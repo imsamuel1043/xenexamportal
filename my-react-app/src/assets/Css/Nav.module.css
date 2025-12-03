@@ -1,101 +1,57 @@
 .navWrapper {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
   width: 100%;
-  background: #fff;
+  background: white;
+  padding: 10px 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
 }
 
-.navu {
+.navContainer {
+  width: 100%;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-  height: 70px;
-  border-bottom: 1px solid #ddd;
-  transition: margin-left 0.3s ease, width 0.3s ease;
-  margin-left: 0;
-  width: 100%;
-}
-
-.adminMode {
-  margin-left: 250px;
-  width: calc(100% - 250px);
-}
-
-.leftSection {
-  display: flex;
-  align-items: center;
 }
 
 .logo {
-  width: 70px;
-  height: auto;
-}
-
-.searchSection {
-  position: relative;
-  flex: 1 1 400px;
-  max-width: 520px;
-  display: flex;
-  justify-content: center;
-}
-
-.searchinput {
-  width: 100%;
-  max-width: 420px;
-  padding: 8px 42px 8px 14px;
-  border-radius: 24px;
-  border: 1px solid #d0d7df;
-  font-size: 14px;
-}
-
-.searchIcon {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #6b7280;
-}
-
-.rightSection {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  height: 45px;
 }
 
 .loginBtn {
-  background: transparent;
-  border: 1px solid #ccc;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
+  background: #ffffff;
+  color: rgb(0, 0, 0);
+  padding: 6px 14px;
+  border-radius: 5px;
+  border: none;
 }
 
 .menuBtn {
-  display: none;
-  position: absolute;
-  left: 12px;
-  top: 18px;
-  font-size: 24px;
-  background: transparent;
+  font-size: 25px;
+  background: none;
   border: none;
+  margin-right: 10px;
   cursor: pointer;
-  z-index: 1200;
+  display: none; 
 }
 
-@media (max-width: 992px) {
-  .menuBtn { display: block; }
-  .adminMode { margin-left: 0; width: 100%; }
-  .logo { display: none; }
-  .searchSection { flex: 1 1 200px; }
+.profileImg {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
 }
 
 @media (max-width: 768px) {
-  .searchSection { flex: 1 1 150px; max-width: 250px; }
-}
 
-@media (max-width: 420px) {
-  .searchSection { display: none; }
-  .loginBtn { padding: 6px 10px; }
+  .menuBtn {
+    display: block; 
+  }
+
+  .logo {
+    height: 40px;
+  }
+
+  .loginBtn {
+    padding: 5px 12px;
+  }
 }

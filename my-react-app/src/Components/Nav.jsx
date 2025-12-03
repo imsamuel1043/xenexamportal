@@ -1,46 +1,70 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Navstyle from "../assets/Css/Nav.module.css";
-import sidebarcss from "../assets/Css/AdminSidebar.module.css";
+
+import AdminsidebarCss from "../assets/Css/Adminsidebar.module.css";
+import "../assets/Css/Studentsidebar.css"; 
+
 import Xenlogo from "../assets/images/xenlogo.png";
+// import ProfileImg from "../assets/images/profile.png";
 
-const Navbar = ({ isAdmin = false }) => {
-    const [search, setSearch] = useState("");
+const Navbar = ({ userRole = "guest" }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    const toggleSidebar = () => {
-        const sb = document.querySelector("." + sidebarcss.sidebar);
-        if (sb) sb.classList.toggle(sidebarcss.open);
-    };
+  const toggleSidebar = () => {
+    let sidebarClass =
+      userRole === "admin"
+        ? AdminsidebarCss.sidebar          
+        : "student-sidebar";               
 
-    return (
-        <header className={Navstyle.navWrapper}>
-            {isAdmin && (
-                <button className={Navstyle.menuBtn} onClick={toggleSidebar}>
-                    ☰
-                </button>
-            )}
+    const sb = document.querySelector("." + sidebarClass);
 
-            <nav className={`${Navstyle.navu} ${isAdmin ? Navstyle.adminMode : ""}`}>
-                <div className={Navstyle.leftSection}>
-                    {!isAdmin && <img src={Xenlogo} alt="logo" className={Navstyle.logo} />}
-                </div>
+    if (sb) {
+      sb.classList.toggle(
+        userRole === "admin"
+          ? AdminsidebarCss.open          
+          : "open"                       
+      );
+    }
 
-                <div className={Navstyle.searchSection}>
-                    <input
-                        className={Navstyle.searchinput}
-                        placeholder="Search..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
-                    <span className={Navstyle.searchIcon}><i className="bi bi-search"></i></span>
-                </div>
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
-                <div className={Navstyle.rightSection}>
-                    <Link to="/login"><button className={Navstyle.loginBtn}>Login</button></Link>
-                </div>
-            </nav>
-        </header>
-    )
-}
+  const isLoggedIn = userRole === "admin" || userRole === "student";
+
+  return (
+    <header className={Navstyle.navWrapper}>
+      {isLoggedIn && (
+        <button className={Navstyle.menuBtn} onClick={toggleSidebar}>
+          ☰
+        </button>
+      )}
+
+      <nav className={Navstyle.navContainer}>
+        <div className={Navstyle.leftSection}>
+          <img src={Xenlogo} alt="logo" className={Navstyle.logo} />
+        </div>
+
+        <div className={Navstyle.rightSection}>
+          {!isLoggedIn && (
+            <Link to="/login">
+              <button className={Navstyle.loginBtn}>Login</button>
+            </Link>
+          )}
+
+          {isLoggedIn && (
+            <div className={Navstyle.profileSection}>
+              <img
+                src={ProfileImg}
+                alt="Profile"
+                className={Navstyle.profileImg}
+              />
+            </div>
+          )}
+        </div>
+      </nav>
+    </header>
+  );
+};
 
 export default Navbar;
