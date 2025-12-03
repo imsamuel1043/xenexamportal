@@ -176,3 +176,9 @@
     font-size: 12px;
   }
 }
+
+@media screen and (min-width: 1440px) {
+  .bannerContainer {
+    height: 850px; 
+  }
+}

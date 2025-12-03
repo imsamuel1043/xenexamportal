@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import Navstyle from "../assets/Css/Nav.module.css";
-import AdminsidebarCss from "../assets/Css/Adminsidebar.module.css";
+import Adminsidebarcss from "../assets/Css/Adminsidebar.module.css";
 import "../assets/Css/Studentsidebar.css";
 
 import Xenlogo from "../assets/images/xenlogo.png";
@@ -19,11 +19,11 @@ const Nav = ({ userRole = "guest", userName = "" }) => {
   const toggleSidebar = () => {
     const sidebarClass =
       userRole === "admin"
-        ? AdminsidebarCss.sidebar
+        ? Adminsidebarcss.sidebar
         : "student-sidebar";
 
     const sb = document.querySelector("." + sidebarClass);
-    if (sb) sb.classList.toggle(userRole === "admin" ? AdminsidebarCss.open : "open");
+    if (sb) sb.classList.toggle(userRole === "admin" ? Adminsidebarcss.open : "open");
 
     setIsSidebarOpen(!isSidebarOpen);
   };
