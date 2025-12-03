@@ -42,20 +42,22 @@
 }
 
 
-@media (max-width: 1200px) {
-  .cardRow {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
 
 @media (max-width: 992px) {
-  .mainContent {
-    margin-left: 0;
-    width: 100%;
+
+  .sidebarWrapper {
+    width: 70px;   
   }
+
+  .mainContent {
+    margin-left: 70px; 
+    width: calc(100% - 70px);
+  }
+
   .cardRow {
     grid-template-columns: repeat(2, 1fr);
   }
+
   .notificationWrapper {
     width: 100%;
     margin: 10px 0 20px 0;

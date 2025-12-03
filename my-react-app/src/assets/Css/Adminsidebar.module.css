@@ -1,4 +1,3 @@
-
 .sidebar {
   width: 250px;
   height: 100vh;
@@ -7,10 +6,20 @@
   top: 0;
   left: 0;
   overflow-y: auto;
+  overflow-x: hidden;         
   transition: 0.3s ease-in-out;
   padding-top: 10px;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
   border-radius: 0px 20px 20px 0px;
+  scrollbar-width: thin;      
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background: #1e3a8a;
+  border-radius: 10px;
 }
 
 .profileContainer {
@@ -52,7 +61,6 @@
   letter-spacing: 1px;
 }
 
-
 .sidebarlist {
   margin: 0;
   padding: 0;
@@ -78,7 +86,6 @@
   display: block;
 }
 
-
 .sidebarlistitem:hover {
   background-color: #1e3a8a;
   color: #ffffff;
@@ -94,41 +101,69 @@
   font-weight: 600;
 }
 
-
 .Adminsidebar-responsive {
   display: inline !important;
   position: absolute;
   z-index: 12;
-  
 }
-
 
 @media (max-width: 992px) {
   .sidebar {
     width: 220px;
   }
 
-  .mainContent, .navu {
+  .mainContent,
+  .navu {
     margin-left: 220px !important;
     width: calc(100% - 220px) !important;
   }
 }
 
-
 @media (max-width: 768px) {
   .sidebar {
-    left: -260px;          
-    width: 250px;
+    width: 75px !important;
+    left: 0 !important;
+    padding-top: 20px;
+
+    overflow-y: auto !important;  
+    overflow-x: hidden !important; 
   }
 
-  .sidebar.open {
-    left: 0;                   
+  .sidebarlistitem span,
+  .submenu li a span,
+  .headings span,
+  .profileText {
+    display: none !important;
+  }
+
+  .sidebarlistitem,
+  .submenu li a {
+    justify-content: center;
+    padding: 12px 0 !important;
+  }
+
+  .sidebarlistitem i,
+  .submenu li a i {
+    font-size: 22px !important;
+  }
+
+  .profileContainer {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 0;
+    margin: 0;
+  }
+
+  .profileImg {
+    width: 45px;
+    height: 45px;
   }
 
   .mainContent,
   .navu {
-    margin-left: 0 !important;
-    width: 100% !important;
+    margin-left: 75px !important;
+    width: calc(100% - 75px) !important;
   }
 }
 
@@ -153,7 +188,6 @@
   margin: 0 12px;
   text-decoration: none;
   font-size: 14px;
-  display: block;
 }
 
 .submenu li a:hover {
@@ -165,6 +199,3 @@ body.sidebar-open .nav-area {
   margin-left: 250px !important;
   width: calc(100% - 250px) !important;
 }
-
-
-

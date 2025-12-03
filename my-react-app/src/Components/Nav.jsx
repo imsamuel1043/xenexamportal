@@ -1,31 +1,29 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Navstyle from "../assets/Css/Nav.module.css";
 
+import Navstyle from "../assets/Css/Nav.module.css";
 import AdminsidebarCss from "../assets/Css/Adminsidebar.module.css";
-import "../assets/Css/Studentsidebar.css"; 
+import "../assets/Css/Studentsidebar.css";
 
 import Xenlogo from "../assets/images/xenlogo.png";
 // import ProfileImg from "../assets/images/profile.png";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
-const Navbar = ({ userRole = "guest" }) => {
+
+
+
+const Nav = ({ userRole = "guest", userName = "" }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleSidebar = () => {
-    let sidebarClass =
+    const sidebarClass =
       userRole === "admin"
-        ? AdminsidebarCss.sidebar          
-        : "student-sidebar";               
+        ? AdminsidebarCss.sidebar
+        : "student-sidebar";
 
     const sb = document.querySelector("." + sidebarClass);
-
-    if (sb) {
-      sb.classList.toggle(
-        userRole === "admin"
-          ? AdminsidebarCss.open          
-          : "open"                       
-      );
-    }
+    if (sb) sb.classList.toggle(userRole === "admin" ? AdminsidebarCss.open : "open");
 
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -41,30 +39,53 @@ const Navbar = ({ userRole = "guest" }) => {
       )}
 
       <nav className={Navstyle.navContainer}>
+        
         <div className={Navstyle.leftSection}>
           <img src={Xenlogo} alt="logo" className={Navstyle.logo} />
         </div>
 
         <div className={Navstyle.rightSection}>
+
           {!isLoggedIn && (
-            <Link to="/login">
-              <button className={Navstyle.loginBtn}>Login</button>
-            </Link>
+            <div className={Navstyle.dropdownContainer}>
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className={Navstyle.loginBtn}
+              >
+                Login <i className="bi bi-caret-down-fill"></i>
+              </button>
+
+              {dropdownOpen && (
+                <div className={Navstyle.dropdownMenu}>
+                  <Link to="/login">Admin Login</Link>
+                  <Link to="/login">Student Login</Link>
+                </div>
+              )}
+            </div>
           )}
 
           {isLoggedIn && (
-            <div className={Navstyle.profileSection}>
-              <img
-                src={ProfileImg}
-                alt="Profile"
-                className={Navstyle.profileImg}
-              />
+            <div className={Navstyle.profileBox}>
+              
+              <button className={Navstyle.notificationIcon}>
+                <i className="bi bi-bell"></i>
+              </button>
+
+              <div className={Navstyle.profileSection}>
+                <img src={ProfileImg} className={Navstyle.profileImg} alt="profile" />
+                <div className={Navstyle.userInfo}>
+                  <p className={Navstyle.userName}>{userName}</p>
+                  <p className={Navstyle.userRole}>{userRole.toUpperCase()}</p>
+                </div>
+              </div>
+
             </div>
           )}
+
         </div>
       </nav>
     </header>
   );
 };
 
-export default Navbar;
+export default Nav;
