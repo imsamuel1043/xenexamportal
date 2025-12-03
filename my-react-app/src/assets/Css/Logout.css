@@ -1,0 +1,25 @@
+.logout-overlay {
+  position: fixed !important;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999999 !important;
+}
+
+.logout-box {
+  background: #fff;
+  padding: 28px;
+  border-radius: 10px;
+  width: 360px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  z-index: 999999999 !important;
+}
+.logout-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 100px;          
+  margin-top: 20px;
+}

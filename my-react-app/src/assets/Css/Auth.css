@@ -1,0 +1,27 @@
+.auth-bg {
+  background: linear-gradient(135deg, rgba(0,123,255,0.6), rgba(0,50,200,0.6));
+  backdrop-filter: blur(10px);
+}
+
+.auth-card {
+  width: 700px;
+  max-width: 90%;
+  border-radius: 15px;
+  overflow: hidden;
+  display: flex;
+}
+
+.auth-image-container {
+  width: 40%;
+  overflow: hidden;
+}
+
+.auth-image-container img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.auth-form-container {
+  width: 60%;
+}

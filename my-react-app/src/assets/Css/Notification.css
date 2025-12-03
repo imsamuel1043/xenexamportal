@@ -1,0 +1,76 @@
+.notify-card {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 10px;
+  margin-left: -12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+}
+
+/* Titles */
+.notify-title {
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+}
+
+/* Notification items */
+.notify-item {
+  background: #f8f8f8;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.notify-item p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.notify-item small {
+  color: #777;
+  font-size: 12px;
+}
+
+/* Divider line */
+.notify-divider {
+  margin: 15px 0;
+  border: none;
+  border-top: 1px solid #eaeaea;
+}
+
+/* -------- Responsive Styles -------- */
+@media (max-width: 768px) {
+  .notify-card {
+    margin-left: 0 !important;
+    padding: 12px;
+  }
+
+  .notify-item {
+    padding: 10px;
+  }
+
+  .notify-title {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .notify-card {
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .notify-item p {
+    font-size: 13px;
+  }
+
+  .notify-item small {
+    font-size: 11px;
+  }
+}

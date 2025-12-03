@@ -1,0 +1,21 @@
+.custom-tab {
+  border: none !important;
+  color: #555 !important;
+  background: #f8f9fa !important;
+  border-radius: 8px 8px 0 0 !important;
+  margin-right: 8px;
+  transition: 0.3s;
+  width: 100px;
+}
+
+.custom-tab:hover {
+  background: #e9ecef !important;
+  color: #000 !important;
+}
+
+.custom-tab-active {
+  background: #3956AD !important;
+  color: #fff !important;
+  border-radius: 6px 6px 0 0 !important;
+  box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
+}

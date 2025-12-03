@@ -1,0 +1,70 @@
+.cardRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.cardBox {
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: 0.3s ease;
+}
+
+.cardBox:hover {
+  box-shadow: 0 4px 12px rgba(115, 209, 246, 0.5);
+}
+
+.student-card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.student-value {
+  font-size: 18px;
+  font-weight: 900;
+  margin: 0;
+  color: #000;
+}
+
+.student-title {
+  font-size: 12px;
+  margin: 0;
+  color: #555;
+}
+
+.student-icon-wrapper {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #15007008;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.student-icon-wrapper i {
+  font-size: 25px;
+  color: #3956AD;
+}
+
+@media (max-width: 1200px) {
+  .cardRow {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .cardRow {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .cardRow {
+    grid-template-columns: 1fr;
+  }
+}

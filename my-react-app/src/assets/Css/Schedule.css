@@ -1,0 +1,80 @@
+
+.rbc-toolbar {
+  padding: 10px;
+  margin-bottom: 10px;
+  background: #ffffff;
+  border-radius: 10px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.rbc-header {
+  padding: 8px;
+  background: #eeeeee;
+  border-radius: 6px;
+  font-weight: 600;
+  color: #5c5c5c;
+}
+
+.rbc-month-view,
+.rbc-time-view {
+  border: none !important;
+}
+
+
+.rbc-day-bg,
+.rbc-time-slot {
+  border: none !important;
+}
+
+.rbc-day-bg:hover,
+.rbc-time-slot:hover {
+  background: #f2f6ff !important;
+  cursor: pointer;
+}
+
+
+.rbc-today {
+  background-color: #dfe9ff !important;
+  border-radius: 10px;
+}
+
+
+.rbc-event-content {
+  font-weight: 500;
+}
+
+
+.rbc-month-row {
+  border-bottom: 0 !important;
+  margin-bottom: 5px;
+}
+
+
+.rbc-btn-group button {
+  background: #f1f1f1;
+  border-radius: 6px !important;
+  padding: 6px 12px;
+  font-weight: 600;
+  border: none;
+}
+
+.rbc-btn-group button:hover {
+  background: #dcdcdc;
+}
+
+.rbc-toolbar button:active,
+.rbc-toolbar button.rbc-active {
+  background: #3956AD !important;
+  color: #fff;
+}
+
+.schedule{
+    font-size: 18px;
+    color: white;
+    background-color: #374980;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 10px;
+    border-radius: 4px;
+}

@@ -1,0 +1,28 @@
+.cardsspace{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: rgb(205, 226, 246);
+    padding: 45px;
+
+}
+.whychoose{
+    font-size: 24px;
+    font-weight: 700;
+}
+.paras{
+    font-size: 16px;
+}
+
+.subs {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+.subbutton{
+    border-radius: 6px;
+  width: 100px;
+  height: 37px;
+  background-color: #3956AD;
+  color: white;
+  border: 0px;
+}

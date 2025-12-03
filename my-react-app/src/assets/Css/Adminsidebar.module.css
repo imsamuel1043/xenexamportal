@@ -1,0 +1,170 @@
+
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: #05173e;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  transition: 0.3s ease-in-out;
+  padding-top: 10px;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+  border-radius: 0px 20px 20px 0px;
+}
+
+.profileContainer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  background: #162c50;
+  border-radius: 8px;
+  margin: 10px 12px;
+}
+
+.profileImg {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff22;
+}
+
+.profileText p {
+  font-size: 13px;
+  margin: 0;
+  color: #cbd5e1;
+}
+
+.profileText h6 {
+  font-size: 16px;
+  color: #fff;
+  margin: 2px 0 0 0;
+  font-weight: 600;
+}
+
+.headings {
+  font-size: 12px;
+  padding: 20px 22px 8px 22px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+
+.sidebarlist {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.sidebarlistitem {
+  padding: 12px 22px;
+  color: #cbd5e1;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+  border-radius: 6px;
+  margin: 0 12px;
+}
+
+.sidebarlistitem a {
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+  display: block;
+}
+
+
+.sidebarlistitem:hover {
+  background-color: #1e3a8a;
+  color: #ffffff;
+}
+
+.sidebarlistitem.active {
+  background-color: #2563eb;
+  color: white;
+}
+
+.logout {
+  color: #ef4444 !important;
+  font-weight: 600;
+}
+
+
+.Adminsidebar-responsive {
+  display: inline !important;
+  position: absolute;
+  z-index: 12;
+  
+}
+
+
+@media (max-width: 992px) {
+  .sidebar {
+    width: 220px;
+  }
+
+  .mainContent, .navu {
+    margin-left: 220px !important;
+    width: calc(100% - 220px) !important;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .sidebar {
+    left: -260px;          
+    width: 250px;
+  }
+
+  .sidebar.open {
+    left: 0;                   
+  }
+
+  .mainContent,
+  .navu {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+}
+
+.submenu {
+  list-style: none;
+  padding-left: 40px;
+  margin: 5px 0 10px 0;
+}
+
+.submenu li {
+  padding: 8px 0;
+}
+
+.submenu li a {
+  padding: 12px 22px;
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+  border-radius: 6px;
+  margin: 0 12px;
+  text-decoration: none;
+  font-size: 14px;
+  display: block;
+}
+
+.submenu li a:hover {
+  background-color: #1e3a8a;
+  color: #ffffff;
+}
+
+body.sidebar-open .nav-area {
+  margin-left: 250px !important;
+  width: calc(100% - 250px) !important;
+}
+
+
+
