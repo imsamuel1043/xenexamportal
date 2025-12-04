@@ -28,7 +28,7 @@ const Cardsandpara = () => {
             <div className={cardspara.cardsspace}>
                 <div className='row row-cols-1 row-cols-md-4 g-3 justify-content-center'>
                     <div className='col d-flex justify-content-center'>
-                        <div className='card text-center' style={{ width: "12rem", border: "0px", backgroundColor: "rgba(205, 226, 246)" }} >
+                        <div className='card text-center' style={{ width: "12rem", border: "0px", backgroundColor: "#ffff" }} >
                             <img src={schooledu} alt="schooleduimg" style={{ height: "82px", width: "195px" }} />
                             <div className='card-body'>
                                 <h6 className='card-title' style={{ fontSize: "16px", fontWeight: "700" }}>Reusable Questions</h6>
@@ -39,7 +39,7 @@ const Cardsandpara = () => {
                         </div>
                     </div>
                     <div className='col d-flex justify-content-center'>
-                        <div className='card text-center' style={{ width: "12rem", border: "0px", backgroundColor: "rgba(205, 226, 246)" }} >
+                        <div className='card text-center' style={{ width: "12rem", border: "0px", backgroundColor:  "#ffff" }} >
                             <img src={testprep} alt="testprepimg" style={{ height: "82px", width: "195px" }} />
                             <div className='card-body'>
                                 <h6 className='card-title' style={{ fontSize: "16px", fontWeight: "700" }}>Save Your Time</h6>
@@ -52,7 +52,7 @@ const Cardsandpara = () => {
 
                     </div>
                     <div className='col d-flex justify-content-center'>
-                        <div className='card text-center' style={{ width: "12rem", border: "0px", backgroundColor: "rgba(205, 226, 246)" }} >
+                        <div className='card text-center' style={{ width: "12rem", border: "0px", backgroundColor:  "#ffff" }} >
                             <img src={testpublish} alt="testpublishimg" style={{ height: "82px", width: "195px" }} />
                             <div className='card-body'>
                                 <h6 className='card-title' style={{ fontSize: "16px", fontWeight: "700" }}>Simple Process</h6>
@@ -67,7 +67,7 @@ const Cardsandpara = () => {
 
                 </div>
             </div>
-            <div className='container mt-5 mb-5 d-flex '>
+            <div className={`container-fluid mt-5 mb-5 d-flex ${cardspara.newchange}`}>
 
                 <div className="row align-items-center justify-content-center">
 

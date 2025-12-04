@@ -25,6 +25,15 @@ const Students = () => {
   const [batchFilter, setBatchFilter] = useState("");
   const [showFilter, setShowFilter] = useState(false);
 
+  const [showModal, setShowModal] = useState(false);
+  const [newStudent, setNewStudent] = useState({
+    name: "",
+    course: "",
+    batch: "",
+    date: "",
+    img: user1
+  });
+
   const filterRef = useRef();
 
   useEffect(() => {
@@ -47,7 +56,6 @@ const Students = () => {
 
   const deleteStudent = (id) => {
     setStudents(students.filter((s) => s.id !== id));
-
     setSelected((prev) => {
       const copy = { ...prev };
       delete copy[id];
@@ -55,16 +63,23 @@ const Students = () => {
     });
   };
 
-  const addNewStudent = () => {
-    const newStudent = {
+  const handleInputChange = (e) => {
+    setNewStudent({ ...newStudent, [e.target.name]: e.target.value });
+  };
+
+  const handleAddStudent = () => {
+    if (!newStudent.name || !newStudent.course || !newStudent.batch) return;
+
+    const studentToAdd = {
       id: "#CMP" + Math.floor(1000 + Math.random() * 9000),
-      name: "New Student",
-      course: "Unknown",
-      batch: "N/A",
+      ...newStudent,
       date: new Date().toDateString(),
-      img: user1,
+      img: newStudent.img || user1,
     };
-    setStudents([...students, newStudent]);
+
+    setStudents([...students, studentToAdd]);
+    setNewStudent({ name: "", course: "", batch: "", date: "", img: user1 });
+    setShowModal(false);
   };
 
   return (
@@ -78,11 +93,55 @@ const Students = () => {
         <button
           className="btn px-4 text-white btn-primary mb-2"
           style={{ borderRadius: "6px" }}
-          onClick={addNewStudent}
+          onClick={() => setShowModal(true)}
         >
           New Student
         </button>
       </div>
+
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-box">
+            <h5>Add New Student</h5>
+
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={newStudent.name}
+              onChange={handleInputChange}
+            />
+
+            <select
+              name="course"
+              value={newStudent.course}
+              onChange={handleInputChange}
+            >
+              <option value="">Select Course</option>
+              <option value="UI/UX Development">UI/UX Design and Development</option>
+              <option value="Full-Stack Development">Full-Stack Development</option>
+              <option value="Digital Marketing">Digital Marketing</option>
+              <option value="Graphic Design">Multimedia With Animation</option>
+              <option value="Data Science">PHP Development</option>
+              <option value="Python Development">Node JS Development</option>
+              <option value="Other">Python Development</option>
+            </select>
+
+            <input
+              type="text"
+              name="batch"
+              placeholder="Batch"
+              value={newStudent.batch}
+              onChange={handleInputChange}
+            />
+
+            <div className="modal-buttons">
+              <button className="btn btn-secondary" onClick={() => setShowModal(false)}>Cancel</button>
+              <button className="btn btn-success" onClick={handleAddStudent}>Add</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="card shadow-sm p-3 mt-3" style={{ borderRadius: "8px" }}>
         <div className="students-top-row">

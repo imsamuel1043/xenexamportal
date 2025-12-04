@@ -1,7 +1,7 @@
 .cardsspace{
     margin-top: 5px;
     margin-bottom: 5px;
-    background-color: rgb(205, 226, 246);
+    background-color: rgb(255, 255, 255);
     padding: 45px;
 
 }
@@ -25,4 +25,7 @@
   background-color: #3956AD;
   color: white;
   border: 0px;
+}
+.newchange{
+  background-color: #e6f1ff;
 }
