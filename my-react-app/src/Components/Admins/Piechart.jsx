@@ -15,11 +15,11 @@ const Piechart = () => {
       style={{
         backgroundColor: "#ffffff",
         width: "100%",
-        maxWidth: "30rem",
-        height: "auto",
+        maxWidth: "25rem",
+        height: "100%",
         borderRadius: "13px",
         padding: "20px",
-        marginTop: "30px",
+        marginTop: "32px",
       }}
     >
       <h3
@@ -32,9 +32,9 @@ const Piechart = () => {
       <div
         style={{
           width: "100%",
-          height: "240px",
+          height: "220px",
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "start",
         }}
       >
         <ResponsiveContainer width="100%" height="100%">

@@ -31,7 +31,7 @@
   transition: 0.3s;
 }
 .cardBox:hover {
-  box-shadow: 0 4px 12px rgba(115, 209, 246, 0.5);
+  box-shadow: 0 4px 12px rgba(176, 176, 176, 0.5);
 }
 .students-grid {
   display: grid;
@@ -143,18 +143,20 @@
 }
 
 @media (max-width: 768px) {
-  .admin-two-cards {
-    flex-direction: column;
+  .admin-dashboard-row {
+    flex-direction: column; 
   }
 
-  .admin-card {
+  .dashboard-card {
     width: 100%;
+    min-width: unset; 
+    margin-bottom: 20px; 
   }
 }
-
 
 @media (max-width: 600px) {
   .cardRow {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; 
   }
 }
+

@@ -17,7 +17,7 @@ import Batches from './Components/Admins/Batches';
 import UserManagement from './Components/Admins/UserManagement';
 import UserGroup from './Components/Admins/UserGroup';
 import Permission from './Components/Admins/Permission';
-import Login from './Components/Homepage/Login';
+import LoginAdmin from './Components/Homepage/LoginAdmin';
 
 import StudentDash from './Components/Students/StudentDash';
 import StudentLayout from './Components/Layouts/StudentLayout';
@@ -26,27 +26,37 @@ import Studentresult from './Components/Students/Studentsresult';
 import FeeBalance from './Components/Students/FeeBalance';
 
 import ProtectedRoute from "./Components/ProtectedRoute";
+import LoginStudent from './Components/Homepage/LoginStudent';
 
 
 function AppLayout() {
 
   const location = useLocation();
 
-  const hideNavRoutes = ["/signup", "/login"];
+  const hideNavRoutes = [
+    "/signup",
+    "/loginadmin",
+    "/loginstudent"
+  ];
+
   const hideNav = hideNavRoutes.includes(location.pathname);
 
   const hideFooterRoutes = [
-    "/signup", "/login",
+    "/signup",
+    "/loginadmin",
+    "/loginstudent",
+
     "/admin", "/students", "/courses",
-    "/live", "/assign", "/bank", 
+    "/live", "/assign", "/bank",
     "/result", "/batch", "/managment",
     "/group", "/permission",
 
-    "/sdashboard", "/exam",
+    "/student/dashboard", "/exam",
     "/Studentresults", "/feebalance"
   ];
-  
+
   const hideFooter = hideFooterRoutes.includes(location.pathname);
+
 
   return (
     <>
@@ -61,51 +71,52 @@ function AppLayout() {
           </>
         } />
 
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        
+        <Route path="/Signup" element={<Signup />} />
+        <Route path="/loginadmin" element={<LoginAdmin />} />
+        <Route path="/loginstudent" element={<LoginStudent />} />
+
         {/* admin route */}
 
-        <Route path="/admin" element={<ProtectedRoute role="admin"><Admin /></ProtectedRoute> } />
-        <Route path="/students" element={<ProtectedRoute role="admin"><Students /></ProtectedRoute>}/>
-        <Route path="/courses" element={<ProtectedRoute role="admin"><Courses /></ProtectedRoute>}/>
-        <Route path="/live" element={<ProtectedRoute role="admin"><OngoingExam /></ProtectedRoute>}/>
-        <Route path="/assign" element={<ProtectedRoute role="admin"><AssignExam /></ProtectedRoute>}/>
-        <Route path="/bank" element={<ProtectedRoute role="admin"><QuestionBank /></ProtectedRoute>}/>
-        <Route path="/result" element={<ProtectedRoute role="admin"><ExamResults /></ProtectedRoute>}/>
-        <Route path="/batch" element={<ProtectedRoute role="admin"><Batches /></ProtectedRoute>}/>
-        <Route path="/managment"element={<ProtectedRoute role="admin"><UserManagement /></ProtectedRoute>}/>
-        <Route path="/group" element={<ProtectedRoute role="admin"><UserGroup /></ProtectedRoute>}/>
-        <Route path="/permission" element={<ProtectedRoute role="admin"><Permission /></ProtectedRoute>}/>
+        <Route path="/admin" element={<ProtectedRoute role="admin"><Admin /></ProtectedRoute>} />
+        <Route path="/students" element={<ProtectedRoute role="admin"><Students /></ProtectedRoute>} />
+        <Route path="/courses" element={<ProtectedRoute role="admin"><Courses /></ProtectedRoute>} />
+        <Route path="/live" element={<ProtectedRoute role="admin"><OngoingExam /></ProtectedRoute>} />
+        <Route path="/assign" element={<ProtectedRoute role="admin"><AssignExam /></ProtectedRoute>} />
+        <Route path="/bank" element={<ProtectedRoute role="admin"><QuestionBank /></ProtectedRoute>} />
+        <Route path="/result" element={<ProtectedRoute role="admin"><ExamResults /></ProtectedRoute>} />
+        <Route path="/batch" element={<ProtectedRoute role="admin"><Batches /></ProtectedRoute>} />
+        <Route path="/managment" element={<ProtectedRoute role="admin"><UserManagement /></ProtectedRoute>} />
+        <Route path="/group" element={<ProtectedRoute role="admin"><UserGroup /></ProtectedRoute>} />
+        <Route path="/permission" element={<ProtectedRoute role="admin"><Permission /></ProtectedRoute>} />
 
         {/* student routes */}
 
-        <Route path="/sdashboard" element={<ProtectedRoute role="student">
-        <StudentLayout>
-        <StudentDash />
-        </StudentLayout>
+        <Route path="/student/dashboard" element={<ProtectedRoute role="student">
+          <StudentLayout>
+            <StudentDash />
+          </StudentLayout>
         </ProtectedRoute>}
         />
 
         <Route path="/exam" element={<ProtectedRoute role="student">
-              <StudentLayout>
-                <Studentexam />
-              </StudentLayout>
-            </ProtectedRoute>
-          } />
+          <StudentLayout>
+            <Studentexam />
+          </StudentLayout>
+        </ProtectedRoute>
+        } />
 
         <Route path="/Studentresults" element={<ProtectedRoute role="student">
-              <StudentLayout>
-                <Studentresult />
-              </StudentLayout>
-            </ProtectedRoute>}
+          <StudentLayout>
+            <Studentresult />
+          </StudentLayout>
+        </ProtectedRoute>}
         />
 
         <Route path="/feebalance" element={<ProtectedRoute role="student">
-              <StudentLayout>
-                <FeeBalance />
-              </StudentLayout>
-            </ProtectedRoute>}
+          <StudentLayout>
+            <FeeBalance />
+          </StudentLayout>
+        </ProtectedRoute>}
         />
 
       </Routes>

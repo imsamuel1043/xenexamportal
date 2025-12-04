@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import LogoutPopup from "../../Components/Logout"; 
 import "../../assets/Css/Studentsidebar.css";
+import studentpro from '../../assets/images/profile.jpeg'
 
 const Sidebar = () => {
 
@@ -21,7 +22,7 @@ const Sidebar = () => {
 
       <div className="profileContainer">
         <img
-          src="https://via.placeholder.com/60"
+          src={studentpro}
           alt="profile"
           className="profileImg"
         />
@@ -35,8 +36,8 @@ const Sidebar = () => {
 
       <ul className="sidebarlist">
 
-        <li className={`sidebarlistitem ${isActive("/sdashboard") ? "active" : ""}`}>
-          <Link to="/sdashboard">Dashboard</Link>
+        <li className={`sidebarlistitem ${isActive("/student/dashboard") ? "active" : ""}`}>
+          <Link to="/student/dashboard">Dashboard</Link>
         </li>
 
         <li className={`sidebarlistitem ${isActive("/exam") ? "active" : ""}`}>

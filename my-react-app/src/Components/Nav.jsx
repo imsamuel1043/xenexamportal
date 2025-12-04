@@ -57,8 +57,8 @@ const Nav = ({ userRole = "guest", userName = "" }) => {
 
               {dropdownOpen && (
                 <div className={Navstyle.dropdownMenu}>
-                  <Link to="/login">Admin Login</Link>
-                  <Link to="/login">Student Login</Link>
+                  <Link to="/loginadmin">Admin Login</Link>
+                  <Link to="/loginstudent">Student Login</Link>
                 </div>
               )}
             </div>

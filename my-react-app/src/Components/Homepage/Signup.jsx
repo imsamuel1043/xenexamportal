@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../assets/Css/Auth.css";
-import adminSignupImg from "../../assets/images/login.jpg";
-import studentSignupImg from "../../assets/images/login.jpg";
+import adminSignupImg from "../../assets/images/Signup.jpg";
+import studentSignupImg from "../../assets/images/Signup.jpg";
 import { Link, useNavigate } from "react-router-dom";
+
+
 
 const Signup = () => {
   const [role, setRole] = useState("admin");
@@ -26,8 +28,11 @@ const Signup = () => {
     localStorage.setItem(`${role}_user`, JSON.stringify(user));
 
     alert(`${role.toUpperCase()} registered successfully!`);
-    navigate("/login");
+
+    navigate(role === "admin" ? "/loginadmin" : "/loginstudent");
   };
+
+
 
   return (
     <div className="auth-bg d-flex justify-content-center align-items-center vh-100">
@@ -39,23 +44,19 @@ const Signup = () => {
 
         <div className="auth-form-container p-4 d-flex flex-column justify-content-center">
           <h2 className="text-center mb-3">Sign Up</h2>
-          <p className="text-center text-muted mb-3">{role === "admin" ? "Admin Portal" : "Student Portal"}</p>
+          <p className="text-center text-muted mb-3">
+            {role === "admin" ? "Admin" : "Student"}
+          </p>
 
-          <div className="d-flex gap-2 justify-content-center mb-3">
-            <button
-              type="button"
-              className={`btn ${role === "admin" ? "btn-primary" : "btn-outline-primary"}`}
-              onClick={() => setRole("admin")}
+          <div className="mb-3">
+            <select
+              className="form-select"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
             >
-              Admin
-            </button>
-            <button
-              type="button"
-              className={`btn ${role === "student" ? "btn-primary" : "btn-outline-primary"}`}
-              onClick={() => setRole("student")}
-            >
-              Student
-            </button>
+              <option value="admin">Admin</option>
+              <option value="student">Student</option>
+            </select>
           </div>
 
           <form onSubmit={handleSignup}>
@@ -69,6 +70,7 @@ const Signup = () => {
                 required
               />
             </div>
+
             <div className="mb-3">
               <input
                 type="email"
@@ -79,6 +81,7 @@ const Signup = () => {
                 required
               />
             </div>
+
             <div className="mb-3">
               <input
                 type="password"
@@ -89,19 +92,29 @@ const Signup = () => {
                 required
               />
             </div>
-            <button className="btn btn-success w-100 mb-2" type="submit">Create Account</button>
-          </form>
 
-          <div className="text-center mt-2">
-            <p>
-              Already have an account? <Link to="/login" className="link-primary">Login</Link>
-            </p>
+            <button className="btn btn-success w-100 mb-2" type="submit">
+              Create Account
+            </button>
+          </form>
+          <div>
+            <p className="text-center">Already have an account?<Link
+              to={role === "admin" ? "/loginadmin" : "/loginstudent"}
+              className="link-primary"
+            >
+              Login
+            </Link></p>
+
           </div>
+
         </div>
 
       </div>
     </div>
   );
 };
+
+
+
 
 export default Signup;
