@@ -27,7 +27,7 @@ const data = [
 const Linechart = () => {
     return (
         <div style={{
-            width: "75%", backgroundColor: "#ffffffff", borderRadius: "12px",
+            width: "100%", backgroundColor: "#ffffffff", borderRadius: "12px",
             paddingTop: "12px", paddingLeft: "12px", height: "300px"
         }}>
 

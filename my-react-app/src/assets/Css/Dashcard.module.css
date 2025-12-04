@@ -33,6 +33,11 @@
 .cardBox:hover {
   box-shadow: 0 4px 12px rgba(115, 209, 246, 0.5);
 }
+.students-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
 
 .notificationWrapper {
   width: 320px;
@@ -40,13 +45,86 @@
   position: sticky;
   top: 20px;
 }
+.responsiveBox {
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px;
+  width: 100%;
+}
+
+.admin-two-cards {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.admin-card {
+  width: 50%;
+  background: #fff;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+.admin-dashboard-row {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.dashboard-card {
+  width: 50%;
+  background: #fff;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.admin-dashboard-row {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.dashboard-card {
+  flex: 1; 
+  min-width: 300px; 
+  background: #fff;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+  .admin-dashboard-row {
+    flex-direction: column;
+  }
+
+  .dashboard-card {
+    width: 100%;
+  }
+}
 
 
+@media (max-width: 768px) {
+  .admin-dashboard-row {
+    flex-direction: column;
+  }
+  .dashboard-card {
+    width: 100%;
+  }
+}
 
 @media (max-width: 992px) {
 
   .sidebarWrapper {
     width: 70px;   
+  }
+
+  .responsiveBox {
+    margin-top: 10px;
   }
 
   .mainContent {
@@ -63,6 +141,17 @@
     margin: 10px 0 20px 0;
   }
 }
+
+@media (max-width: 768px) {
+  .admin-two-cards {
+    flex-direction: column;
+  }
+
+  .admin-card {
+    width: 100%;
+  }
+}
+
 
 @media (max-width: 600px) {
   .cardRow {

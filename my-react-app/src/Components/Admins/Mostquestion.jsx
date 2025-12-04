@@ -9,9 +9,9 @@ const Mostquestion = ({ data }) => {
         padding: "15px",
         borderRadius: "12px",
         boxShadow: "0 4px 12px rgba(255, 255, 255, 0.08)",
-        width: "23%",
-        marginLeft:"auto",
-        marginTop: "-300px",
+        width: "100%",
+        marginLeft:"0px",
+        marginTop: "0px",
         height:"300px"
       }}
     >

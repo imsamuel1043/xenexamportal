@@ -15,15 +15,16 @@ const Piechart = () => {
       style={{
         backgroundColor: "#ffffff",
         width: "100%",
-        maxWidth: "24rem",
+        maxWidth: "30rem",
         height: "auto",
         borderRadius: "13px",
         padding: "20px",
+        marginTop: "30px",
       }}
     >
       <h3
-        className="fw-bold text-center"
-        style={{ fontSize: "16px", marginBottom: "20px" }}
+        className="fw-bold text-start"
+        style={{ fontSize: "16px" }}
       >
         Exam Attended by
       </h3>
@@ -31,12 +32,12 @@ const Piechart = () => {
       <div
         style={{
           width: "100%",
-          height: "260px",
+          height: "240px",
           display: "flex",
           justifyContent: "center",
         }}
       >
-        <ResponsiveContainer>
+        <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
               data={data}
@@ -49,7 +50,6 @@ const Piechart = () => {
           </PieChart>
         </ResponsiveContainer>
       </div>
-
 
       <div
         style={{
@@ -66,7 +66,8 @@ const Piechart = () => {
             style={{
               display: "flex",
               alignItems: "center",
-              minWidth: "40%",
+              minWidth: "45%",
+              justifyContent: "flex-start",
               gap: "8px",
             }}
           >
@@ -78,7 +79,9 @@ const Piechart = () => {
                 backgroundColor: item.fill,
               }}
             ></span>
-            <span style={{ fontSize: "14px" }}>{item.name}</span>
+            <span style={{ fontSize: "13px", flexWrap: "wrap" }}>
+              {item.name}
+            </span>
           </div>
         ))}
       </div>

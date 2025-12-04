@@ -1,24 +1,24 @@
-.top-students-container {
-  background: #f0f7fd;
+.topcontainer {
+  background: #fcfcfc;
   padding: 40px;
   border-radius: 12px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.153);
 }
 
-.title {
+.titles {
   font-size: 22px;
   font-weight: 600;
   margin-bottom: 20px;
   text-align: center;
 }
 
-.students-grid {
+.studentgrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;
 }
 
-.student-card {
+.studentscard {
   background: #ffffff;
   border-radius: 14px;
   padding: 20px;
@@ -28,11 +28,11 @@
   transition: 0.3s;
 }
 
-.student-card:hover {
+.studentscard:hover {
   transform: translateY(-5px);
 }
 
-.student-img {
+.studentimg {
   width: 90px;
   height: 90px;
   border-radius: 50%;
@@ -41,20 +41,20 @@
   border: 4px solid #4C8EF6;
 }
 
-.student-name {
+.studentname {
   font-size: 18px;
   font-weight: 600;
   margin: 5px 0;
 }
 
-.student-percentage {
+.studentspercentage {
   font-size: 16px;
   font-weight: 500;
   color: #4C8EF6;
 }
 
 
-.badge {
+.badges {
   margin-top: 12px;
   background: #fdd835;
   padding: 6px 12px;

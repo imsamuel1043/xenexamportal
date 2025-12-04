@@ -30,18 +30,18 @@ const students = [
 
 const TheTops = () => {
   return (
-    <div className="top-students-container">
-      <h3 className="title">Top Students of the Month</h3>
+    <div className="topcontainer">
+      <h3 className="titles">Top Students of the Month</h3>
 
-      <div className="students-grid">
+      <div className="studentgrid">
         {students.map((student, index) => (
-          <div key={index} className="student-card">
-            <img src={student.image} alt={student.name} className="student-img" />
+          <div key={index} className="studentscard">
+            <img src={student.image} alt={student.name} className="studentimg" />
 
-            <h4 className="student-name">{student.name}</h4>
-            <p className="student-percentage">{student.percentage}</p>
+            <h4 className="studentname">{student.name}</h4>
+            <p className="studentspercentage">{student.percentage}</p>
 
-            <div className="badge">Congratulations 🎉</div>
+            <div className="badges">Congratulations 🎉</div>
           </div>
         ))}
       </div>

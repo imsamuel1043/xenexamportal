@@ -118,33 +118,38 @@
     width: calc(100% - 220px) !important;
   }
 }
-
 @media (max-width: 768px) {
+
   .sidebar {
     width: 75px !important;
-    left: 0 !important;
     padding-top: 20px;
-
-    overflow-y: auto !important;  
-    overflow-x: hidden !important; 
+    height: 100vh;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
   }
 
   .sidebarlistitem span,
   .submenu li a span,
-  .headings span,
+  .headings,
   .profileText {
     display: none !important;
   }
 
   .sidebarlistitem,
   .submenu li a {
-    justify-content: center;
-    padding: 12px 0 !important;
+    justify-content: center !important;
+    padding: 14px 0 !important;
+    margin: 0 !important;          
+    width: 100% !important;        
+    text-align: center !important; 
   }
 
   .sidebarlistitem i,
   .submenu li a i {
     font-size: 22px !important;
+    display: block;
+    width: 100%;
+    text-align: center;
   }
 
   .profileContainer {
@@ -153,6 +158,7 @@
     gap: 10px;
     padding: 15px 0;
     margin: 0;
+    text-align: center;
   }
 
   .profileImg {
@@ -167,35 +173,27 @@
   }
 }
 
-.submenu {
-  list-style: none;
-  padding-left: 40px;
-  margin: 5px 0 10px 0;
+@media (max-width: 400px) {
+
+  .sidebar {
+    width: 60px !important;    
+  }
+
+  .sidebarlistitem,
+  .submenu li a {
+    padding: 12px 0 !important; 
+  }
+
+  .sidebarlistitem i,
+  .submenu li a i {
+    font-size: 20px !important;
+  }
+
+  .mainContent,
+  .navu {
+    margin-left: 60px !important;
+    width: calc(100% - 60px) !important;
+  }
 }
 
-.submenu li {
-  padding: 8px 0;
-}
 
-.submenu li a {
-  padding: 12px 22px;
-  color: #cbd5e1;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  transition: 0.2s ease;
-  border-radius: 6px;
-  margin: 0 12px;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.submenu li a:hover {
-  background-color: #1e3a8a;
-  color: #ffffff;
-}
-
-body.sidebar-open .nav-area {
-  margin-left: 250px !important;
-  width: calc(100% - 250px) !important;
-}
