@@ -14,7 +14,7 @@ const ExamResults = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [editingResult, setEditingResult] = useState(null);
-  const [isAdding, setIsAdding] = useState(false); 
+  const [isAdding, setIsAdding] = useState(false);
 
   const handleRemove = (id) => {
     setResults(results.filter((r) => r.id !== id));
@@ -63,33 +63,35 @@ const ExamResults = () => {
   return (
     <AdminLayout>
       <div className="container mt-4">
-        <div className="d-flex justify-content-between align-items-center mb-3">
+
+        <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap">
           <h3 className="fw-bold">Exam Results</h3>
-          <button className="btn btn-primary" onClick={handleAddClick}>
+          <button className="btn btn-primary mt-2 mt-md-0" onClick={handleAddClick}>
             Add Result
           </button>
         </div>
 
         <div className="card shadow-sm p-3 mt-3" style={{ borderRadius: "8px" }}>
-          <div className="d-flex justify-content-between align-items-center flex-wrap gap-3">
-            <div className="d-flex gap-3">
+          <div className="row g-3">
+
+            <div className="col-12 col-md-4">
               <select
                 className="form-select"
-                style={{ width: "180px" }}
                 value={filterBatch}
                 onChange={(e) => setFilterBatch(e.target.value)}
               >
-                <option value=""> Batch</option>
+                <option value="">Batch</option>
                 {uniqueBatches.map((b, index) => (
                   <option key={index} value={b}>
                     {b}
                   </option>
                 ))}
               </select>
+            </div>
 
+            <div className="col-12 col-md-4">
               <select
                 className="form-select"
-                style={{ width: "180px" }}
                 value={filterCourse}
                 onChange={(e) => setFilterCourse(e.target.value)}
               >
@@ -102,11 +104,10 @@ const ExamResults = () => {
               </select>
             </div>
 
-            <div>
+            <div className="col-12 col-md-4">
               <input
                 type="text"
                 className="form-control"
-                style={{ width: "250px" }}
                 placeholder="Search name..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -116,47 +117,50 @@ const ExamResults = () => {
 
           <div className="card shadow-sm mt-3">
             <div className="card-body">
-              <table className="table table-hover">
-                <thead className="table-primary">
-                  <tr>
-                    <th>Student</th>
-                    <th>Exam</th>
-                    <th>Batch</th>
-                    <th>Date</th>
-                    <th>Score</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredResults.map((r) => (
-                    <tr key={r.id}>
-                      <td>{r.student}</td>
-                      <td>{r.exam}</td>
-                      <td>{r.batch}</td>
-                      <td>{r.date}</td>
-                      <td className="fw-bold">{r.score}</td>
-                      <td>
-                        <button
-                          className="btn btn-sm btn-primary me-2"
-                          onClick={() => handleEditClick(r)}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="btn btn-sm btn-danger"
-                          onClick={() => handleRemove(r.id)}
-                        >
-                          Remove
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
 
-              {filteredResults.length === 0 && (
-                <p className="text-center text-muted">No matching records found.</p>
-              )}
+              <div className="table-responsive">
+                <table className="table table-hover">
+                  <thead className="table-primary">
+                    <tr>
+                      <th>Student</th>
+                      <th>Exam</th>
+                      <th>Batch</th>
+                      <th>Date</th>
+                      <th>Score</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredResults.map((r) => (
+                      <tr key={r.id}>
+                        <td>{r.student}</td>
+                        <td>{r.exam}</td>
+                        <td>{r.batch}</td>
+                        <td>{r.date}</td>
+                        <td className="fw-bold">{r.score}</td>
+                        <td>
+                          <button
+                            className="btn btn-sm btn-primary me-2"
+                            onClick={() => handleEditClick(r)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="btn btn-sm btn-danger"
+                            onClick={() => handleRemove(r.id)}
+                          >
+                            Remove
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
+                {filteredResults.length === 0 && (
+                  <p className="text-center text-muted">No matching records found.</p>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -166,7 +170,13 @@ const ExamResults = () => {
             className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
             style={{ background: "rgba(0,0,0,0.5)", zIndex: 1050 }}
           >
-            <div className="bg-white p-4 rounded" style={{ width: "400px" }}>
+            <div
+              className="bg-white p-4 rounded"
+              style={{
+                width: "90%",
+                maxWidth: "400px",
+              }}
+            >
               <h5 className="fw-bold mb-3">{isAdding ? "Add Result" : "Edit Result"}</h5>
 
               <label className="form-label">Student Name</label>

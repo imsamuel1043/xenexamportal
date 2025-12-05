@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import LogoutPopup from "../../Components/Logout"; 
+import LogoutPopup from "../../Components/Logout";
 import "../../assets/Css/Studentsidebar.css";
-import studentpro from '../../assets/images/profile.jpeg'
+import studentpro from "../../assets/images/profile.jpeg";
 
-const Sidebar = () => {
-
+const Studentsidebar = () => {
   const location = useLocation();
+
   const isActive = (path) => location.pathname === path;
 
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
@@ -14,18 +14,14 @@ const Sidebar = () => {
   const handleLogoutConfirm = () => {
     setShowLogoutPopup(false);
     localStorage.clear();
-    window.location.href = "/"; 
+    window.location.href = "/";
   };
 
   return (
     <div className="sidebar">
 
       <div className="profileContainer">
-        <img
-          src={studentpro}
-          alt="profile"
-          className="profileImg"
-        />
+        <img src={studentpro} alt="profile" className="profileImg" />
         <div className="profileText">
           <p>Welcome</p>
           <h6>Student</h6>
@@ -37,27 +33,39 @@ const Sidebar = () => {
       <ul className="sidebarlist">
 
         <li className={`sidebarlistitem ${isActive("/student/dashboard") ? "active" : ""}`}>
-          <Link to="/student/dashboard">Dashboard</Link>
+          <Link to="/student/dashboard">
+            <i className="bi bi-speedometer2"></i>
+            <span>Dashboard</span>
+          </Link>
         </li>
 
         <li className={`sidebarlistitem ${isActive("/exam") ? "active" : ""}`}>
-          <Link to="/exam">Exam</Link>
+          <Link to="/exam">
+            <i className="bi bi-journal-text"></i>
+            <span>Exam</span>
+          </Link>
         </li>
 
         <li className={`sidebarlistitem ${isActive("/Studentresults") ? "active" : ""}`}>
-          <Link to="/Studentresults">Results</Link>
+          <Link to="/Studentresults">
+            <i className="bi bi-bar-chart"></i>
+            <span>Results</span>
+          </Link>
         </li>
 
         <li className={`sidebarlistitem ${isActive("/feebalance") ? "active" : ""}`}>
-          <Link to="/feebalance">Fee Balance</Link>
+          <Link to="/feebalance">
+            <i className="bi bi-wallet2"></i>
+            <span>Fee Balance</span>
+          </Link>
         </li>
 
         <li
           className="sidebarlistitem logout"
           onClick={() => setShowLogoutPopup(true)}
-          style={{ cursor: "pointer" }}
         >
-          <i className="bi bi-box-arrow-left"></i> Logout
+          <i className="bi bi-box-arrow-left"></i>
+          <span>Logout</span>
         </li>
 
       </ul>
@@ -72,4 +80,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default Studentsidebar;

@@ -6,11 +6,22 @@
   top: 0;
   left: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   transition: 0.3s ease-in-out;
   padding-top: 10px;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
   border-radius: 0px 20px 20px 0px;
+  scrollbar-width: thin;
   z-index: 9999;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #1e3a8a;
+  border-radius: 10px;
 }
 
 .profileContainer {
@@ -64,6 +75,7 @@
   font-size: 15px;
   display: flex;
   align-items: center;
+  gap: 12px;
   cursor: pointer;
   transition: 0.2s ease;
   border-radius: 6px;
@@ -74,7 +86,13 @@
   text-decoration: none;
   color: inherit;
   width: 100%;
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebarlistitem i {
+  font-size: 20px;
 }
 
 .sidebarlistitem:hover {
@@ -92,61 +110,66 @@
   font-weight: 600;
 }
 
-.logout:hover {
-  background-color: #7f1d1d !important;
-  color: #fff !important;
-}
-
-@media (max-width: 992px) {
-  .sidebar {
-    width: 220px;
-  }
-
-  .mainContent,
-  .navu {
-    margin-left: 220px !important;
-    width: calc(100% - 220px) !important;
-  }
-}
 
 @media (max-width: 768px) {
   .sidebar {
-    left: -260px;
-    width: 250px;
+    width: 75px !important;
+    padding-top: 20px;
   }
 
-  .sidebar.open {
-    left: 0;
+  .profileContainer {
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 0;
+    gap: 10px;
+  }
+
+  .profileText {
+    display: none !important;
+  }
+
+  .headings {
+    display: none !important;
+  }
+
+  .sidebarlistitem {
+    justify-content: center !important;
+    padding: 14px 0 !important;
+    margin: 0 !important;
+  }
+
+  .sidebarlistitem a {
+    justify-content: center !important;
+  }
+
+  .sidebarlistitem a span {
+    display: none !important;
+  }
+
+  .profileImg {
+    width: 45px;
+    height: 45px;
   }
 
   .mainContent,
   .navu {
-    margin-left: 0 !important;
-    width: 100% !important;
+    margin-left: 75px !important;
+    width: calc(100% - 75px) !important;
   }
 }
 
-.submenu {
-  list-style: none;
-  padding-left: 40px;
-  margin: 5px 0 10px 0;
-}
+@media (max-width: 400px) {
+  .sidebar {
+    width: 60px !important;
+  }
 
-.submenu li a {
-  padding: 12px 22px;
-  color: #cbd5e1;
-  display: block;
-  border-radius: 6px;
-  font-size: 14px;
-  transition: 0.2s ease;
-}
+  .sidebarlistitem i {
+    font-size: 18px !important;
+  }
 
-.submenu li a:hover {
-  background-color: #1e3a8a;
-  color: white;
-}
-
-body.sidebar-open .nav-area {
-  margin-left: 250px !important;
-  width: calc(100% - 250px) !important;
+  .mainContent,
+  .navu {
+    margin-left: 60px !important;
+    width: calc(100% - 60px) !important;
+  }
 }
