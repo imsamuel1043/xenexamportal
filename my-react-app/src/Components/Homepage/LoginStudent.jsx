@@ -12,9 +12,9 @@ const LoginStudent = () => {
     const handleLogin = (e) => {
     e.preventDefault();
 
-    if (email === "samxen700@gmail.com" && password === "12345678") {
+    if (email === "xenexamportal@gmail.com" && password === "12345678") {
         const defaultStudent = {
-            email: "samxen700@gmail.com",
+            email: "xenexamportal@gmail.com",
             password: "12345678",
             role: "student",
         };

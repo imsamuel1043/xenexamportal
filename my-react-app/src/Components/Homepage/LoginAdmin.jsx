@@ -20,8 +20,8 @@ const Login = () => {
     e.preventDefault();
 
     const hardcodedUser = {
-      name: "Samuel",
-      email: "samxen700@gmail.com",
+      name: "",
+      email: "xenexamportal@gmail.com",
       password: "12345678",
       roles: ["admin", "student"] 
     };
