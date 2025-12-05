@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import AdminLayout from "../Layouts/AdminLayout";
 
-
-
 const Permission = () => {
     const allPermissions = [
         "Create User",
@@ -65,14 +63,11 @@ const Permission = () => {
         if (isEdit) {
             setGroups(
                 groups.map((g) =>
-                    g.id === form.id ? form : g
+                    g.id === form.id
+                        ? { ...g, name: form.name, permissions: form.permissions }
+                        : g
                 )
             );
-        } else {
-            setGroups([
-                ...groups,
-                { ...form, id: Date.now() },
-            ]);
         }
 
         setForm({ id: null, name: "", permissions: [] });
@@ -80,8 +75,10 @@ const Permission = () => {
     };
 
     const handleEdit = (group) => {
-        setForm(group);
+        setForm({ ...group });
         setIsEdit(true);
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     const handleDelete = (id) => {
@@ -90,74 +87,90 @@ const Permission = () => {
 
     return (
         <AdminLayout>
+            
+
             <div className="container mt-4">
-                <h3 className="fw-bold mb-3">Permission Group Management</h3>
+                <h3 className="fw-bold mb-3">Permissions</h3>
 
-                <div className="card shadow-sm p-3" style={{ borderRadius: "10px" }}>
-
-                    <div className="d-flex justify-content-between mb-3">
+                <div
+                    className="card shadow-sm p-3"
+                    style={{ borderRadius: "12px" }}
+                >
+                    <div className="d-flex flex-wrap justify-content-start mb-3">
                         <input
                             type="text"
                             className="form-control"
-                            style={{ width: "250px" }}
+                            style={{ maxWidth: "250px" }}
                             placeholder="Search permission groups..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
-
-                        <button
-                            className="btn btn-primary"
-                            onClick={() => {
-                                setIsEdit(false);
-                                setForm({ id: null, name: "", permissions: [] });
-                            }}
-                        >
-                            + Add Permission Group
-                        </button>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="mb-4">
-                        <div className="row">
-                            <div className="col-md-4">
-                                <label className="form-label fw-bold">Group Name</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    value={form.name}
-                                    onChange={(e) =>
-                                        setForm({ ...form, name: e.target.value })
-                                    }
-                                    required
-                                />
-                            </div>
+                    {isEdit && (
+                        <form
+                            onSubmit={handleSubmit}
+                            className="mb-4 bg-light p-3 rounded"
+                        >
+                            <div className="row gy-3">
+                                <div className="col-12 col-md-4">
+                                    <label className="form-label fw-bold">
+                                        Group Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={form.name}
+                                        onChange={(e) =>
+                                            setForm({
+                                                ...form,
+                                                name: e.target.value,
+                                            })
+                                        }
+                                        required
+                                    />
+                                </div>
 
-                            <div className="col-md-8">
-                                <label className="form-label fw-bold">Assign Permissions</label>
+                                <div className="col-12 col-md-8">
+                                    <label className="form-label fw-bold">
+                                        Assign Permissions
+                                    </label>
 
-                                <div className="d-flex flex-wrap gap-3 mt-1">
-                                    {allPermissions.map((perm, index) => (
-                                        <div key={index} className="form-check">
-                                            <input
-                                                className="form-check-input"
-                                                type="checkbox"
-                                                checked={form.permissions.includes(perm)}
-                                                onChange={() => togglePermission(perm)}
-                                            />
-                                            <label className="form-check-label">
-                                                {perm}
-                                            </label>
-                                        </div>
-                                    ))}
+                                    <div className="d-flex flex-wrap gap-3 mt-2">
+                                        {allPermissions.map((perm, index) => (
+                                            <div
+                                                key={index}
+                                                className="form-check"
+                                            >
+                                                <input
+                                                    className="form-check-input"
+                                                    type="checkbox"
+                                                    checked={form.permissions.includes(
+                                                        perm
+                                                    )}
+                                                    onChange={() =>
+                                                        togglePermission(perm)
+                                                    }
+                                                />
+                                                <label className="form-check-label">
+                                                    {perm}
+                                                </label>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="col-12">
+                                    <button
+                                        className="btn btn-primary px-4 mt-2"
+                                        type="submit"
+                                    >
+                                        Update Permissions
+                                    </button>
                                 </div>
                             </div>
-
-                            <div className="col-12 mt-3">
-                                <button className="btn btn-success px-4" type="submit">
-                                    {isEdit ? "Update Group" : "Add Group"}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                        </form>
+                    )}
 
                     <div className="table-responsive">
                         <table className="table table-hover table-bordered">
@@ -172,25 +185,35 @@ const Permission = () => {
                             <tbody>
                                 {groups
                                     .filter((g) =>
-                                        g.name.toLowerCase().includes(search.toLowerCase())
+                                        g.name
+                                            .toLowerCase()
+                                            .includes(
+                                                search.toLowerCase()
+                                            )
                                     )
                                     .map((group) => (
                                         <tr key={group.id}>
-                                            <td>{group.name}</td>
-                                            <td>
+                                            <td className="fw-bold">
+                                                {group.name}
+                                            </td>
+                                            <td style={{ fontSize: "14px" }}>
                                                 {group.permissions.join(", ")}
                                             </td>
                                             <td>
                                                 <button
                                                     className="btn btn-sm btn-primary me-2"
-                                                    onClick={() => handleEdit(group)}
+                                                    onClick={() =>
+                                                        handleEdit(group)
+                                                    }
                                                 >
                                                     Edit
                                                 </button>
 
                                                 <button
                                                     className="btn btn-sm btn-danger"
-                                                    onClick={() => handleDelete(group.id)}
+                                                    onClick={() =>
+                                                        handleDelete(group.id)
+                                                    }
                                                 >
                                                     Delete
                                                 </button>
@@ -201,12 +224,15 @@ const Permission = () => {
                         </table>
 
                         {groups.length === 0 && (
-                            <p className="text-center text-muted">No permission groups found.</p>
+                            <p className="text-center text-muted">
+                                No permission groups found.
+                            </p>
                         )}
                     </div>
-
                 </div>
             </div>
+
+
         </AdminLayout>
     );
 };

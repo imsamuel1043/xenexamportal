@@ -34,7 +34,7 @@ const Topstudent = () => {
                         <div key={index} className={Studentcss.studentscard}>
                             <img src={student.image} alt={student.name} className={Studentcss.studentsimg} />
                             <h5 style={{fontWeight:"600"}}>{student.name}</h5>
-                            <p style={{color:"#449bffff"}}>{student.percentage}</p>
+                            <p style={{color:"#4C8EF6"}}>{student.percentage}</p>
                             <div className={Studentcss.badg}>Congratulations 🎉</div>
                         </div>
                     ))}

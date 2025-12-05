@@ -45,13 +45,13 @@
 
 .badg {
   margin-top: 12px;
-  background: #fdd835;
+  background: #4C8EF6;
   padding: 15px 45px;
   border-radius: 25px;
   font-weight: 600;
   display: inline-block;
-  color: #333;
-  font-size: 14px;
+  color: #ffffff;
+  font-size: 15px;
 }
 .titles{
   font-weight: 700;

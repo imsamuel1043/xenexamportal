@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Adminsidebarcss from '../../assets/Css/Adminsidebar.module.css';
 import adminimg from '../../assets/images/adminimg.jpg';
-import LogoutPopup from "../../Components/Logout"; 
+import LogoutPopup from "../../Components/Logout";
 
 const Adminsidebar = () => {
     const [openExam, setOpenExam] = useState(false);
@@ -32,7 +32,7 @@ const Adminsidebar = () => {
                 <ul className={Adminsidebarcss.sidebarlist}>
                     <h6 className={Adminsidebarcss.headings}><span>Main</span></h6>
                     <li className={`${Adminsidebarcss.sidebarlistitem} ${isActive("/admin") ? Adminsidebarcss.active : ""}`}>
-                        <Link to="/admin"><i className="bi bi-box-fill"></i> <span>Dashboard</span></Link>  
+                        <Link to="/admin"><i className="bi bi-box-fill"></i> <span>Dashboard</span></Link>
                     </li>
 
                     <h6 className={Adminsidebarcss.headings}><span>Academic</span></h6>
@@ -43,7 +43,7 @@ const Adminsidebar = () => {
                         <Link to="/courses"><i className="bi bi-journal-bookmark-fill"></i> <span>Courses</span></Link>
                     </li>
 
-                    <li className={Adminsidebarcss.sidebarlistitem} onClick={() => setOpenExam(!openExam)}> 
+                    <li className={Adminsidebarcss.sidebarlistitem} onClick={() => setOpenExam(!openExam)}>
                         <i className="bi bi-clipboard-fill"></i> <span>Exams</span>
                     </li>
                     {openExam && (
@@ -66,6 +66,9 @@ const Adminsidebar = () => {
                     <li className={`${Adminsidebarcss.sidebarlistitem} ${isActive("/batch") ? Adminsidebarcss.active : ""}`}>
                         <Link to="/batch"><i className="bi bi-collection-fill"></i> <span>Batch</span></Link>
                     </li>
+                    <li className={`${Adminsidebarcss.sidebarlistitem} ${isActive("/fees") ? Adminsidebarcss.active : ""}`}>
+                        <Link to="/fees"><i className="bi bi-currency-rupee"></i> <span>Fee</span></Link>
+                    </li>
 
                     <h6 className={Adminsidebarcss.headings}><span>Masters</span></h6>
                     <li className={`${Adminsidebarcss.sidebarlistitem} ${isActive("/managment") ? Adminsidebarcss.active : ""}`}>
@@ -78,8 +81,8 @@ const Adminsidebar = () => {
                         <Link to="/permission"><i className="bi bi-shield-check"></i> <span>Permission</span></Link>
                     </li>
 
-                    <li 
-                        className={`${Adminsidebarcss.sidebarlistitem} ${Adminsidebarcss.logout}`} 
+                    <li
+                        className={`${Adminsidebarcss.sidebarlistitem} ${Adminsidebarcss.logout}`}
                         onClick={() => setShowLogoutPopup(true)}
                         style={{ cursor: "pointer" }}
                     >

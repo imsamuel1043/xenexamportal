@@ -20,20 +20,45 @@ const Courses = () => {
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState({});
 
+  const [showModal, setShowModal] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [courseForm, setCourseForm] = useState({
+    id: "",
+    course: "",
+    fee: "",
+    duration: "",
+    batch: "9th"
+  });
+
   const filtered = courses.filter((item) =>
     item.course.toLowerCase().includes(search.toLowerCase())
   );
 
   const addNewCourses = () => {
-    const newCourse = {
+    setEditing(false);
+    setCourseForm({
       id: "#CM" + Math.floor(1000 + Math.random() * 9000),
-      course: "New Course",
-      fee: 0,
-      batch: "N/A",
-      duration: "N/A",
-    };
+      course: "",
+      fee: "",
+      duration: "",
+      batch: "9th"
+    });
+    setShowModal(true);
+  };
 
-    setCourses([...courses, newCourse]);
+  const openEdit = (course) => {
+    setEditing(true);
+    setCourseForm(course);
+    setShowModal(true);
+  };
+
+  const handleSave = () => {
+    if (editing) {
+      setCourses(courses.map((c) => (c.id === courseForm.id ? courseForm : c)));
+    } else {
+      setCourses([...courses, courseForm]);
+    }
+    setShowModal(false);
   };
 
   const deleteCourse = (id) => {
@@ -71,12 +96,9 @@ const Courses = () => {
       </div>
 
       <div className="card shadow-sm p-3 mt-3" style={{ borderRadius: "12px" }}>
+
         <div className="d-flex justify-content-between align-items-center mb-3 students-top-row ">
           <div className="d-flex align-items-center gap-3">
-
-            {/* <button className="btn btn-light border">
-              <i className="bi bi-sort-down"></i>
-            </button> */}
 
             <div className="search-wrapper">
               <i className="bi bi-search search-icon"></i>
@@ -137,7 +159,7 @@ const Courses = () => {
                     ) : (
                       <button
                         className="btn btn-primary btn-sm"
-                        onClick={() => alert("Open Edit Page")}
+                        onClick={() => openEdit(row)}
                       >
                         Edit
                       </button>
@@ -151,6 +173,60 @@ const Courses = () => {
         </div>
 
       </div>
+
+      {showModal && (
+        <div
+          className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
+          style={{ background: "rgba(0,0,0,0.5)", zIndex: "1000" }}
+        >
+          <div className="bg-white p-4 rounded" style={{ width: "420px" }}>
+            <h5 className="fw-bold mb-3">
+              {editing ? "Edit Course" : "Add New Course"}
+            </h5>
+
+            <label className="form-label fw-semibold">Course Name</label>
+            <input
+              type="text"
+              className="form-control mb-3"
+              value={courseForm.course}
+              onChange={(e) =>
+                setCourseForm({ ...courseForm, course: e.target.value })
+              }
+            />
+
+            <label className="form-label fw-semibold">Fee</label>
+            <input
+              type="number"
+              className="form-control mb-3"
+              value={courseForm.fee}
+              onChange={(e) =>
+                setCourseForm({ ...courseForm, fee: e.target.value })
+              }
+            />
+
+            <label className="form-label fw-semibold">Duration</label>
+            <input
+              type="text"
+              className="form-control mb-3"
+              value={courseForm.duration}
+              onChange={(e) =>
+                setCourseForm({ ...courseForm, duration: e.target.value })
+              }
+            />
+
+            <div className="d-flex justify-content-end gap-2 mt-2">
+              <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
+                Cancel
+              </button>
+
+              <button className="btn btn-primary" onClick={handleSave}>
+                {editing ? "Update" : "Add"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </AdminLayout>
   );
 };

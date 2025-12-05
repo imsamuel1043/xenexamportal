@@ -27,6 +27,11 @@ import FeeBalance from './Components/Students/FeeBalance';
 
 import ProtectedRoute from "./Components/ProtectedRoute";
 import LoginStudent from './Components/Homepage/LoginStudent';
+import StudentDetails from './Components/Admins/StudentDetails';
+import CompletedExamDetails from './Components/Admins/CompletedExamDetails';
+
+import { DataProvider } from "./Components/DataContext";
+import Fees from './Components/Admins/Fees';
 
 
 function AppLayout() {
@@ -36,7 +41,8 @@ function AppLayout() {
   const hideNavRoutes = [
     "/signup",
     "/loginadmin",
-    "/loginstudent"
+    "/loginstudent",
+    "/students/:id"
   ];
 
   const hideNav = hideNavRoutes.includes(location.pathname);
@@ -47,12 +53,13 @@ function AppLayout() {
     "/loginstudent",
 
     "/admin", "/students", "/courses",
-    "/live", "/assign", "/bank",
+    "/live", "/bank",
     "/result", "/batch", "/managment",
-    "/group", "/permission",
+    "/group", "/permission", "/assign",
 
     "/student/dashboard", "/exam",
-    "/Studentresults", "/feebalance"
+    "/Studentresults", "/feebalance", "/students/:id",
+
   ];
 
   const hideFooter = hideFooterRoutes.includes(location.pathname);
@@ -71,11 +78,13 @@ function AppLayout() {
           </>
         } />
 
+        <Route path="/students/:id" element={<StudentDetails />} />
+        <Route path="/completed-exams/:id" element={<CompletedExamDetails />} />
+
         <Route path="/Signup" element={<Signup />} />
         <Route path="/loginadmin" element={<LoginAdmin />} />
         <Route path="/loginstudent" element={<LoginStudent />} />
 
-        {/* admin route */}
 
         <Route path="/admin" element={<ProtectedRoute role="admin"><Admin /></ProtectedRoute>} />
         <Route path="/students" element={<ProtectedRoute role="admin"><Students /></ProtectedRoute>} />
@@ -88,8 +97,8 @@ function AppLayout() {
         <Route path="/managment" element={<ProtectedRoute role="admin"><UserManagement /></ProtectedRoute>} />
         <Route path="/group" element={<ProtectedRoute role="admin"><UserGroup /></ProtectedRoute>} />
         <Route path="/permission" element={<ProtectedRoute role="admin"><Permission /></ProtectedRoute>} />
+        <Route path="/fees" element={<ProtectedRoute role="admin"><Fees/></ProtectedRoute>} />
 
-        {/* student routes */}
 
         <Route path="/student/dashboard" element={<ProtectedRoute role="student">
           <StudentLayout>
@@ -109,15 +118,13 @@ function AppLayout() {
           <StudentLayout>
             <Studentresult />
           </StudentLayout>
-        </ProtectedRoute>}
-        />
+        </ProtectedRoute>} />
 
         <Route path="/feebalance" element={<ProtectedRoute role="student">
           <StudentLayout>
             <FeeBalance />
           </StudentLayout>
-        </ProtectedRoute>}
-        />
+        </ProtectedRoute>} />
 
       </Routes>
 
@@ -130,9 +137,11 @@ function AppLayout() {
 
 function App() {
   return (
-    <Router>
-      <AppLayout />
-    </Router>
+    <DataProvider>
+      <Router>
+        <AppLayout />
+      </Router>
+    </DataProvider>
   );
 }
 

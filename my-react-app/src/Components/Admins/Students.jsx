@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import AdminLayout from "../Layouts/AdminLayout";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import user1 from "../../assets/images/user1.jpg";
 import user2 from "../../assets/images/user2.jpg";
@@ -10,6 +10,8 @@ import "../../assets/Css/Student.css";
 import FilterBox from "../Admins/FilterBox";
 
 const Students = () => {
+  const navigate = useNavigate();
+
   const [students, setStudents] = useState([
     { id: "#CMP801", name: "Prabin", course: "UI/UX Development", batch: "9th", date: "Feb 5, 2025", img: user1 },
     { id: "#CMP802", name: "Vibina", course: "UI/UX Development", batch: "9th", date: "Feb 5, 2025", img: user2 },
@@ -102,42 +104,48 @@ const Students = () => {
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-box">
-            <h5>Add New Student</h5>
+            <h3 className="modal-title">Add New Student</h3>
 
-            <input
-              type="text"
-              name="name"
-              placeholder="Name"
-              value={newStudent.name}
-              onChange={handleInputChange}
-            />
+            <div className="modal-group">
+              <input
+                type="text"
+                name="name"
+                placeholder="Student Name"
+                value={newStudent.name}
+                onChange={handleInputChange}
+              />
 
-            <select
-              name="course"
-              value={newStudent.course}
-              onChange={handleInputChange}
-            >
-              <option value="">Select Course</option>
-              <option value="UI/UX Development">UI/UX Design and Development</option>
-              <option value="Full-Stack Development">Full-Stack Development</option>
-              <option value="Digital Marketing">Digital Marketing</option>
-              <option value="Graphic Design">Multimedia With Animation</option>
-              <option value="Data Science">PHP Development</option>
-              <option value="Python Development">Node JS Development</option>
-              <option value="Other">Python Development</option>
-            </select>
+              <select
+                name="course"
+                value={newStudent.course}
+                onChange={handleInputChange}
+              >
+                <option value="">Select Course</option>
+                <option value="UI/UX Development">UI/UX Design and Development</option>
+                <option value="Full-Stack Development">Full-Stack Development</option>
+                <option value="Digital Marketing">Digital Marketing</option>
+                <option value="Graphic Design">Multimedia With Animation</option>
+                <option value="Data Science">PHP Development</option>
+                <option value="Python Development">Node JS Development</option>
+                <option value="Other">Python Development</option>
+              </select>
 
-            <input
-              type="text"
-              name="batch"
-              placeholder="Batch"
-              value={newStudent.batch}
-              onChange={handleInputChange}
-            />
+              <input
+                type="text"
+                name="batch"
+                placeholder="Batch"
+                value={newStudent.batch}
+                onChange={handleInputChange}
+              />
+            </div>
 
             <div className="modal-buttons">
-              <button className="btn btn-secondary" onClick={() => setShowModal(false)}>Cancel</button>
-              <button className="btn btn-success" onClick={handleAddStudent}>Add</button>
+              <button className="btn-cancel" onClick={() => setShowModal(false)}>
+                Cancel
+              </button>
+              <button className="btn-add" onClick={handleAddStudent}>
+                Add
+              </button>
             </div>
           </div>
         </div>
@@ -145,7 +153,7 @@ const Students = () => {
 
       <div className="card shadow-sm p-3 mt-3" style={{ borderRadius: "8px" }}>
         <div className="students-top-row">
-          <button 
+          <button
             className="btn filter-btn"
             onClick={() => setShowFilter(!showFilter)}
           >
@@ -221,7 +229,7 @@ const Students = () => {
                       onClick={() =>
                         selected[s.id]
                           ? deleteStudent(s.id)
-                          : alert("Open student details page!")
+                          : navigate(`/students/${s.id.replace("#", "")}`)
                       }
                       className={`btn border p-0 ${
                         selected[s.id] ? "btn-danger" : "btn-primary"
@@ -230,6 +238,7 @@ const Students = () => {
                       {selected[s.id] ? "Remove" : "Details"}
                     </button>
                   </td>
+
                 </tr>
               ))}
             </tbody>

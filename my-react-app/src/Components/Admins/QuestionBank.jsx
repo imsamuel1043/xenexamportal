@@ -1,218 +1,210 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Select from "react-select";
 import AdminLayout from "../Layouts/AdminLayout";
-
-
+import { DataContext } from "../DataContext";
 
 const courses = [
     { id: 1, name: "UI/UX Design" },
     { id: 2, name: "Javascript" },
     { id: 3, name: "Python Programming" },
     { id: 4, name: "React Development" },
-    { id: 5, name: "Digital Marketing" },
-    { id: 6, name: "Multimedia & Animations" },
-    { id: 7, name: "Creative Design" },
-
+    { id: 5, name: "Digital Marketing" }
 ];
-
-const initialQuestions = [
-    { id: 1, courseId: 1, question: "What is UX?" },
-    { id: 2, courseId: 1, question: "Explain Wireframe." },
-    { id: 3, courseId: 2, question: "How do you declare a variable in JavaScript?" },
-    { id: 4, courseId: 2, question: "What is JavaScript used for?" },
-    { id: 5, courseId: 2, question: "What does console.log() do?" },
-    { id: 6, courseId: 3, question: "What is a variable in Python?" },
-    { id: 7, courseId: 3, question: "What function is used to display output in Python?" },
-    { id: 8, courseId: 3, question: "What symbol is used for comments in Python?" },
-    { id: 9, courseId: 4, question: "What is JSX?" },
-    { id: 10, courseId: 4, question: "Explain useEffect hook." },
-    { id: 11, courseId: 5, question: "What is social media marketing?" },
-    { id: 12, courseId: 5, question: "What is the purpose of Google Ads?" },
-    { id: 13, courseId: 6, question: "What is animation?" },
-    { id: 14, courseId: 6, question: "What is the difference between 2D and 3D animation?" },
-    { id: 15, courseId: 7, question: "What is graphic design?" },
-    { id: 16, courseId: 7, question: "What is the purpose of a color palette?" },
-];
-
 
 const QuestionBank = () => {
+    const { questions, setQuestions } = useContext(DataContext);
+
     const [selectedCourse, setSelectedCourse] = useState("all");
-
-    const [questions, setQuestions] = useState(initialQuestions);
-
     const [showModal, setShowModal] = useState(false);
-    const [newQuestion, setNewQuestion] = useState("");
+    const [editingId, setEditingId] = useState(null);
 
-    const [newQuestionCourse, setNewQuestionCourse] = useState("");
+    const [form, setForm] = useState({
+        courseId: "",
+        question: "",
+        optionA: "",
+        optionB: "",
+        optionC: "",
+        optionD: "",
+        correct: "A"
+    });
 
     const filteredQuestions =
         selectedCourse === "all"
-            ? questions : questions.filter((q) =>
-                q.courseId === Number(selectedCourse));
+            ? questions
+            : questions.filter((q) => q.courseId === Number(selectedCourse));
 
+    const handleOpenModal = () => {
+        setEditingId(null);
+        setForm({
+            courseId: "",
+            question: "",
+            optionA: "",
+            optionB: "",
+            optionC: "",
+            optionD: "",
+            correct: "A"
+        });
+        setShowModal(true);
+    };
 
-    const handleAddQuestion = () => {
-        if (!newQuestion || !newQuestionCourse) return;
+    const handleEdit = (q) => {
+        setEditingId(q.id);
+        setForm(q);
+        setShowModal(true);
+    };
 
-        const newEntry = {
-            id: questions.length + 1,
-            question: newQuestion,
-            courseId: Number(newQuestionCourse),
-        };
+    const handleDelete = (id) => {
+        const updated = questions.filter((q) => q.id !== id);
+        setQuestions(updated);
+    };
 
-        setQuestions([...questions, newEntry]);
+    const handleSubmit = () => {
+        if (!form.courseId || !form.question) return;
+
+        const courseQuestions = questions.filter(q => q.courseId === Number(form.courseId));
+
+        if (!editingId && courseQuestions.length >= 5) {
+            alert("❗ You can store only 5 questions per course!");
+            return;
+        }
+
+        if (editingId) {
+            const updated = questions.map((q) => (q.id === editingId ? form : q));
+            setQuestions(updated);
+        } else {
+            const newEntry = {
+                ...form,
+                id: questions.length + 1
+            };
+            setQuestions([...questions, newEntry]);
+        }
+
         setShowModal(false);
-        setNewQuestion("");
     };
 
     return (
-
-
         <AdminLayout>
             <div className="container mt-4">
-
-                <div className="d-flex justify-content-between align-items-center mb-4">
+                <div className="d-flex justify-content-between">
                     <h3 className="fw-bold">Question Bank</h3>
-                    <button className="btn btn-primary" onClick={() => setShowModal(true)}>
+                    <button className="btn btn-primary" onClick={handleOpenModal}>
                         + Add Question
                     </button>
-
                 </div>
 
-                <div className="card shadow-sm p-3 mt-3" style={{ borderRadius: "8px", width: "100%" }}>
+                <div className="card p-3 mt-3">
+                    <Select
+                        options={[
+                            { value: "all", label: "All Courses" },
+                            ...courses.map((c) => ({
+                                value: c.id,
+                                label: c.name
+                            }))
+                        ]}
+                        onChange={(opt) => setSelectedCourse(opt.value)}
+                        placeholder="Filter by course"
+                    />
+                </div>
 
-                    <div className="mb-3">
-                        <label className="form-label fw-bold">Filter by Course</label>
+                <table className="table table-bordered mt-3">
+                    <thead className="table-primary">
+                        <tr>
+                            <th>ID</th>
+                            <th>Question</th>
+                            <th>Course</th>
+                            <th>Correct</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
 
-                        <div style={{ width: "280px" }}>
-                            <Select
-                                options={[
-                                    { value: "all", label: "All Courses" },
-                                    ...courses.map((c) => ({
-                                        value: c.id,
-                                        label: c.name,
-                                    })),
-                                ]}
-                                onChange={(selectedOption) => setSelectedCourse(selectedOption.value)}
-                                placeholder="Select course"
-                                styles={{
-                                    control: (base) => ({
-                                        ...base,
-                                        border: "1px solid #00000018",
-                                        backgroundColor: "#f0f4ff",
-                                        borderRadius: "8px",
-                                        padding: "3px",
-                                        boxShadow: "none",
-                                    }),
-                                    option: (base, state) => ({
-                                        ...base,
-                                        backgroundColor: state.isFocused ? "#dce6ff" : "white",
-                                        color: "#222",
-                                        padding: "10px",
-                                        cursor: "pointer",
-                                    }),
-                                    singleValue: (base) => ({
-                                        ...base,
-                                        color: "#333",
-                                        fontWeight: "500",
-                                    }),
-                                }}
-                            />
-                        </div>
-                    </div>
-
-                    <table className="table table-bordered shadow-sm">
-                        <thead className="table-primary">
-                            <tr>
-                                <th>ID</th>
-                                <th>Question</th>
-                                <th>Course</th>
+                    <tbody>
+                        {filteredQuestions.map((q) => (
+                            <tr key={q.id}>
+                                <td>{q.id}</td>
+                                <td>{q.question}</td>
+                                <td>{courses.find((c) => c.id === q.courseId)?.name}</td>
+                                <td>{q.correct}</td>
+                                <td>
+                                    <button className="btn btn-primary btn-sm me-2" onClick={() => handleEdit(q)}>
+                                        Edit
+                                    </button>
+                                    <button className="btn btn-danger btn-sm" onClick={() => handleDelete(q.id)}>
+                                        Delete
+                                    </button>
+                                </td>
                             </tr>
-                        </thead>
+                        ))}
+                    </tbody>
+                </table>
 
-                        <tbody>
-                            {filteredQuestions.length === 0 ? (
-                                <tr>
-                                    <td colSpan="3" className="text-center p-3">
-                                        No questions found
-                                    </td>
-                                </tr>
-                            ) : (
-                                filteredQuestions.map((q) => {
-                                    const course = courses.find((c) => c.id === q.courseId);
-                                    return (
-                                        <tr key={q.id}>
-                                            <td>{q.id}</td>
-                                            <td>{q.question}</td>
-                                            <td>{course.name}</td>
-                                        </tr>
-                                    );
-                                })
-                            )}
-                        </tbody>
-                    </table>
+                {showModal && (
+                    <div className="overlay">
+                        <div className="modal-box p-4 rounded bg-white" style={{ width: "450px" }}>
+                            <h5 className="fw-bold mb-3">{editingId ? "Edit Question" : "Add Question"}</h5>
 
+                            <label>Course</label>
+                            <Select
+                                className="mb-3"
+                                options={courses.map((c) => ({
+                                    value: c.id,
+                                    label: c.name
+                                }))}
+                                onChange={(opt) => setForm({ ...form, courseId: opt.value })}
+                                value={
+                                    form.courseId
+                                        ? {
+                                            value: form.courseId,
+                                            label: courses.find((c) => c.id === form.courseId)?.name
+                                        }
+                                        : null
+                                }
+                            />
 
-                    {showModal && (
-                        <div
-                            className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
-                            style={{ background: "rgba(0,0,0,0.5)" }}
-                        >
-                            <div className="bg-white p-4 rounded" style={{ width: "400px" }}>
-                                <h5 className="fw-bold mb-3">Add New Question</h5>
+                            <label>Question</label>
+                            <textarea
+                                className="form-control mb-3"
+                                rows="2"
+                                value={form.question}
+                                onChange={(e) => setForm({ ...form, question: e.target.value })}
+                            />
 
-                                <label className="form-label">Select Course</label>
-
-                                <Select
-                                    className="mb-3"
-                                    options={courses.map((c) => ({
-                                        value: c.id,
-                                        label: c.name
-                                    }))}
-                                    value={
-                                        newQuestionCourse
-                                            ? {
-                                                value: newQuestionCourse,
-                                                label: courses.find((c) => c.id === newQuestionCourse)?.name
-                                            }
-                                            : null
-                                    }
-                                    onChange={(selected) => setNewQuestionCourse(selected.value)}
-                                    placeholder="Choose a course..."
-                                    styles={{
-                                        control: (base) => ({
-                                            ...base,
-                                            border: "1px solid #00000018",
-                                            borderRadius: "10px",
-                                            padding: "2px",
-                                            boxShadow: "none"
-                                        }),
-                                    }}
-                                />
-
-                                <label className="form-label">Question</label>
-                                <textarea
-                                    className="form-control mb-3"
-                                    rows="3"
-                                    value={newQuestion}
-                                    onChange={(e) => setNewQuestion(e.target.value)}
-                                    style={{border: "1px solid #00000018",}}
-                                    ></textarea>
-
-                                <div className="d-flex justify-content-end gap-2">
-                                    <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
-                                        Cancel
-                                    </button>
-
-                                    <button className="btn btn-primary" onClick={handleAddQuestion}>
-                                        Add
-                                    </button>
+                            {["A", "B", "C", "D"].map((opt) => (
+                                <div key={opt} className="mb-2">
+                                    <label>Option {opt}</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={form[`option${opt}`]}
+                                        onChange={(e) =>
+                                            setForm({ ...form, [`option${opt}`]: e.target.value })
+                                        }
+                                    />
                                 </div>
+                            ))}
+
+                            <label className="mt-2">Correct Answer</label>
+                            <select
+                                className="form-control mb-3"
+                                value={form.correct}
+                                onChange={(e) => setForm({ ...form, correct: e.target.value })}
+                            >
+                                <option value="A">Option A</option>
+                                <option value="B">Option B</option>
+                                <option value="C">Option C</option>
+                                <option value="D">Option D</option>
+                            </select>
+
+                            <div className="d-flex justify-content-end gap-2">
+                                <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
+                                    Cancel
+                                </button>
+                                <button className="btn btn-primary" onClick={handleSubmit}>
+                                    Save
+                                </button>
                             </div>
                         </div>
-                    )}
-
-                </div>
+                    </div>
+                )}
             </div>
         </AdminLayout>
     );

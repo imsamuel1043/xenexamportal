@@ -26,7 +26,6 @@ const UserGroup = () => {
                 )
             );
         } else {
-         
             setGroups([
                 ...groups,
                 {
@@ -42,12 +41,16 @@ const UserGroup = () => {
     };
 
     const handleEdit = (group) => {
-        setForm(group);
-        setIsEdit(true);
+        setForm(group);   
+        setIsEdit(true);  
     };
 
     const handleDelete = (id) => {
         setGroups(groups.filter((g) => g.id !== id));
+    };
+
+    const handleClearFilter = () => {
+        setSearch(""); 
     };
 
     return (
@@ -56,7 +59,8 @@ const UserGroup = () => {
                 <h3 className="fw-bold mb-3">User Group Management</h3>
 
                 <div className="card shadow-sm p-3" style={{ borderRadius: "10px" }}>
-                    <div className="d-flex justify-content-between mb-3">
+                    
+                    <div className="d-flex justify-content-start gap-2 mb-3">
                         <input
                             type="text"
                             className="form-control"
@@ -66,19 +70,20 @@ const UserGroup = () => {
                             onChange={(e) => setSearch(e.target.value)}
                         />
 
-                        <button
-                            className="btn btn-primary"
-                            onClick={() => {
-                                setForm({ id: null, name: "", description: "" });
-                                setIsEdit(false);
-                            }}
-                        >
-                            + Add Group
-                        </button>
+                        {search && (
+                            <button
+                                className="btn btn-outline-secondary"
+                                onClick={handleClearFilter}
+                                title="Clear filter"
+                            >
+                                ✖
+                            </button>
+                        )}
                     </div>
 
                     <form onSubmit={handleSubmit} className="mb-4">
                         <div className="row g-3">
+                            
                             <div className="col-md-4">
                                 <label className="form-label fw-bold">Group Name</label>
                                 <input
@@ -105,14 +110,13 @@ const UserGroup = () => {
                             </div>
 
                             <div className="col-md-2 d-flex align-items-end">
-                                <button className="btn btn-success w-100" type="submit">
+                                <button className="btn btn-primary w-100" type="submit">
                                     {isEdit ? "Update" : "Add"}
                                 </button>
                             </div>
                         </div>
                     </form>
 
-                    {/* TABLE */}
                     <div className="table-responsive">
                         <table className="table table-hover table-bordered">
                             <thead className="table-primary">
@@ -139,6 +143,7 @@ const UserGroup = () => {
                                                 >
                                                     Edit
                                                 </button>
+
                                                 <button
                                                     className="btn btn-sm btn-danger"
                                                     onClick={() => handleDelete(group.id)}
