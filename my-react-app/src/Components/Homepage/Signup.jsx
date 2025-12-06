@@ -93,7 +93,7 @@ const Signup = () => {
               />
             </div>
 
-            <button className="btn btn-success w-100 mb-2" type="submit">
+            <button className="btn btn-primary w-100 mb-2" type="submit">
               Create Account
             </button>
           </form>

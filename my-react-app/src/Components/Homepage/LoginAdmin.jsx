@@ -69,22 +69,7 @@ const Login = () => {
 
         <div className="auth-form-container p-4 d-flex flex-column justify-content-center">
           <h2 className="text-center mb-3">Admin Login</h2>
-          {/* <p className="text-center text-muted mb-3">{role === "admin" ? "Admin Portal" : "Student Portal"}</p> */}
-
-          {/* <div className="d-flex gap-2 justify-content-center mb-3">
-            <button
-              className={`btn ${role === "admin" ? "btn-primary" : "btn-outline-primary"}`}
-              onClick={() => setRole("admin")}
-            >
-              Admin
-            </button>
-            <button
-              className={`btn ${role === "student" ? "btn-primary" : "btn-outline-primary"}`}
-              onClick={() => setRole("student")}
-            >
-              Student
-            </button>
-          </div> */}
+          
 
           <form onSubmit={handleLogin}>
             <div className="mb-3 mt-3">

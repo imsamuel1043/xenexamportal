@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import StudentLayout from "../Layouts/StudentLayout";
-
-
+import "../../assets/Css/Studentcss/Studentexam.css";
 
 const liveExams = [
     {
@@ -56,7 +55,7 @@ const Studentexam = () => {
                         <div key={index} className="col-12 col-md-6 col-lg-4 mb-3">
 
                             <div className="card p-3 shadow-sm" style={{ borderRadius: "10px", cursor: "pointer" }}
-                                 onClick={() => exam.status === "completed" && openResult(exam)}>
+                                onClick={() => exam.status === "completed" && openResult(exam)}>
 
                                 <div
                                     className="mb-3"
@@ -133,11 +132,25 @@ const Studentexam = () => {
                     className="modal fade show"
                     style={{
                         display: "block",
-                        background: "rgba(0,0,0,0.5)"
+                        background: "rgba(0,0,0,0.5)",
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        overflowY: "auto",
+                        paddingLeft: "260px", 
+                        zIndex: 1050
                     }}
                 >
-                    <div className="modal-dialog modal-lg modal-dialog-scrollable">
-                        <div className="modal-content">
+                    <div
+                        className="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+                        style={{
+                            maxWidth: "750px",
+                            width: "100%",
+                        }}
+                    >
+                        <div className="modal-content shadow-lg">
 
                             <div className="modal-header">
                                 <h5 className="modal-title fw-bold">
@@ -147,10 +160,8 @@ const Studentexam = () => {
                             </div>
 
                             <div className="modal-body">
-
                                 {selectedExam.questions.map((q, i) => {
-                                    const isCorrect =
-                                        q.studentAnswer === q.correct;
+                                    const isCorrect = q.studentAnswer === q.correct;
 
                                     return (
                                         <div
@@ -200,6 +211,7 @@ const Studentexam = () => {
                                     Close
                                 </button>
                             </div>
+
                         </div>
                     </div>
                 </div>

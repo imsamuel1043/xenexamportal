@@ -7,7 +7,6 @@ export const NotificationProvider = ({ children }) => {
 
   const [notifications, setNotifications] = useState([]);
 
-  // ---------------- LOAD FROM LOCAL STORAGE ----------------
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -15,12 +14,10 @@ export const NotificationProvider = ({ children }) => {
     }
   }, []);
 
-  // ---------------- SAVE TO LOCAL STORAGE ----------------
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(notifications));
   }, [notifications]);
 
-  // ---------------- ADMIN SENDS NOTIFICATION ----------------
   const sendNotification = (message) => {
     const newNote = {
       id: Date.now(),
@@ -32,7 +29,6 @@ export const NotificationProvider = ({ children }) => {
     setNotifications((prev) => [newNote, ...prev]);
   };
 
-  // ---------------- STUDENT MARKS AS SEEN ----------------
   const markAsSeen = (id) => {
     setNotifications((prev) =>
       prev.map((note) =>

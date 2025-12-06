@@ -13,7 +13,6 @@
 
 .auth-image-container {
   width: 50%;
-  overflow: hidden;
 }
 
 .auth-image-container img {
@@ -24,4 +23,38 @@
 
 .auth-form-container {
   width: 50%;
+}
+
+@media (max-width: 768px) {
+  .auth-card {
+    flex-direction: row;
+    width: 95%;
+    height: auto;
+  }
+
+  .auth-image-container {
+    width: 25%;
+    order: 2;
+  }
+
+  .auth-image-container img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .auth-form-container {
+    width: 75%;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 500px) {
+  .auth-image-container {
+    width: 20%;
+  }
+
+  .auth-form-container {
+    width: 80%;
+  }
 }

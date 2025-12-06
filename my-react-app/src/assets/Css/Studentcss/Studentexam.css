@@ -1,0 +1,36 @@
+.student-exam-modal {
+  padding-left: 260px;
+}
+
+@media (max-width: 768px) {
+  .student-exam-modal {
+    padding-left: 0 !important;
+  }
+  .student-exam-dialog {
+    max-width: 95% !important;
+    margin: 15px auto !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .student-exam-dialog {
+    max-width: 90% !important;
+    margin: 10px auto !important;
+  }
+  .student-exam-modal .modal-content {
+    padding: 10px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .student-exam-dialog {
+    max-width: 95% !important;
+  }
+  .student-exam-modal .modal-content {
+    padding: 8px !important;
+  }
+  .student-exam-modal h5 {
+    font-size: 16px !important;
+  }
+}
+

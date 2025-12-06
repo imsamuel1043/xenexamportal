@@ -55,20 +55,53 @@
   color: #3956AD;
 }
 
-@media (max-width: 1200px) {
-  .cardRow {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 992px) {
-  .cardRow {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
 
 @media (max-width: 600px) {
   .cardRow {
     grid-template-columns: 1fr;
+  }
+
+  .cardBox {
+    padding: 12px;
+  }
+
+  .student-value {
+    font-size: 16px;
+  }
+
+  .student-title {
+    font-size: 11px;
+  }
+
+  .student-icon-wrapper {
+    width: 40px;
+    height: 40px;
+  }
+
+  .student-icon-wrapper i {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 400px) {
+  .cardBox {
+    padding: 10px;
+  }
+
+  .student-value {
+    font-size: 14px;
+  }
+
+  .student-title {
+    font-size: 10px;
+  }
+
+  .student-icon-wrapper {
+    width: 35px;
+    height: 35px;
+  }
+
+  .student-icon-wrapper i {
+    font-size: 18px;
   }
 }

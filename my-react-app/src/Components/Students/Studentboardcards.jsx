@@ -13,9 +13,7 @@ const StudentboardCards = () => {
     <div className="cardRow">
       {statsData.map((item, index) => (
         <div className="cardBox" key={index}>
-          
           <div className="student-card-content">
-            
             <div>
               <h3 className="student-value">{item.value}</h3>
               <h6 className="student-title">{item.title}</h6>
@@ -24,9 +22,7 @@ const StudentboardCards = () => {
             <div className="student-icon-wrapper">
               <i className={item.icon}></i>
             </div>
-
           </div>
-
         </div>
       ))}
     </div>

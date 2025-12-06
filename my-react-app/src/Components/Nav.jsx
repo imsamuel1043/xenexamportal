@@ -21,7 +21,6 @@ const Nav = ({ userRole = "guest", userName = "" }) => {
   const { notifications, sendNotification, markAsSeen } =
     useContext(NotificationContext);
 
-  // ---------------- Sidebar Toggle ----------------
   const toggleSidebar = () => {
     const sidebarClass =
       userRole === "admin"
@@ -65,7 +64,6 @@ const Nav = ({ userRole = "guest", userName = "" }) => {
         </div>
 
         <div className={Navstyle.rightSection}>
-          {/* ----------------- LOGIN DROPDOWN (Guest Only) ----------------- */}
           {!isLoggedIn && (
             <div className={Navstyle.dropdownContainer}>
               <button
@@ -84,10 +82,8 @@ const Nav = ({ userRole = "guest", userName = "" }) => {
             </div>
           )}
 
-          {/* ----------------- LOGGED IN: NOTIFICATION + PROFILE ----------------- */}
           {isLoggedIn && (
             <>
-              {/* ------------ Notification Icon ------------ */}
               <button
                 className={Navstyle.notificationIcon}
                 onClick={() => setNoteOpen(!noteOpen)}
@@ -99,10 +95,8 @@ const Nav = ({ userRole = "guest", userName = "" }) => {
                 )}
               </button>
 
-              {/* ------------ Notification Dropdown ------------ */}
               {noteOpen && (
                 <div className={Navstyle.dropdownMenu} style={{ width: "250px" }}>
-                  {/* Admin notification creator */}
                   {userRole === "admin" && (
                     <div style={{ padding: "10px" }}>
                       <textarea
@@ -135,7 +129,6 @@ const Nav = ({ userRole = "guest", userName = "" }) => {
                     </div>
                   )}
 
-                  {/* Notification list */}
                   <div style={{ maxHeight: "200px", overflowY: "auto" }}>
                     {notifications.length === 0 ? (
                       <p style={{ padding: "10px" }}>No notifications</p>
@@ -160,7 +153,6 @@ const Nav = ({ userRole = "guest", userName = "" }) => {
                 </div>
               )}
 
-              {/* ------------ Profile Section ------------ */}
               <div className={Navstyle.profileSection}>
                 <img src={ProfileImg} className={Navstyle.profileImg} alt="profile" />
 

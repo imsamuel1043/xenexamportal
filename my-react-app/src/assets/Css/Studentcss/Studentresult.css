@@ -1,106 +1,50 @@
-.results-container {
+.table-container {
   width: 100%;
-  padding: 20px;
+  margin-left: 0px;   
+  padding: 160px;
 }
 
-.results-title {
+.students-title {
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 20px;
-  text-align: start;
   color: #333;
+  text-align: start;
 }
 
-.results-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
-}
-
-.result-card {
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 15px;
+table.dataTable {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
   border: 1px solid #e5e5e5;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
-  transition: 0.3s ease;
 }
 
-.result-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.1);
-}
-
-.score-circle {
-  width: 80px;
-  height: 80px;
-  background: #f3f7ff;
-  border: 3px solid #4c8bf5;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 15px;
-}
-
-.score-circle span {
-  font-size: 22px;
+table.dataTable thead th {
+  background: #f5f7fb;
   font-weight: 700;
-  color: #4c8bf5;
-}
-
-.subject {
-  text-align: center;
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-
-.info-row {
-  background: #fafafa;
-  border-radius: 10px;
   padding: 12px;
-  margin-bottom: 10px;
-  border: 1px solid #e3e3e3;
 }
 
-.info-row p {
-  margin: 5px 0;
+table.dataTable tbody td {
+  padding: 10px 12px;
   font-size: 14px;
-  color: #444;
 }
 
-.status-badge {
-  width: fit-content;
-  padding: 6px 14px;
-  border-radius: 20px;
+/* Buttons */
+.action-btn {
+  padding: 5px 10px;
+  border-radius: 6px;
   font-size: 13px;
-  font-weight: 600;
-  margin: 10px auto 0;
-  text-align: center;
+  border: none;
+  cursor: pointer;
+  color: #fff;
 }
 
-.passed {
-  background: #d8ffe2;
-  color: #1d8b45;
+.action-edit {
+  background: #3956AD ;
+  margin-right: 6px;
 }
 
-.failed {
-  background: #ffe3e3;
-  color: #c62828;
-}
-
-@media (max-width: 480px) {
-  .result-card {
-    padding: 16px;
-  }
-
-  .score-circle {
-    width: 70px;
-    height: 70px;
-  }
-
-  .score-circle span {
-    font-size: 18px;
-  }
+.action-delete {
+  background: #e53935;
 }

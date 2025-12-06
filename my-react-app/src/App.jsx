@@ -41,7 +41,6 @@ import Fees from "./Components/Admins/Fees";
 import { NotificationProvider } from "./Components/NotificationContext";
 
 
-// ======================= APP LAYOUT ========================= //
 
 function AppLayout() {
   const location = useLocation();
