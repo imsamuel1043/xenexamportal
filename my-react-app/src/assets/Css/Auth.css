@@ -19,6 +19,7 @@
   height: 100%;
   width: 100%;
   object-fit: cover;
+  border-radius: 0px 0px 160px 0px;
 }
 
 .auth-form-container {
@@ -41,6 +42,7 @@
     height: 100%;
     width: 100%;
     object-fit: cover;
+    
   }
 
   .auth-form-container {

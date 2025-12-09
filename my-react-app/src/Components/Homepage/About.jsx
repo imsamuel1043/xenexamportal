@@ -49,7 +49,7 @@ const About = () => {
         </div>
       </div>
 
-      <div className={`container-fluid mt-5 mb-5 d-flex justify-content-center ${aboutcss.colorchange}`}>
+      <div className={`container-fluid mt-5  d-flex justify-content-center ${aboutcss.colorchange}`}>
         <div className="row align-items-center justify-content-center">
           <div className="col-12 col-md-5">
             <h3 className={aboutcss.about}>About</h3>

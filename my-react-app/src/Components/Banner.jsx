@@ -18,7 +18,7 @@ const Banner = () => {
       <img src={bannerimg} className={Bannercss.bannerImage} alt="bannerimg" />
       <div className={Bannercss.Textover}>
         
-        <h3 className={Bannercss.xen}>Xeneducation</h3>
+        <h3 className={Bannercss.xen}>Xen Education</h3>
         <h1 className={Bannercss.bannerhead}>Exam Portal</h1>
         
         <p className={Bannercss.para}>

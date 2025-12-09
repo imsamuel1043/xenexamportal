@@ -1,5 +1,6 @@
 * {
   font-family: 'Poppins', sans-serif;
+  
 }
 .btn-primary {
   background-color: #3956AD !important;
@@ -10,4 +11,18 @@
   background-color: #2f4991 !important; 
   border-color: #2f4991 !important;
 }
+p:hover,
+span:hover,
+a:hover,
+li:hover,
+h1:hover,
+h2:hover,
+h3:hover,
+h4:hover,
+h5:hover,
+h6:hover {
+  color: rgb(0, 98, 131);
+}
+
+
 

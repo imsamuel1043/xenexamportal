@@ -14,7 +14,7 @@
 }
 
 .subs {
-  font-size: 30px;
+  font-size: 22px;
   font-weight: 700;
   margin-bottom: 15px;
 }
@@ -27,6 +27,45 @@
   border: 0px;
   margin-top: 10px;
 }
+
 .newchange{
   background-color: #d0f0ff;
 }
+
+.whycard {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 0px 0px rgba(0, 0, 0, 0.08);
+  transition: 0.3s ease;
+}
+
+.whycard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0px 0px rgba(0, 0, 0, 0.15);
+}
+
+.whyicon {
+  width: 60px;
+  height: 60px;
+  background: #e6f0ff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 15px;
+  font-size: 28px;
+  color: #2954d6;
+}
+
+.whytitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.whytext {
+  font-size: 14px;
+  color: #666;
+}
+

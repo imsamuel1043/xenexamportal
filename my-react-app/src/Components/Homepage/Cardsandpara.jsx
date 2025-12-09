@@ -8,23 +8,23 @@ import testpublish from '../../assets/images/testpublisher.svg'
 const Cardsandpara = () => {
 
     const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+    const [message, setMessage] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+    const handleSubmit = (e) => {
+        e.preventDefault();
 
-    if (!email) {
-      setMessage("Please enter your email.");
-      return;
-    }
+        if (!email) {
+            setMessage("Please enter your email.");
+            return;
+        }
 
-    setMessage("Subscribed successfully! 🎉");
-    setEmail("");
-  };
+        setMessage("Subscribed successfully! 🎉");
+        setEmail("");
+    };
 
 
-  return (
-    <div>
+    return (
+        <div>
             <div className={cardspara.cardsspace}>
                 <div className='row row-cols-1 row-cols-md-4 g-3 justify-content-center'>
                     <div className='col d-flex justify-content-center'>
@@ -39,7 +39,7 @@ const Cardsandpara = () => {
                         </div>
                     </div>
                     <div className='col d-flex justify-content-center'>
-                        <div className='card text-center' style={{ width: "12rem", border: "0px", backgroundColor:  "#ffff" }} >
+                        <div className='card text-center' style={{ width: "12rem", border: "0px", backgroundColor: "#ffff" }} >
                             <img src={testprep} alt="testprepimg" style={{ height: "82px", width: "195px" }} />
                             <div className='card-body'>
                                 <h6 className='card-title' style={{ fontSize: "16px", fontWeight: "700" }}>Save Your Time</h6>
@@ -52,7 +52,7 @@ const Cardsandpara = () => {
 
                     </div>
                     <div className='col d-flex justify-content-center'>
-                        <div className='card text-center' style={{ width: "12rem", border: "0px", backgroundColor:  "#ffff" }} >
+                        <div className='card text-center' style={{ width: "12rem", border: "0px", backgroundColor: "#ffff" }} >
                             <img src={testpublish} alt="testpublishimg" style={{ height: "82px", width: "195px" }} />
                             <div className='card-body'>
                                 <h6 className='card-title' style={{ fontSize: "16px", fontWeight: "700" }}>Simple Process</h6>
@@ -67,7 +67,7 @@ const Cardsandpara = () => {
 
                 </div>
             </div>
-            <div className={`container-fluid mt-5 mb-5 d-flex ${cardspara.newchange}`}>
+            <div className={`container-fluid  mb-5 d-flex ${cardspara.newchange}`}>
 
                 <div className="row align-items-center justify-content-center">
 
@@ -83,8 +83,39 @@ const Cardsandpara = () => {
                     </div>
                 </div>
             </div>
-            <div className="text-center mt-4 mb-5">
-                <h3 className={cardspara.subs}>Subscribe Newsletter</h3>
+
+            <div className="container mt-4">
+                <div className="row text-center justify-content-center gap-4">
+
+                    <div className={`col-10 col-md-3 ${cardspara.whycard}`}>
+                        <div className={cardspara.whyicon}>
+                            <i className="bi bi-book"></i>
+                        </div>
+                        <h5 className={cardspara.whytitle}>Comprehensive Content</h5>
+                        <p className={cardspara.whytext}>High-quality curated materials to help you excel.</p>
+                    </div>
+
+                    <div className={`col-10 col-md-3 ${cardspara.whycard}`}>
+                        <div className={cardspara.whyicon}>
+                            <i className="bi bi-clock-history"></i>
+                        </div>
+                        <h5 className={cardspara.whytitle}>Flexible Learning</h5>
+                        <p className={cardspara.whytext}>Learn anytime with complete freedom.</p>
+                    </div>
+   
+                    <div className={`col-10 col-md-3 ${cardspara.whycard}`}>
+                        <div className={cardspara.whyicon}>
+                            <i className="bi bi-award"></i>
+                        </div>
+                        <h5 className={cardspara.whytitle}>Recognized Certification</h5>
+                        <p className={cardspara.whytext}>Get certifications that hold real value.</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div className="text-center mt-3 mb-5">
+                <h4 className={cardspara.subs}>Subscribe Newsletter</h4>
 
                 <div className="d-flex justify-content-center gap-2 mt-3">
                     <input
@@ -100,7 +131,7 @@ const Cardsandpara = () => {
             </div>
 
         </div>
-  )
+    )
 }
 
 export default Cardsandpara
