@@ -14,7 +14,6 @@ const Studentsresult = () => {
     { id: 6, name: "Extra Emily", course: "Bootstrap", status: "Active" }
   ]);
 
-  // For inline editing
   const [editRow, setEditRow] = useState(null);
   const [editForm, setEditForm] = useState({ name: "", course: "", status: "" });
 

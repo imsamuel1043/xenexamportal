@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Adminsidebarcss from '../../assets/Css/Adminsidebar.module.css';
 import adminimg from '../../assets/images/adminimg.jpg';
@@ -18,6 +18,14 @@ const Adminsidebar = () => {
 
     const isActive = (path) => location.pathname === path;
 
+
+    const [adminName, setAdminName] = useState("");
+
+    useEffect(() => {
+        const storedName = localStorage.getItem("userName");
+        if (storedName) setAdminName(storedName);
+    }, []);
+
     return (
         <>
             <aside className={Adminsidebarcss.sidebar}>
@@ -25,7 +33,7 @@ const Adminsidebar = () => {
                     <img className={Adminsidebarcss.profileImg} src={adminimg} alt="profile" />
                     <div className={Adminsidebarcss.profileText}>
                         <p className='text-white'>Admin</p>
-                        <h6 className='text-white'>Samuel</h6>
+                        <h6>{adminName || "Admin Name"}</h6>
                     </div>
                 </div>
 

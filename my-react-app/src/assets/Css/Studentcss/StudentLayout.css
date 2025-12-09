@@ -6,14 +6,14 @@
 
 .student-layout-content {
   flex: 1;
-  margin-left: 240px; 
+  margin-left: 110px; 
   display: flex;
   flex-direction: column;
   transition: margin 0.3s;
 }
 
 .student-layout-page {
-  padding: 20px;
+  padding: 15px;
   flex: 1;
 }
 

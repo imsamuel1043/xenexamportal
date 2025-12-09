@@ -126,7 +126,7 @@ const StudentExam = () => {
 
                     <td data-label="Start">
                       <button
-                        className="sr-btn start-btn"
+                        className="sr-btn btn-primary start-btn"
                         onClick={() => startExam(exam)}
                       >
                         Start

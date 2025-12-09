@@ -66,7 +66,10 @@ const Signup = () => {
                 className="form-control"
                 placeholder="Full Name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  localStorage.setItem("userName", e.target.value); 
+                }}
                 required
               />
             </div>

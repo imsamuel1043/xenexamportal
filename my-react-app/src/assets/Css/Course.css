@@ -3,24 +3,14 @@
   width: 250px;
 }
 
-.search-wrapper input {
-  padding-left: 40px;
-  background: #f5f5f5;
+.search-wrapper .search-icon {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  font-size: 16px;
+  color: #6c757d;
 }
 
-.search-icon {
-  position: absolute;
-  top: 50%;
-  left: 15px;
-  transform: translateY(-50%);
-  color: gray;
-}
-.students-top-row {
-  display: flex;
-  justify-content: space-between;
-  background-color: #f5f5f5;
-  padding: 12px;
-  border-radius: 8px;
-  flex-wrap: wrap;
-  gap: 10px;
+.search-wrapper input {
+  padding-left: 35px;
 }

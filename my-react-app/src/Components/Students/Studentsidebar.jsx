@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import LogoutPopup from "../../Components/Logout";
 import "../../assets/Css/Studentsidebar.css";
@@ -16,6 +16,14 @@ const Studentsidebar = () => {
     localStorage.clear();
     window.location.href = "/";
   };
+  
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    const storedName = localStorage.getItem("userName");
+    if (storedName) setUserName(storedName);
+  }, []);
+
 
   return (
     <div className="sidebar">
@@ -24,7 +32,7 @@ const Studentsidebar = () => {
         <img src={studentpro} alt="profile" className="profileImg" />
         <div className="profileText">
           <p>Welcome</p>
-          <h6>Student</h6>
+          <h6>{userName || "Student Name"}</h6>
         </div>
       </div>
 

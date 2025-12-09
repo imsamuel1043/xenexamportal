@@ -1,102 +1,107 @@
+.d-flex h3 {
+  font-weight: 700;
+}
 
-.students-top-row {
-  display: flex;
-  justify-content: space-between;
-  background-color: #f5f5f5;
-  padding: 12px;
+.card input.form-control {
   border-radius: 8px;
-  flex-wrap: wrap;
-  gap: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
 }
 
-.filter-btn {
-  background: transparent !important;
-  border: none;
-  font-size: 20px;
-}
-
-
-.search-wrapper {
-  position: relative;
-  width: 250px;
-}
-
-.search-wrapper input {
-  padding-left: 40px;
-  background: #f5f5f5;
-}
-
-.search-icon {
-  position: absolute;
-  top: 50%;
-  left: 15px;
-  transform: translateY(-50%);
-  color: gray;
+.card input.form-control:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59,130,246,0.2);
 }
 
 
-.filter-popup {
-  position: absolute;
-  z-index: 10;
-  margin-top: 8px;
+.student-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
 }
 
-
-.students-table-wrapper {
-  margin-top: 15px;
-  overflow-x: auto;
+#studentsTable {
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-.students-table th,
-.students-table td {
+#studentsTable th {
+  background: #3956AD !important;
+  color: white;
+  font-weight: 600;
   font-size: 14px;
   white-space: nowrap;
 }
 
-.student-img {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  margin-right: 8px;
+#studentsTable td {
+  vertical-align: middle;
+  font-size: 14px;
+  white-space: nowrap;
 }
 
-.action-btn {
-  width: 80px;
-  height: 30px;
+.table-responsive {
+  border-radius: 10px;
+  overflow: hidden;
 }
+
+.dt-buttons {
+  margin-bottom: 10px;
+}
+
+.dataTables_filter input {
+  border-radius: 8px;
+  padding: 6px 12px !important;
+}
+
+
+.badge {
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 8px;
+}
+
+
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(2px);
-  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(3px);
+  background: rgba(0, 0, 0, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
+  z-index: 9999;
 }
 
 .modal-box {
-  width: 380px;
+  width: 420px;
   background: white;
   padding: 25px;
   border-radius: 12px;
+  animation: popup 0.25s ease-in-out;
   box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-  animation: popup 0.25s ease;
 }
 
 @keyframes popup {
-  from { transform: scale(0.9); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .modal-title {
-  margin-bottom: 20px;
+  font-size: 20px;
   text-align: center;
   font-weight: 600;
-  font-size: 20px;
+  margin-bottom: 18px;
 }
 
 .modal-group {
@@ -107,18 +112,15 @@
 
 .modal-group input,
 .modal-group select {
-  padding: 10px 12px;
-  border: 1px solid #ccc;
   border-radius: 8px;
+  padding: 10px !important;
   font-size: 14px;
-  outline: none;
-  transition: 0.2s;
 }
 
 .modal-group input:focus,
 .modal-group select:focus {
-  border-color: #3B82F6;
-  box-shadow: 0 0 0 2px rgba(59,130,246,0.2);
+  border-color: #3962c8;
+  box-shadow: 0 0 0 2px rgba(57, 98, 200, 0.2);
 }
 
 .modal-buttons {
@@ -133,8 +135,8 @@
   border: none;
   padding: 10px 18px;
   border-radius: 8px;
+  font-size: 14px;
   cursor: pointer;
-  transition: 0.2s;
 }
 
 .btn-cancel:hover {
@@ -142,59 +144,51 @@
 }
 
 .btn-add {
-  background: #3956AD;
+  background: #3962c8;
   color: white;
   border: none;
   padding: 10px 18px;
   border-radius: 8px;
+  font-size: 14px;
   cursor: pointer;
-  transition: 0.2s;
 }
 
 .btn-add:hover {
-  background: #2f4991
+  background: #2f50a6;
 }
 
 
+.btn-sm {
+  border-radius: 8px;
+  padding: 5px 12px;
+  font-size: 13px;
+}
+
 
 @media (max-width: 768px) {
-  .students-top-row {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 15px;
+  .modal-box {
+    width: 90%;
   }
 
-  .search-wrapper {
-    width: 100%;
+  #studentsTable th,
+  #studentsTable td {
+    font-size: 12px;
   }
 
-  .filter-popup {
-    position: relative;
-    width: 100%;
-  }
-
-  .students-table-wrapper {
-    overflow-x: scroll;
+  .student-img {
+    width: 26px;
+    height: 26px;
   }
 }
 
 @media (max-width: 480px) {
-  .students-top-row {
-    padding: 12px;
-  }
-
-  .students-table th, 
-  .students-table td {
+  .btn-sm {
+    padding: 4px 8px;
     font-size: 12px;
   }
 
-  .action-btn {
-    width: 70px;
-    height: 28px;
+  .badge {
+    padding: 4px 8px;
   }
 
-  .student-img {
-    width: 24px;
-    height: 24px;
-  }
 }
