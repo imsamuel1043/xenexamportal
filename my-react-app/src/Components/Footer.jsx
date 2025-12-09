@@ -1,60 +1,74 @@
-import React from 'react'
+import React from "react";
+import "../assets/Css/Footer.css";
+
 
 const Footer = () => {
   return (
-     <footer className="text-white py-2" style={{ background: "#171E71" }}>
-            <div className="container">
+    <footer className="footer-wrapper">
+      <div className="footer-card container">
 
-                <div className="row text-center text-md-start">
+        <div className="row footer-top">
 
-
-                    <div className="col-12 col-md-4 mb-5">
-                        <h5 className="fw-bold mt-3">Location</h5>
-                        <p className="mb-1">Chulliyode Road, Sultan Bathery,</p>
-                        <p className="mb-1">Wayanad, Kerala</p>
-                        <p className="mb-1">673592</p>
-                        <div>
-                            <p className="mb-1">exam.xeneducation.in</p>
-                            <p className="mb-1">(+91) 6282 437 109</p>
-                        </div>
-                    </div>
-
-
-                    <div className="col-12 col-md-4 mb-5">
-                        <h5 className="fw-bold mt-3">Useful links</h5>
-                        <p className="mb-1">xeventureitsolution.com</p>
-                        <p className="mb-1">exam.xeneducation.in</p>
-                        <p className="mb-1">How it works</p>
-                         <p className="mb-1">Support</p>
-                    </div>
-
-
-                    <div className="col-12 col-md-4 mb-5">
-                        <h5 className="fw-bold mt-3">Follow us</h5>
-                        <p className="mb-1">Support Follow our social media <br />to get updates or news about <br />the projects</p><br />
-                        <div className="d-flex gap-3" >
-                            <i className="bi bi-instagram"></i>
-                        <i className="bi bi-facebook"></i>
-                        <i className="bi bi-linkedin"></i>
-                        <i className="bi bi-twitter-x"></i>
-                        <i className="bi bi-pinterest"></i>
-                         </div>
-                        
-                    </div>
-
-                </div>
-
-
-                <div className="text-center py-3 mt-3 mb-4" style={{ borderTop: "1px solid rgba(255,255,255,0.3)" }}>
-                    <p className="mb-0" style={{ fontSize: "14px" }}>
-                        Copyright © 2025 Xeneducation, All Rights Reserved.
-                        Developed by <strong>Xeventure</strong>
-                    </p>
-                </div>
-
+         
+          <div className="col-12 col-md-4 footer-brand">
+            <div className="footer-logo-row">
+             
+              <span className="footer-brand-name text-white">Xen Education</span>
             </div>
-        </footer>
-  )
-}
 
-export default Footer
+            <p className="footer-description">
+              Xen Education empowers students and institutes to conduct 
+              secure, fast, and accurate online exams with ease.
+            </p>
+
+            <div className="footer-social">
+              <i className="bi bi-instagram"></i>
+              <i className="bi bi-facebook"></i>
+              <i className="bi bi-linkedin"></i>
+              <i className="bi bi-twitter-x"></i>
+              <i className="bi bi-github"></i>
+            </div>
+          </div>
+
+          <div className="col-6 col-md-2">
+            <h6 className="footer-title">Product</h6>
+            <ul className="footer-links">
+              <li>Online Exams</li>
+              <li>Auto-Grading</li>
+              <li>Instant Results</li>
+              <li>Question Bank</li>
+            </ul>
+          </div>
+
+          <div className="col-6 col-md-2">
+            <h6 className="footer-title">Resources</h6>
+            <ul className="footer-links">
+              <li>Documentation</li>
+              <li>Tutorials</li>
+              <li>Blog</li>
+              <li>Support</li>
+            </ul>
+          </div>
+
+          <div className="col-6 col-md-2">
+            <h6 className="footer-title">Company</h6>
+            <ul className="footer-links">
+              <li>About</li>
+              <li>Careers</li>
+              <li>Contact</li>
+              <li>Partners</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="footer-bottom ">
+          <p>Copyright © 2025 Xeneducation, All Rights Reserved. Developed by Xeventure</p>
+
+          
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

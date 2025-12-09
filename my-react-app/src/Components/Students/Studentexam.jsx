@@ -1,223 +1,238 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import StudentLayout from "../Layouts/StudentLayout";
 import "../../assets/Css/Studentcss/Studentexam.css";
 
-const liveExams = [
+import "datatables.net-dt/js/dataTables.dataTables";
+import "datatables.net-responsive-dt/js/responsive.dataTables";
+
+const StudentExam = () => {
+  const [upcomingExams] = useState([
     {
-        id: 1,
-        title: "Javascript",
-        date: "Dec 5, 2025",
-        duration: "2 Hours",
-        status: "completed",
-        questions: [
-            {
-                qno: 1,
-                question: "Which keyword is used to declare a constant in JavaScript?",
-                correct: "const",
-                studentAnswer: "var"
-            },
-            {
-                qno: 2,
-                question: "Which method is used to convert JSON to object?",
-                correct: "JSON.parse()",
-                studentAnswer: "JSON.parse()"
-            },
-            {
-                qno: 3,
-                question: "Which operator is used for strict comparison?",
-                correct: "===",
-                studentAnswer: ""
-            }
-        ]
+      id: 1,
+      examName: "React Basics",
+      course: "React",
+      batch: "Batch 9",
+      teacher: "Samuel",
+      date: "2025-12-15",
+      time: "10:00 AM",
+      duration: "2 Hours",
+      totalMarks: 100,
+      status: "Scheduled",
+    },
+    {
+      id: 2,
+      examName: "JavaScript Advanced",
+      course: "JavaScript",
+      batch: "Batch 7",
+      teacher: "Duke",
+      date: "2025-12-20",
+      time: "11:00 AM",
+      duration: "1.5 Hours",
+      totalMarks: 80,
+      status: "Not Started",
+    },
+  ]);
+
+  const [ongoingExams] = useState([
+    {
+      id: 3,
+      examName: "UI/UX Mock Test",
+      course: "UI/UX",
+      batch: "Batch 5",
+      questions: 20,
+      durationLeft: "01:43:25",
+      status: "Ongoing",
+    },
+  ]);
+
+  const [completedExams] = useState([
+    {
+      id: 4,
+      examName: "JavaScript Mock Test",
+      course: "JavaScript",
+      batch: "Batch 7",
+      attempted: "2025-10-20",
+      marks: 72,
+      totalMarks: 80,
+      percentage: 90,
+      status: "Passed",
+    },
+  ]);
+
+  const upcomingRef = useRef();
+  const ongoingRef = useRef();
+  const completedRef = useRef();
+
+  useEffect(() => {
+    if (window.$) {
+      const loadTable = (ref) => {
+        if (ref.current && !window.$.fn.DataTable.isDataTable(ref.current)) {
+          window.$(ref.current).DataTable({
+            responsive: true,
+            autoWidth: false,
+            paging: true,
+            searching: true,
+            ordering: true,
+          });
+        }
+      };
+
+      loadTable(upcomingRef);
+      loadTable(ongoingRef);
+      loadTable(completedRef);
     }
-];
+  }, []);
 
-const Studentexam = () => {
-    const [selectedExam, setSelectedExam] = useState(null);
+  const startExam = (exam) => alert(`Exam: ${exam.examName}`);
 
-    const openResult = (exam) => {
-        setSelectedExam(exam);
-    };
+  return (
+    <StudentLayout>
+      <div className="studentExamWrapper">
+        <h3 className="studentExamTitle">Examinations</h3>
 
-    const closeModal = () => {
-        setSelectedExam(null);
-    };
+        <div className="examCard">
+          <h5 className="examCardTitle">Upcoming Exams</h5>
 
-    return (
-        <StudentLayout>
-            <div className="d-flex justify-content-between align-items-center flex-wrap ms-3 mt-3">
-                <h3 className="fw-bold mb-2">Examinations</h3>
-            </div>
+          <div className="table-wrapper">
+            <table ref={upcomingRef} className="studentsResultTable display">
+              <thead>
+                <tr>
+                  <th>Exam Name</th>
+                  <th>Course</th>
+                  <th>Batch</th>
+                  <th>Teacher</th>
+                  <th>Date & Time</th>
+                  <th>Duration</th>
+                  <th>Marks</th>
+                  <th>Status</th>
+                  <th>Start</th>
+                </tr>
+              </thead>
 
-            <div className="card shadow-sm p-3 mt-3 ms-3" style={{ borderRadius: "10px" }}>
-                <div className="row mt-3">
-                    {liveExams.map((exam, index) => (
-                        <div key={index} className="col-12 col-md-6 col-lg-4 mb-3">
+              <tbody>
+                {upcomingExams.map((exam) => (
+                  <tr key={exam.id}>
+                    <td data-label="Exam Name">{exam.examName}</td>
+                    <td data-label="Course">{exam.course}</td>
+                    <td data-label="Batch">{exam.batch}</td>
+                    <td data-label="Teacher">{exam.teacher}</td>
+                    <td data-label="Date & Time">{exam.date} – {exam.time}</td>
+                    <td data-label="Duration">{exam.duration}</td>
+                    <td data-label="Marks">{exam.totalMarks}</td>
 
-                            <div className="card p-3 shadow-sm" style={{ borderRadius: "10px", cursor: "pointer" }}
-                                onClick={() => exam.status === "completed" && openResult(exam)}>
+                    <td data-label="Status">
+                      <span className="badge bg-warning text-dark">{exam.status}</span>
+                    </td>
 
-                                <div
-                                    className="mb-3"
-                                    style={{
-                                        width: "100%",
-                                        height: "6px",
-                                        borderRadius: "0 0 10px 10px",
-                                        marginTop: "-16px",
-                                        backgroundColor:
-                                            exam.status === "completed"
-                                                ? "#0dba35"
-                                                : exam.status === "inprogress"
-                                                    ? "#144efd"
-                                                    : "#ff480b"
-                                    }}
-                                ></div>
+                    <td data-label="Start">
+                      <button
+                        className="sr-btn start-btn"
+                        onClick={() => startExam(exam)}
+                      >
+                        Start
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-                                <div>
-                                    <h6 className="fw-bold">{exam.title}</h6>
-                                    <p className="mb-1" style={{ fontSize: "13px", color: "#4f4f4f" }}>
-                                        Date: {exam.date}
-                                    </p>
-                                    <p className="mb-1" style={{ fontSize: "14px" }}>
-                                        Duration: {exam.duration}
-                                    </p>
-                                </div>
+        <div className="examCard">
+          <h5 className="examCardTitle">Ongoing Exams</h5>
 
-                                <div className="mt-2">
-                                    {exam.status === "completed" && (
-                                        <span
-                                            className="badge px-3 py-2"
-                                            style={{
-                                                backgroundColor: "#0dba3525",
-                                                borderRadius: "30px",
-                                                color: "#028b22ff"
-                                            }}
-                                        >
-                                            Completed
-                                        </span>
-                                    )}
-                                    {exam.status === "inprogress" && (
-                                        <span
-                                            className="badge px-3 py-2"
-                                            style={{
-                                                backgroundColor: "#144efd20",
-                                                borderRadius: "30px",
-                                                color: "#144efdff"
-                                            }}
-                                        >
-                                            In Progress
-                                        </span>
-                                    )}
-                                    {exam.status === "notstarted" && (
-                                        <span
-                                            className="badge px-3 py-2"
-                                            style={{
-                                                backgroundColor: "#ff480b24",
-                                                borderRadius: "30px",
-                                                color: "#ff480bff"
-                                            }}
-                                        >
-                                            Not Started
-                                        </span>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
+          <div className="table-wrapper">
+            <table ref={ongoingRef} className="studentsResultTable display">
+              <thead>
+                <tr>
+                  <th>Exam Name</th>
+                  <th>Course</th>
+                  <th>Batch</th>
+                  <th>Questions</th>
+                  <th>Duration Left</th>
+                  <th>Status</th>
+                  <th>Resume</th>
+                </tr>
+              </thead>
 
-            {selectedExam && (
-                <div
-                    className="modal fade show"
-                    style={{
-                        display: "block",
-                        background: "rgba(0,0,0,0.5)",
-                        position: "fixed",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        overflowY: "auto",
-                        paddingLeft: "260px", 
-                        zIndex: 1050
-                    }}
-                >
-                    <div
-                        className="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-                        style={{
-                            maxWidth: "750px",
-                            width: "100%",
-                        }}
-                    >
-                        <div className="modal-content shadow-lg">
+              <tbody>
+                {ongoingExams.map((exam) => (
+                  <tr key={exam.id}>
+                    <td data-label="Exam Name">{exam.examName}</td>
+                    <td data-label="Course">{exam.course}</td>
+                    <td data-label="Batch">{exam.batch}</td>
+                    <td data-label="Questions">{exam.questions}</td>
+                    <td data-label="Duration Left">{exam.durationLeft}</td>
 
-                            <div className="modal-header">
-                                <h5 className="modal-title fw-bold">
-                                    {selectedExam.title} – Results
-                                </h5>
-                                <button className="btn-close" onClick={closeModal}></button>
-                            </div>
+                    <td data-label="Status">
+                      <span className="badge bg-primary">{exam.status}</span>
+                    </td>
 
-                            <div className="modal-body">
-                                {selectedExam.questions.map((q, i) => {
-                                    const isCorrect = q.studentAnswer === q.correct;
+                    <td data-label="Resume">
+                      <button
+                        className="sr-btn sr-btn-edit"
+                        onClick={() => startExam(exam)}
+                      >
+                        Resume
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-                                    return (
-                                        <div
-                                            key={i}
-                                            className="p-3 mb-3 rounded shadow-sm"
-                                            style={{
-                                                borderLeft: `5px solid ${
-                                                    q.studentAnswer === ""
-                                                        ? "#6c757d"
-                                                        : isCorrect
-                                                            ? "#198754"
-                                                            : "#dc3545"
-                                                }`,
-                                                background: "#f9f9f9"
-                                            }}
-                                        >
-                                            <h6 className="fw-bold">
-                                                Q{i + 1}. {q.question}
-                                            </h6>
+        <div className="examCard">
+          <h5 className="examCardTitle">Completed Exams</h5>
 
-                                            <p className="mt-2 mb-1">
-                                                <strong>Correct Answer:</strong>{" "}
-                                                <span className="text-success">{q.correct}</span>
-                                            </p>
+          <div className="table-wrapper">
+            <table ref={completedRef} className="studentsResultTable display">
+              <thead>
+                <tr>
+                  <th>Exam Name</th>
+                  <th>Course</th>
+                  <th>Batch</th>
+                  <th>Date Attempted</th>
+                  <th>Marks</th>
+                  <th>Percentage</th>
+                  <th>Status</th>
+                  <th>View</th>
+                </tr>
+              </thead>
 
-                                            <p className="mb-0">
-                                                <strong>Your Answer:</strong>{" "}
-                                                <span
-                                                    className={
-                                                        q.studentAnswer === ""
-                                                            ? "text-secondary"
-                                                            : isCorrect
-                                                                ? "text-success"
-                                                                : "text-danger"
-                                                    }
-                                                >
-                                                    {q.studentAnswer || "Not Answered"}
-                                                </span>
-                                            </p>
-                                        </div>
-                                    );
-                                })}
-                            </div>
+              <tbody>
+                {completedExams.map((exam) => (
+                  <tr key={exam.id}>
+                    <td data-label="Exam Name">{exam.examName}</td>
+                    <td data-label="Course">{exam.course}</td>
+                    <td data-label="Batch">{exam.batch}</td>
+                    <td data-label="Attempted">{exam.attempted}</td>
+                    <td data-label="Marks">{exam.marks}</td>
+                    <td data-label="Percentage">{exam.percentage}%</td>
 
-                            <div className="modal-footer">
-                                <button className="btn btn-secondary" onClick={closeModal}>
-                                    Close
-                                </button>
-                            </div>
+                    <td data-label="Status">
+                      <span className="badge bg-success">{exam.status}</span>
+                    </td>
 
-                        </div>
-                    </div>
-                </div>
-            )}
-        </StudentLayout>
-    );
+                    <td data-label="View">
+                      <button
+                        className="sr-btn sr-btn-edit"
+                        onClick={() => startExam(exam)}
+                      >
+                        View
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </StudentLayout>
+  );
 };
 
-export default Studentexam;
+export default StudentExam;

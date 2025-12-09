@@ -6,11 +6,10 @@ import Adminsidebarcss from "../assets/Css/Adminsidebar.module.css";
 import "../assets/Css/Studentsidebar.css";
 
 import Xenlogo from "../assets/images/xenlogo.png";
-// import ProfileImg from "../assets/images/user1.jpg"; // <-- ADDED
+import ProfileImg from "../assets/images/user1.jpg";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 import { NotificationContext } from "../Components/NotificationContext";
-
 
 const Nav = ({ userRole = "guest", userName = "" }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -28,7 +27,6 @@ const Nav = ({ userRole = "guest", userName = "" }) => {
         : "student-sidebar";
 
     const sidebar = document.querySelector("." + sidebarClass);
-
     if (!sidebar) return;
 
     if (userRole === "admin") {
@@ -41,7 +39,6 @@ const Nav = ({ userRole = "guest", userName = "" }) => {
   };
 
   const isLoggedIn = userRole === "admin" || userRole === "student";
-
   const unseenCount = notifications.filter((n) => !n.seen).length;
 
   const handleSend = () => {
@@ -66,12 +63,15 @@ const Nav = ({ userRole = "guest", userName = "" }) => {
         <div className={Navstyle.rightSection}>
           {!isLoggedIn && (
             <div className={Navstyle.dropdownContainer}>
-              <button
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-                className={Navstyle.loginBtn}
-              >
-                Login <i className="bi bi-caret-down-fill"></i>
-              </button>
+              <div className={Navstyle.loginGroup}>
+                <button
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  className={Navstyle.loginBtn}
+                >
+                  <i className="bi bi-person-circle"></i>
+                  Login
+                </button>
+              </div>
 
               {dropdownOpen && (
                 <div className={Navstyle.dropdownMenu}>

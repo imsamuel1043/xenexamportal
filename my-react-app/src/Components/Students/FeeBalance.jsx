@@ -16,7 +16,9 @@ const FeeBalance = () => {
     const pending = feeData.totalFee - totalPaid;
 
     return (
+        
         <StudentLayout>
+
             <div className="fee-container">
 
                 <h2 className="fee-title">Fee Balance</h2>

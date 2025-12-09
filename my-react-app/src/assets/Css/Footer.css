@@ -1,0 +1,155 @@
+.footer-wrapper {
+  background: #000647;
+  padding: 40px 0 40px 0; 
+}
+
+
+.footer-card {
+  background: #000647;
+  padding: 70px 60px;  
+  border-radius: 24px;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.25);
+}
+
+
+.footer-top {
+  margin-bottom: 55px; 
+  display: flex;
+  gap: 60px; 
+}
+
+
+.footer-brand {
+  padding-right: 40px; 
+}
+
+.footer-brand .footer-logo {
+  width: 42px;
+  height: 42px;
+}
+
+.footer-logo-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-brand-name {
+  font-size: 21px;
+  font-weight: 600;
+}
+
+.footer-description {
+  margin-top: 18px;
+  margin-bottom: 22px; 
+  font-size: 14.5px;
+  line-height: 1.75;
+  max-width: 320px; 
+  color: #ffffff;
+}
+
+.footer-social {
+  margin-top: 10px;
+  display: flex;
+  gap: 20px;
+}
+
+.footer-social i {
+  font-size: 19px;
+  cursor: pointer;
+  color: #ffffff;
+  transition: 0.25s ease;
+}
+
+.footer-social i:hover {
+  transform: scale(1.15);
+  color: #cfcfcf;
+}
+
+.footer-title {
+  font-weight: 600;
+  margin-bottom: 14px;
+  font-size: 15.5px;
+  color: #ffffff;
+}
+
+
+.footer-links {
+  padding: 0;
+  list-style: none;
+}
+
+.footer-links li {
+  font-size: 14px;
+  margin-bottom: 10px; 
+  color: #ffffff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.footer-links li:hover {
+  color: #d5d5d5;
+  transform: translateX(4px);
+}
+
+
+.footer-bottom {
+  border-top: 1px solid rgb(255, 255, 255);
+  padding-top: 25px;
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+
+.footer-bottom p {
+  margin: 0;
+  text-align: center;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+
+/* .footer-policy-links {
+  display: flex;
+  gap: 28px; 
+}
+
+.footer-policy-links a {
+  font-size: 14px;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.footer-policy-links a:hover {
+  color: #dcdcdc;
+} */
+
+
+@media (max-width: 768px) {
+  .footer-card {
+    padding: 45px 30px;
+    text-align: center;
+  }
+
+  .footer-top {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .footer-social {
+    justify-content: center;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .footer-policy-links {
+    justify-content: center;
+    gap: 18px;
+  }
+}

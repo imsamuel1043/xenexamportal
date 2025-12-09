@@ -1,36 +1,155 @@
-.student-exam-modal {
-  padding-left: 260px;
+/* ================================
+   WRAPPER
+================================ */
+.studentExamWrapper {
+  padding: 20px;
 }
 
+.studentExamTitle {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0a2b5c;
+  margin-bottom: 15px;
+}
+
+/* ================================
+   CARD STYLE
+================================ */
+.examCard {
+  background: #ffffff;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 25px;
+}
+
+.examCardTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0a2b5c;
+  margin-bottom: 12px;
+}
+
+/* ================================
+   TABLE WRAPPER
+================================ */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.studentsResultTable {
+  width: 100% !important;
+  border-collapse: collapse;
+  background: white;
+  table-layout: auto;
+}
+
+.studentsResultTable thead th {
+  background: #05173e;
+  color: white;
+  font-weight: 600;
+  padding: 12px;
+  white-space: nowrap;
+}
+
+.studentsResultTable tbody td {
+  padding: 10px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/* ================================
+   BUTTONS
+================================ */
+.sr-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 14px;
+}
+
+.sr-btn-edit {
+  background: #3956AD;
+}
+.sr-btn-edit:hover {
+  background: #2f4991;
+}
+
+.start-btn {
+  background: #28a745;
+}
+.start-btn:hover {
+  background: #1e7e34;
+}
+
+/* ================================
+   DataTables Styling
+================================ */
+.dataTables_wrapper {
+  margin-top: 10px;
+}
+
+.dataTables_filter input {
+  border: 2px solid #05173e;
+  border-radius: 6px;
+  padding: 6px;
+}
+
+.dataTables_length select {
+  border: 2px solid #05173e;
+  border-radius: 6px;
+  padding: 4px;
+}
+
+.dataTables_paginate .paginate_button {
+  background: #e6ecf7 !important;
+  color: #05173e !important;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+.dataTables_paginate .paginate_button.current {
+  background: #05173e !important;
+  color: white !important;
+}
+
+/* ================================
+   MOBILE RESPONSIVE
+================================ */
 @media (max-width: 768px) {
-  .student-exam-modal {
-    padding-left: 0 !important;
+
+  .studentsResultTable thead {
+    display: none;
   }
-  .student-exam-dialog {
-    max-width: 95% !important;
-    margin: 15px auto !important;
+
+  .studentsResultTable tbody tr {
+    display: block;
+    margin-bottom: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+  }
+
+  .studentsResultTable tbody td {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 5px;
+    white-space: normal;
+    border-bottom: 1px solid #eee;
+  }
+
+  .studentsResultTable tbody td:last-child {
+    border-bottom: 0;
+  }
+
+  .studentsResultTable tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #05173e;
+    margin-right: 10px;
   }
 }
-
-@media (max-width: 576px) {
-  .student-exam-dialog {
-    max-width: 90% !important;
-    margin: 10px auto !important;
-  }
-  .student-exam-modal .modal-content {
-    padding: 10px !important;
-  }
-}
-
-@media (max-width: 420px) {
-  .student-exam-dialog {
-    max-width: 95% !important;
-  }
-  .student-exam-modal .modal-content {
-    padding: 8px !important;
-  }
-  .student-exam-modal h5 {
-    font-size: 16px !important;
-  }
-}
-
