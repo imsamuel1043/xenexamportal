@@ -1,16 +1,86 @@
-.search-wrapper {
-  position: relative;
-  width: 250px;
+.table-responsive {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #dce3f1;
 }
 
-.search-wrapper .search-icon {
-  position: absolute;
-  top: 10px;
-  left: 12px;
-  font-size: 16px;
-  color: #6c757d;
+#coursesTable thead {
+  background: #0047ee !important;
+  color: #fff !important;
 }
 
-.search-wrapper input {
-  padding-left: 35px;
+#coursesTable thead th {
+  font-weight: 600;
+  padding: 12px;
+  background-color: #3956AD;
+  font-size: 15px;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+#coursesTable tbody tr {
+  transition: background 0.2s ease-in-out;
+}
+
+#coursesTable tbody tr:hover {
+  background: #f1f5ff !important;
+}
+
+#coursesTable td {
+  padding: 12px;
+  vertical-align: middle;
+  color: #333;
+  font-size: 14px;
+}
+
+#coursesTable .btn-primary {
+  background: #3867d6;
+  border: none;
+}
+
+#coursesTable .btn-primary:hover {
+  background: #2748a0;
+}
+
+#coursesTable .btn-danger {
+  background: #eb3b5a;
+  border: none;
+}
+
+#coursesTable .btn-danger:hover {
+  background: #c62841;
+}
+
+#coursesTable tbody tr:nth-child(even) {
+  background: #f8faff;
+}
+
+.dataTables_filter input {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-left: 6px;
+}
+
+.dataTables_length select {
+  border-radius: 6px;
+  padding: 5px;
+}
+
+.dataTables_paginate .paginate_button {
+  padding: 5px 10px !important;
+  margin: 2px;
+  border-radius: 6px !important;
+  border: 1px solid #ccc !important;
+}
+
+.dataTables_paginate .paginate_button.current {
+  background: #4b7bec !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+.dataTables_info {
+  font-size: 14px;
+  color: #555;
 }

@@ -1,127 +1,134 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import AdminLayout from '../Layouts/AdminLayout';
+import React, { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import AdminLayout from "../Layouts/AdminLayout";
+import '../../assets/Css/Ongoing.css';
 
 const OngoingExam = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const tableRef = useRef(null);
+  const dataTable = useRef(null);
 
-    const liveExams = [
-        {
-            id: 1,
-            title: "Javascript",
-            date: "Dec 5, 2025",
-            duration: "2 Hours",
-            status: "inprogress"
-        },
-        {
-            id: 2,
-            title: "Css",
-            date: "Dec 15, 2025",
-            duration: "1 Hour",
-            status: "notstarted"
-        },
-        {
-            id: 3,
-            title: "Digital Marketing",
-            date: "Nov 27, 2025",
-            duration: "1.5 Hours",
-            status: "completed"
-        }
-    ];
+  const liveExams = [
+    {
+      id: 1,
+      title: "Javascript",
+      date: "Dec 5, 2025",
+      duration: "2 Hours",
+      status: "inprogress",
+    },
+    {
+      id: 2,
+      title: "Css",
+      date: "Dec 15, 2025",
+      duration: "1 Hour",
+      status: "notstarted",
+    },
+    {
+      id: 3,
+      title: "Digital Marketing",
+      date: "Nov 27, 2025",
+      duration: "1.5 Hours",
+      status: "completed",
+    },
+  ];
 
-    return (
-        <AdminLayout>
-            <div className="d-flex justify-content-between align-items-center flex-wrap">
-                <h3 className="fw-bold mb-2">Examinations</h3>
+  useEffect(() => {
+    if (dataTable.current) {
+      dataTable.current.destroy();
+    }
 
-                {/* <button
-                    className="btn btn-success px-4"
-                    onClick={() => navigate('/completed-exams')}
-                >
-                    Completed Exams
-                </button> */}
-            </div>
+    dataTable.current = $(tableRef.current).DataTable();
+  }, []);
 
-            <div className="card shadow-sm p-3 mt-3" style={{ borderRadius: "10px" }}>
-                <div className="row mt-3">
-                    {liveExams.map((exam, index) => (
-                        <div key={index} className="col-12 col-md-6 col-lg-4 mb-3">
-                            <div className="card p-3 shadow-sm" style={{ borderRadius: "10px" }}>
-                                <div
-                                    className='mb-3'
-                                    style={{
-                                        width: "100%",
-                                        height: "6px",
-                                        marginTop: "-16px",
-                                        borderRadius: "0 0 10px 10px",
-                                        backgroundColor:
-                                            exam.status === "completed"
-                                                ? "#0dba35"
-                                                : exam.status === "inprogress"
-                                                    ? "#144efd"
-                                                    : "#ff480b"
-                                    }}
-                                ></div>
+  const getStatusBadge = (status, id) => {
+    if (status === "completed") {
+      return `
+        <span class="badge px-3 py-2"
+          style="
+            background-color:#0dba3525;
+            color:#028b22;
+            border-radius:30px;
+            cursor:pointer;">
+          ✔ Completed
+        </span>`;
+    }
 
-                                <h6 className="fw-bold">{exam.title}</h6>
-                                <p className="mb-1" style={{ fontSize: "13px", color: "#4f4f4f" }}>
-                                    Date: {exam.date}
-                                </p>
-                                <p className="mb-1" style={{ fontSize: "14px" }}>
-                                    Duration: {exam.duration}
-                                </p>
+    if (status === "inprogress") {
+      return `
+        <span class="badge px-3 py-2"
+          style="
+            background-color:#144efd20;
+            color:#144efd;
+            border-radius:30px;">
+          In Progress
+        </span>`;
+    }
 
-                                <div className="mt-2">
-                                    {exam.status === "completed" && (
-                                        <span
-                                            onClick={() =>
-                                                navigate(`/completed-exams/${exam.id}`)
-                                            }
-                                            className="badge px-3 py-2"
-                                            style={{
-                                                backgroundColor: "#0dba3525",
-                                                borderRadius: "30px",
-                                                color: "#028b22ff",
-                                                cursor: "pointer"
-                                            }}
-                                        >
-                                            ✔ View Completed
-                                        </span>
-                                    )}
+    return `
+      <span class="badge px-3 py-2"
+        style="
+          background-color:#ff480b25;
+          color:#ff480b;
+          border-radius:30px;">
+        Not Started
+      </span>`;
+  };
 
-                                    {exam.status === "inprogress" && (
-                                        <span
-                                            className="badge px-3 py-2"
-                                            style={{
-                                                backgroundColor: "#144efd20",
-                                                borderRadius: "30px",
-                                                color: "#144efdff"
-                                            }}
-                                        >
-                                            In Progress
-                                        </span>
-                                    )}
+  return (
+    <AdminLayout>
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h3 className="fw-bold">Examinations</h3>
+      </div>
 
-                                    {exam.status === "notstarted" && (
-                                        <span
-                                            className="badge px-3 py-2"
-                                            style={{
-                                                backgroundColor: "#ff480b24",
-                                                borderRadius: "30px",
-                                                color: "#ff480bff"
-                                            }}
-                                        >
-                                            Not Started
-                                        </span>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </AdminLayout>
-    );
+      <div className="table-responsive card shadow-sm p-3" style={{ borderRadius: "10px" }}>
+        <table className="table table-bordered" ref={tableRef} id="examTable">
+          <thead className="table-primary">
+            <tr>
+              <th>Exam Title</th>
+              <th>Date</th>
+              <th>Duration</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {liveExams.map((exam) => (
+              <tr key={exam.id}>
+                <td>{exam.title}</td>
+                <td>{exam.date}</td>
+                <td>{exam.duration}</td>
+                <td
+                  dangerouslySetInnerHTML={{
+                    __html: getStatusBadge(exam.status, exam.id),
+                  }}
+                ></td>
+
+                <td>
+                  {exam.status === "completed" ? (
+                    <button
+                      className="btn btn-success btn-sm"
+                      onClick={() => navigate(`/completed-exams/${exam.id}`)}
+                    >
+                      View Report
+                    </button>
+                  ) : exam.status === "inprogress" ? (
+                    <button className="btn btn-primary btn-sm" disabled>
+                      Ongoing
+                    </button>
+                  ) : (
+                    <button className="btn btn-warning btn-sm" disabled>
+                      Not Started
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </AdminLayout>
+  );
 };
 
 export default OngoingExam;

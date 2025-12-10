@@ -140,3 +140,8 @@
     gap: 10px;
   }
 }
+@media (max-width: 620px){
+  .logo {
+  height: 75px;
+}
+}

@@ -60,7 +60,7 @@ const Adminsidebar = () => {
                                 <Link to="/live"><i className="bi bi-activity"></i> <span>Ongoing Exams</span></Link>
                             </li>
                             <li className={isActive("/Assign") ? Adminsidebarcss.active : ""}>
-                                <Link to="/Assign"><i className="bi bi-clipboard-plus"></i> <span>Assign Exam</span></Link>
+                                <Link to="/assign"><i className="bi bi-clipboard-plus"></i> <span>Assign Exam</span></Link>
                             </li>
                             <li className={isActive("/bank") ? Adminsidebarcss.active : ""}>
                                 <Link to="/bank"><i className="bi bi-journal-text"></i> <span>Question Bank</span></Link>

@@ -1,0 +1,34 @@
+#examTable thead {
+  background: #3956AD !important;
+  color: #fff !important;
+}
+
+#examTable thead th {
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  background: #3956AD !important;
+  color: #fff !important;
+}
+
+#examTable tbody tr:hover {
+  background: #f1f5ff !important;
+}
+
+#examTable td {
+  padding: 12px;
+  vertical-align: middle;
+  font-size: 14px;
+}
+
+.dataTables_paginate .paginate_button.current {
+  background: #3956AD !important;
+  color: white !important;
+  border: none !important;
+}
+
+.dataTables_filter input {
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  padding: 6px 10px;
+}

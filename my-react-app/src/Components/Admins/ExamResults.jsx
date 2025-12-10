@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import AdminLayout from "../Layouts/AdminLayout";
+import "../../assets/Css/Examresult.css";
 
 const ExamResults = () => {
   const [results, setResults] = useState([
-    { id: 1, student: "samuel", exam: "React", batch: "Batch 9", date: "2025-02-10", score: "85%" },
+    { id: 1, student: "Samuel", exam: "React", batch: "Batch 9", date: "2025-02-10", score: "85%" },
     { id: 2, student: "Prabin Kumar", exam: "JavaScript", batch: "Batch 12", date: "2025-02-12", score: "92%" },
     { id: 3, student: "Vibina", exam: "UI/UX Design", batch: "Batch 7", date: "2025-02-13", score: "78%" },
   ]);
@@ -11,14 +12,38 @@ const ExamResults = () => {
   const [search, setSearch] = useState("");
   const [filterBatch, setFilterBatch] = useState("");
   const [filterCourse, setFilterCourse] = useState("");
-
   const [showModal, setShowModal] = useState(false);
   const [editingResult, setEditingResult] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
 
-  const handleRemove = (id) => {
-    setResults(results.filter((r) => r.id !== id));
-  };
+  const tableRef = useRef(null);
+  const dataTableInstance = useRef(null);
+
+  const filteredResults = results.filter((r) => {
+    return (
+      r.student.toLowerCase().includes(search.toLowerCase()) &&
+      (filterBatch ? r.batch === filterBatch : true) &&
+      (filterCourse ? r.exam === filterCourse : true)
+    );
+  });
+
+  const uniqueBatches = [...new Set(results.map((r) => r.batch))];
+  const uniqueCourses = [...new Set(results.map((r) => r.exam))];
+
+  // Initialize / Reinitialize DataTable whenever filteredResults change
+  useEffect(() => {
+    if (dataTableInstance.current) {
+      dataTableInstance.current.destroy();
+    }
+
+    dataTableInstance.current = window.$(tableRef.current).DataTable({
+      pageLength: 5,
+      destroy: true,
+      responsive: true, // enable responsiveness
+    });
+  }, [filteredResults]);
+
+  const handleRemove = (id) => setResults(results.filter((r) => r.id !== id));
 
   const handleEditClick = (result) => {
     setEditingResult({ ...result });
@@ -42,69 +67,35 @@ const ExamResults = () => {
       const newResult = { ...editingResult, id: Math.floor(Math.random() * 10000) };
       setResults([...results, newResult]);
     } else {
-      setResults((prev) =>
-        prev.map((r) => (r.id === editingResult.id ? editingResult : r))
-      );
+      setResults(results.map((r) => (r.id === editingResult.id ? editingResult : r)));
     }
     setShowModal(false);
   };
 
-  const filteredResults = results.filter((r) => {
-    return (
-      r.student.toLowerCase().includes(search.toLowerCase()) &&
-      (filterBatch ? r.batch === filterBatch : true) &&
-      (filterCourse ? r.exam === filterCourse : true)
-    );
-  });
-
-  const uniqueBatches = [...new Set(results.map((r) => r.batch))];
-  const uniqueCourses = [...new Set(results.map((r) => r.exam))];
-
   return (
     <AdminLayout>
       <div className="container mt-4">
-
         <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap">
           <h3 className="fw-bold">Exam Results</h3>
-          <button className="btn btn-primary mt-2 mt-md-0" onClick={handleAddClick}>
-            Add Result
-          </button>
+          <button className="btn btn-primary mt-2 mt-md-0" onClick={handleAddClick}>Add Result</button>
         </div>
 
+        {/* Filters */}
         <div className="card shadow-sm p-3 mt-3" style={{ borderRadius: "8px" }}>
           <div className="row g-3">
-
             <div className="col-12 col-md-4">
-              <select
-                className="form-select"
-                value={filterBatch}
-                onChange={(e) => setFilterBatch(e.target.value)}
-              >
+              <select className="form-select" value={filterBatch} onChange={(e) => setFilterBatch(e.target.value)}>
                 <option value="">Batch</option>
-                {uniqueBatches.map((b, index) => (
-                  <option key={index} value={b}>
-                    {b}
-                  </option>
-                ))}
+                {uniqueBatches.map((b, idx) => <option key={idx} value={b}>{b}</option>)}
               </select>
             </div>
-
             <div className="col-12 col-md-4">
-              <select
-                className="form-select"
-                value={filterCourse}
-                onChange={(e) => setFilterCourse(e.target.value)}
-              >
+              <select className="form-select" value={filterCourse} onChange={(e) => setFilterCourse(e.target.value)}>
                 <option value="">Exam</option>
-                {uniqueCourses.map((c, index) => (
-                  <option key={index} value={c}>
-                    {c}
-                  </option>
-                ))}
+                {uniqueCourses.map((c, idx) => <option key={idx} value={c}>{c}</option>)}
               </select>
             </div>
-
-            <div className="col-12 col-md-4">
+            {/* <div className="col-12 col-md-4">
               <input
                 type="text"
                 className="form-control"
@@ -112,125 +103,63 @@ const ExamResults = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-            </div>
-          </div>
-
-          <div className="card shadow-sm mt-3">
-            <div className="card-body">
-
-              <div className="table-responsive">
-                <table className="table table-hover">
-                  <thead className="table-primary">
-                    <tr>
-                      <th>Student</th>
-                      <th>Exam</th>
-                      <th>Batch</th>
-                      <th>Date</th>
-                      <th>Score</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredResults.map((r) => (
-                      <tr key={r.id}>
-                        <td>{r.student}</td>
-                        <td>{r.exam}</td>
-                        <td>{r.batch}</td>
-                        <td>{r.date}</td>
-                        <td className="fw-bold">{r.score}</td>
-                        <td>
-                          <button
-                            className="btn btn-sm btn-primary me-2"
-                            onClick={() => handleEditClick(r)}
-                          >
-                            Edit
-                          </button>
-                          <button
-                            className="btn btn-sm btn-danger"
-                            onClick={() => handleRemove(r.id)}
-                          >
-                            Remove
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-
-                {filteredResults.length === 0 && (
-                  <p className="text-center text-muted">No matching records found.</p>
-                )}
-              </div>
-            </div>
+            </div> */}
           </div>
         </div>
 
-        {showModal && (
-          <div
-            className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
-            style={{ background: "rgba(0,0,0,0.5)", zIndex: 1050 }}
+        
+        <div className="card shadow-sm p-3 mt-3">
+          <table
+            ref={tableRef}
+            className="display table table-striped table-bordered dt-responsive nowrap"
+            style={{ width: "100%" }}
           >
-            <div
-              className="bg-white p-4 rounded"
-              style={{
-                width: "90%",
-                maxWidth: "400px",
-              }}
-            >
+            <thead>
+              <tr className="table-header">
+                <th>Student</th>
+                <th>Exam</th>
+                <th>Batch</th>
+                <th>Date</th>
+                <th>Score</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredResults.map((r) => (
+                <tr key={r.id}>
+                  <td>{r.student}</td>
+                  <td>{r.exam}</td>
+                  <td>{r.batch}</td>
+                  <td>{r.date}</td>
+                  <td className="fw-bold">{r.score}</td>
+                  <td>
+                    <button className="btn btn-sm btn-primary me-2" onClick={() => handleEditClick(r)}>Edit</button>
+                    <button className="btn btn-sm btn-danger" onClick={() => handleRemove(r.id)}>Remove</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        
+        {showModal && (
+          <div className="modal-overlay">
+            <div className="modal-box">
               <h5 className="fw-bold mb-3">{isAdding ? "Add Result" : "Edit Result"}</h5>
-
               <label className="form-label">Student Name</label>
-              <input
-                type="text"
-                className="form-control mb-2"
-                name="student"
-                value={editingResult.student}
-                onChange={handleModalChange}
-              />
-
+              <input type="text" className="form-control mb-2" name="student" value={editingResult.student} onChange={handleModalChange} />
               <label className="form-label">Exam</label>
-              <input
-                type="text"
-                className="form-control mb-2"
-                name="exam"
-                value={editingResult.exam}
-                onChange={handleModalChange}
-              />
-
+              <input type="text" className="form-control mb-2" name="exam" value={editingResult.exam} onChange={handleModalChange} />
               <label className="form-label">Batch</label>
-              <input
-                type="text"
-                className="form-control mb-2"
-                name="batch"
-                value={editingResult.batch}
-                onChange={handleModalChange}
-              />
-
+              <input type="text" className="form-control mb-2" name="batch" value={editingResult.batch} onChange={handleModalChange} />
               <label className="form-label">Date</label>
-              <input
-                type="date"
-                className="form-control mb-2"
-                name="date"
-                value={editingResult.date}
-                onChange={handleModalChange}
-              />
-
+              <input type="date" className="form-control mb-2" name="date" value={editingResult.date} onChange={handleModalChange} />
               <label className="form-label">Score</label>
-              <input
-                type="text"
-                className="form-control mb-3"
-                name="score"
-                value={editingResult.score}
-                onChange={handleModalChange}
-              />
-
+              <input type="text" className="form-control mb-3" name="score" value={editingResult.score} onChange={handleModalChange} />
               <div className="d-flex justify-content-end gap-2">
-                <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
-                  Cancel
-                </button>
-                <button className="btn btn-primary" onClick={handleSaveChanges}>
-                  Save
-                </button>
+                <button className="btn btn-secondary" onClick={() => setShowModal(false)}>Cancel</button>
+                <button className="btn btn-primary" onClick={handleSaveChanges}>Save</button>
               </div>
             </div>
           </div>
