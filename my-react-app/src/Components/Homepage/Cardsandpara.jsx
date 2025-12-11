@@ -65,68 +65,103 @@ const Cardsandpara = () => {
 
                     </div>
 
+
                 </div>
             </div>
-            <div className={`container-fluid  mb-5 d-flex ${cardspara.newchange}`}>
+            <div className={` container ${cardspara.stepswrapper}`}>
+                <h2 className={cardspara.stepstitle}>
+                    <span>Get easily started in </span>
+                    <span style={{ color: "#3956AD" }}>3 simple steps</span>
+                </h2>
 
-                <div className="row align-items-center justify-content-center">
+                <div className={cardspara.stepscontainer}>
 
-                    <div className="col-12 col-md-5">
-                        <img src={whyimg} alt="whychooseimg" className='img-fluid rounded-4' />
-                    </div>
-                    <div className="col-12 col-md-5">
-                        <h3 className={cardspara.whychoose}>Why choose us</h3>
-                        <p className={cardspara.paras}>Unlock your creative potential with Xen Education's Exam portal one of the leading
-                            It based course providers in Wayanad.Enroll in Xen Education's creative designing
-                            and digital marketing course in Wayanad to unlock your creative potential and master the skills
-                            needed for a successful career in the digital world.</p>
-                    </div>
-                </div>
-            </div>
+                    <div className={cardspara.line}></div>
 
-            <div className="container mt-4">
-                <div className="row text-center justify-content-center gap-4">
-
-                    <div className={`col-10 col-md-3 ${cardspara.whycard}`}>
-                        <div className={cardspara.whyicon}>
-                            <i className="bi bi-book"></i>
-                        </div>
-                        <h5 className={cardspara.whytitle}>Comprehensive Content</h5>
-                        <p className={cardspara.whytext}>High-quality curated materials to help you excel.</p>
+                    <div className={cardspara.stepbox}>
+                        <div className={cardspara.stepcircle}>1</div>
+                        <p>Login / Register</p>
                     </div>
 
-                    <div className={`col-10 col-md-3 ${cardspara.whycard}`}>
-                        <div className={cardspara.whyicon}>
-                            <i className="bi bi-clock-history"></i>
-                        </div>
-                        <h5 className={cardspara.whytitle}>Flexible Learning</h5>
-                        <p className={cardspara.whytext}>Learn anytime with complete freedom.</p>
+                    <div className={cardspara.stepbox}>
+                        <div className={cardspara.stepcircle}>2</div>
+                        <p>Select your course</p>
                     </div>
-   
-                    <div className={`col-10 col-md-3 ${cardspara.whycard}`}>
-                        <div className={cardspara.whyicon}>
-                            <i className="bi bi-award"></i>
-                        </div>
-                        <h5 className={cardspara.whytitle}>Recognized Certification</h5>
-                        <p className={cardspara.whytext}>Get certifications that hold real value.</p>
+
+                    <div className={cardspara.stepbox}>
+                        <div className={cardspara.stepcircle}>3</div>
+                        <p>Enjoy giving test</p>
                     </div>
 
                 </div>
             </div>
 
-            <div className="text-center mt-3 mb-5">
-                <h4 className={cardspara.subs}>Subscribe Newsletter</h4>
 
-                <div className="d-flex justify-content-center gap-2 mt-3">
-                    <input
-                        type="text"
-                        className="form-control w-25"
-                        placeholder="Enter your email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <button className={cardspara.subbutton} onSubmit={handleSubmit}>Subscribe</button>
-                    {message && <p className="newsletter-message">{message}</p>}
+            {/* <div className={`container-fluid  mb-3 d-flex ${cardspara.newchange}`}>
+                <div className="container">
+                    <div className="row align-items-center justify-content-center">
+
+                        <div className="col-12 col-md-5">
+                            <img src={whyimg} alt="whychooseimg" className='img-fluid rounded-4' />
+                        </div>
+                        <div className="col-12 col-md-5">
+                            <h3 className={cardspara.whychoose}>Why choose us</h3>
+                            <p className={cardspara.paras}>Unlock your creative potential with Xen Education's Exam portal one of the leading
+                                It based course providers in Wayanad.Enroll in Xen Education's creative designing
+                                and digital marketing course in Wayanad to unlock your creative potential and master the skills
+                                needed for a successful career in the digital world.</p>
+                        </div>
+                    </div>
+                </div>
+            </div> */}
+
+
+            <div className={cardspara.lastcolor}>
+                <div className="container-fluid mt-4 mb-5">
+                    <div className="row text-center justify-content-center gap-4">
+
+                        <div className={`col-10 col-md-3 ${cardspara.whycard}`}>
+                            <div className={cardspara.whyicon}>
+                                <i className="bi bi-book"></i>
+                            </div>
+                            <h5 className={cardspara.whytitle}>Comprehensive Content</h5>
+                            <p className={cardspara.whytext}>High-quality curated materials to help you excel.</p>
+                        </div>
+
+                        <div className={`col-10 col-md-3 ${cardspara.whycard}`}>
+                            <div className={cardspara.whyicon}>
+                                <i className="bi bi-clock-history"></i>
+                            </div>
+                            <h5 className={cardspara.whytitle}>Flexible Learning</h5>
+                            <p className={cardspara.whytext}>Learn anytime with complete freedom.</p>
+                        </div>
+
+                        <div className={`col-10 col-md-3 ${cardspara.whycard}`}>
+                            <div className={cardspara.whyicon}>
+                                <i className="bi bi-award"></i>
+                            </div>
+                            <h5 className={cardspara.whytitle}>Recognized Certification</h5>
+                            <p className={cardspara.whytext}>Get certifications that hold real value.</p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div className={`text-center ${cardspara.subscribe}`}>
+                    <h4 className={`text-white ${cardspara.subs}`}>Subscribe <span  style={{color:"#3956AD"}}>Newsletter
+                    </span></h4>
+
+                    <div className="d-flex justify-content-center gap-2 mt-3">
+                        <input
+                            type="text"
+                            className="form-control w-25"
+                            placeholder="Enter your email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <button className={cardspara.subbutton} onSubmit={handleSubmit}>Subscribe</button>
+                        {message && <p className="newsletter-message">{message}</p>}
+                    </div>
                 </div>
             </div>
 

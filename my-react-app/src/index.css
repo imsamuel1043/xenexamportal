@@ -11,6 +11,10 @@
   background-color: #2f4991 !important; 
   border-color: #2f4991 !important;
 }
+p{
+  font-size: 15px;
+}
+
 p:hover,
 span:hover,
 a:hover,
@@ -20,7 +24,7 @@ h3:hover,
 h4:hover,
 h5:hover,
 h6:hover {
-  color: rgb(0, 98, 131);
+  color: rgb(71, 71, 71);
 }
 
 

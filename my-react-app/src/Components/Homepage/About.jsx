@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import aboutimg from '../../assets/images/aboutimg.jpg';
+import aboutimg from "../../assets/images/aboutnew.png";
 import aboutcss from '../../assets/Css/About.module.css';
 
 const About = () => {
@@ -23,7 +23,10 @@ const About = () => {
   return (
     <div>
       <div className={`container ${aboutcss.coursesWrapper}`}>
-        <h3 className="text-center fw-bold mb-1 mt-4">Courses</h3>
+        <h3 className="text-center fw-bold mb-1 mt-3">
+          <span>Our</span>{" "}
+          <span style={{ color: "#3956AD" }}>Courses</span>
+        </h3>
 
         <div className={aboutcss.cardRow}>
           {courses.map((course, index) => (
@@ -49,19 +52,49 @@ const About = () => {
         </div>
       </div>
 
-      <div className={`container-fluid mt-5  d-flex justify-content-center ${aboutcss.colorchange}`}>
-        <div className="row align-items-center justify-content-center">
-          <div className="col-12 col-md-5">
-            <h3 className={aboutcss.about}>About</h3>
-            <p className={aboutcss.para}>
-              An online exam portal in the IT field is a web-based platform designed for the digital administration,
-              execution, and evaluation of technical assessments and certifications. These systems streamline the
-              entire examination process, leveraging technology to offer a secure, efficient, and scalable alternative
-              to traditional paper-based testing.
-            </p>
-          </div>
-          <div className="col-12 col-md-5">
-            <img src={aboutimg} alt="aboutimage" className="img-fluid rounded-4" />
+      <div className={`container-fluid mt-3  d-flex justify-content-center ${aboutcss.colorchange}`}>
+        <div className='container'>
+          <div className="row align-items-center justify-content-center">
+            {/* <div className="col-12 col-md-5">
+              <h3 className={aboutcss.about}>About</h3>
+              <p className={aboutcss.para}>
+                An online exam portal in the IT field is a web-based platform designed for the digital administration,
+                execution, and evaluation of technical assessments and certifications. These systems streamline the
+                entire examination process, leveraging technology to offer a secure, efficient, and scalable alternative
+                to traditional paper-based testing.
+              </p>
+            </div>
+            <div className="col-12 col-md-5">
+              <img src={aboutimg} alt="aboutimage" className="img-fluid rounded-4" />
+            </div> */}
+
+            <div className={aboutcss.aboutSection}>
+              <h2 className={aboutcss.aboutTitle}>
+                About <span>US</span>
+              </h2>
+
+              <div className={aboutcss.aboutImageWrapper}>
+                <img
+                  src={aboutimg} 
+                  alt="Chatbot Illustration"
+                  className={aboutcss.aboutImage}
+                />
+              </div>
+
+              <h4 className={aboutcss.aboutSubtitle}>
+                About us 
+              </h4>
+
+              <p className={aboutcss.aboutDescription}>
+                An online exam portal in the IT field is a web-based platform designed for the digital administration,
+                execution, and evaluation of technical assessments and certifications. These systems streamline the
+                entire examination process, leveraging technology to offer a secure, efficient, and scalable alternative
+                to traditional paper-based testing.
+              </p>
+            </div>
+
+
+
           </div>
         </div>
       </div>

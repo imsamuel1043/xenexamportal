@@ -70,11 +70,13 @@
   margin-bottom: 14px;
   font-size: 15.5px;
   color: #ffffff;
+  cursor: pointer;
+  transition: 0.3s;
 }
-.footer-title :hover{
-   color: #cfcfcf;
+.footer-title :hover {
+  color: #d5d5d5;
+  transform: translateX(4px);
 }
-
 
 .footer-links {
   padding: 0;

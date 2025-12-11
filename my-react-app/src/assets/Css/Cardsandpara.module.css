@@ -30,6 +30,8 @@
 
 .newchange{
   background-color: #d0f0ff;
+  padding-bottom: 20px;
+  padding-top: 20px;
 }
 
 .whycard {
@@ -67,5 +69,85 @@
 .whytext {
   font-size: 14px;
   color: #666;
+}
+
+
+.stepswrapper {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.stepstitle {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 50px;
+}
+
+.stepscontainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 200px;
+  margin-top: 40px;
+}
+
+.line {
+  position: absolute;
+  top: 30px; 
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #000000;
+  z-index: 1;
+}
+
+.stepbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2; 
+}
+
+.stepcircle {
+  width: 60px;
+  height: 60px;
+  border: 2px solid #000000;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.stepbox p {
+  margin-top: 5px;
+  font-size: 16px;
+  color: #444;
+}
+.lastcolor{
+  background-color: #d0f0ff;
+  /* padding-bottom: 40px; */
+  padding-top: 30px;
+}
+
+.subscribe{
+  background-color:#88d9ff;
+  padding-bottom: 94px ;
+  padding-top: 70px;
+  border-radius: 65px 65px 0px 0px;
+}
+
+
+@media (max-width: 768px) {
+  .stepscontainer {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .line {
+    display: none;
+  }
 }
 
