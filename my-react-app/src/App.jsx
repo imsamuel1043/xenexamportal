@@ -10,7 +10,7 @@ import Nav from "./Components/Nav";
 import Banner from "./Components/Banner";
 import Home from "./Components/Homepage/Home";
 import Footer from "./Components/Footer";
-import Admin from "./Components/Admins/Admin";
+import Admin from "./Components/Admins/Admin"; 
 import Students from "./Components/Admins/Students";
 import Signup from "./Components/Homepage/Signup";
 import Courses from "./Components/Admins/Courses";

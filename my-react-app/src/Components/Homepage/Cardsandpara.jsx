@@ -10,16 +10,21 @@ const Cardsandpara = () => {
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
 
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
         if (!email) {
             setMessage("Please enter your email.");
+            setTimeout(() => setMessage(""), 2000);
             return;
         }
 
         setMessage("Subscribed successfully! 🎉");
         setEmail("");
+
+        // Auto hide after 2 seconds
+        setTimeout(() => setMessage(""), 2000);
     };
 
 
@@ -38,6 +43,7 @@ const Cardsandpara = () => {
                             </div>
                         </div>
                     </div>
+
                     <div className='col d-flex justify-content-center'>
                         <div className='card text-center' style={{ width: "12rem", border: "0px", backgroundColor: "#ffff" }} >
                             <img src={testprep} alt="testprepimg" style={{ height: "82px", width: "195px" }} />
@@ -49,8 +55,8 @@ const Cardsandpara = () => {
                                     system.</p>
                             </div>
                         </div>
-
                     </div>
+
                     <div className='col d-flex justify-content-center'>
                         <div className='card text-center' style={{ width: "12rem", border: "0px", backgroundColor: "#ffff" }} >
                             <img src={testpublish} alt="testpublishimg" style={{ height: "82px", width: "195px" }} />
@@ -62,12 +68,11 @@ const Cardsandpara = () => {
                                     allocate marks, done!</p>
                             </div>
                         </div>
-
                     </div>
-
 
                 </div>
             </div>
+
             <div className={` container ${cardspara.stepswrapper}`}>
                 <h2 className={cardspara.stepstitle}>
                     <span>Get easily started in </span>
@@ -95,26 +100,6 @@ const Cardsandpara = () => {
 
                 </div>
             </div>
-
-
-            {/* <div className={`container-fluid  mb-3 d-flex ${cardspara.newchange}`}>
-                <div className="container">
-                    <div className="row align-items-center justify-content-center">
-
-                        <div className="col-12 col-md-5">
-                            <img src={whyimg} alt="whychooseimg" className='img-fluid rounded-4' />
-                        </div>
-                        <div className="col-12 col-md-5">
-                            <h3 className={cardspara.whychoose}>Why choose us</h3>
-                            <p className={cardspara.paras}>Unlock your creative potential with Xen Education's Exam portal one of the leading
-                                It based course providers in Wayanad.Enroll in Xen Education's creative designing
-                                and digital marketing course in Wayanad to unlock your creative potential and master the skills
-                                needed for a successful career in the digital world.</p>
-                        </div>
-                    </div>
-                </div>
-            </div> */}
-
 
             <div className={cardspara.lastcolor}>
                 <div className="container-fluid mt-4 mb-5">
@@ -148,8 +133,9 @@ const Cardsandpara = () => {
                 </div>
 
                 <div className={`text-center ${cardspara.subscribe}`}>
-                    <h4 className={`text-white ${cardspara.subs}`}>Subscribe <span  style={{color:"#3956AD"}}>Newsletter
-                    </span></h4>
+                    <h4 className={`text-white ${cardspara.subs}`}>
+                        Subscribe <span style={{ color: "#3956AD" }}>Newsletter</span>
+                    </h4>
 
                     <div className="d-flex justify-content-center gap-2 mt-3">
                         <input
@@ -159,9 +145,22 @@ const Cardsandpara = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
-                        <button className={cardspara.subbutton} onSubmit={handleSubmit}>Subscribe</button>
-                        {message && <p className="newsletter-message">{message}</p>}
+
+                        {/* FIX IS HERE ↓ */}
+                        <button
+                            className={cardspara.subbutton}
+                            onClick={handleSubmit}
+                        >
+                            Subscribe
+                        </button>
                     </div>
+
+                    {message && (
+                        <p className={cardspara.fadeMessage}>
+                            {message}
+                        </p>
+
+                    )}
                 </div>
             </div>
 
@@ -169,4 +168,4 @@ const Cardsandpara = () => {
     )
 }
 
-export default Cardsandpara
+export default Cardsandpara;
