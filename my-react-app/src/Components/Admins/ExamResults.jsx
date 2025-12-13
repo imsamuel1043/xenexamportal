@@ -73,14 +73,16 @@ const ExamResults = () => {
   };
 
   return (
+
     <AdminLayout>
+
       <div className="container mt-4">
         <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap">
           <h3 className="fw-bold">Exam Results</h3>
           <button className="btn btn-primary mt-2 mt-md-0" onClick={handleAddClick}>Add Result</button>
         </div>
 
-        {/* Filters */}
+
         <div className="card shadow-sm p-3 mt-3" style={{ borderRadius: "8px" }}>
           <div className="row g-3">
             <div className="col-12 col-md-4">

@@ -222,6 +222,7 @@ const QuestionBank = () => {
                   </td>
                 </tr>
               ))}
+              
             </tbody>
           </table>
 

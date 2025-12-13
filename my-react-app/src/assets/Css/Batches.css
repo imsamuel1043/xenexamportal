@@ -1,0 +1,103 @@
+/* 
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f7fb;
+}
+
+
+.card {
+  border-radius: 8px;
+  background-color: #ffffff;
+} */
+
+
+/* h3 {
+  color: #0a2b5c;
+} */
+
+
+.btn-primary {
+  background-color: #0a2b5c;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #143f7a;
+}
+
+
+.form-control,
+.form-select {
+  font-size: 14px;
+  border-radius: 6px;
+}
+
+.datatable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+
+.datatable thead th {
+  background-color: #0a2b5c;
+  padding: 10px;
+  text-align: left;
+}
+
+table.dataTable thead th {
+  color: #ffffff !important;
+}
+
+
+.datatable tbody td {
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.datatable tbody tr:hover {
+  background-color: #f1f4ff;
+}
+
+.badge {
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 12px;
+}
+
+.btn-sm {
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+
+@media (max-width: 768px) {
+  .datatable thead {
+    display: none;
+  }
+
+  .datatable tbody tr {
+    display: block;
+    margin-bottom: 10px;
+    background-color: #ffffff;
+    border-radius: 6px;
+    padding: 10px;
+  }
+
+  .datatable tbody td {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border: none;
+  }
+
+  .datatable tbody td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    color: #555;
+  }
+}

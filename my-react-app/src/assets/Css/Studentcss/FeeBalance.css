@@ -1,10 +1,9 @@
-/* MAIN CONTAINER */
 .fee-container {
   padding: 25px;
   animation: fadeIn 0.4s ease-out;
 }
 
-/* TITLE */
+
 .fee-title {
   font-size: 28px;
   font-weight: 800;
@@ -13,7 +12,7 @@
   letter-spacing: 0.5px;
 }
 
-/* CARD */
+
 .fee-card {
   background: #ffffff;
   padding: 25px;
@@ -28,7 +27,7 @@
   box-shadow: 0 6px 16px rgba(0,0,0,0.12);
 }
 
-/* ROWS */
+
 .fee-row {
   display: flex;
   justify-content: space-between;
@@ -45,7 +44,7 @@
   font-weight: 700;
 }
 
-/* COLORS */
+
 .paid {
   color: #0a8f32;
 }
@@ -54,7 +53,7 @@
   color: #d60000;
 }
 
-/* DIVIDER */
+
 .divider {
   width: 100%;
   height: 1px;
@@ -62,7 +61,10 @@
   margin: 20px 0;
 }
 
-/* PAYMENT HISTORY TITLE */
+.display{
+  background-color: #0a2b5c;
+}
+
 .history-title {
   font-size: 22px;
   font-weight: 700;
@@ -70,13 +72,23 @@
   color: #333;
 }
 
-/* DATATABLE IMPROVEMENT */
 table.dataTable {
   border-collapse: collapse !important;
   background: #ffffff;
   border-radius: 12px;
   overflow: hidden;
 }
+
+#paymentTable thead th {
+  background-color: #0a2b5c !important;
+  color: #ffffff !important;
+  text-align: left;
+}
+
+#paymentTable thead {
+  border-bottom: none;
+}
+
 
 table.dataTable thead {
   background: #f5f7ff;
@@ -102,7 +114,6 @@ table.dataTable tbody tr:hover {
   background: #eef4ff;
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
   .fee-row {
     flex-direction: column;
@@ -111,7 +122,6 @@ table.dataTable tbody tr:hover {
   }
 }
 
-/* ANIMATION */
 @keyframes fadeIn {
   from {
     opacity: 0;

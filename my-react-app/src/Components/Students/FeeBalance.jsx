@@ -16,7 +16,7 @@ const FeeBalance = () => {
   const pending = feeData.totalFee - totalPaid;
 
   const tableRef = useRef(null);
-  const initialized = useRef(false); // prevents reinitialization
+  const initialized = useRef(false); 
 
   useEffect(() => {
     if (!initialized.current && window.$) {
@@ -27,12 +27,14 @@ const FeeBalance = () => {
         responsive: true,
       });
 
-      initialized.current = true; // mark as initialized
+      initialized.current = true; 
     }
   }, []);
 
   return (
+
     <StudentLayout>
+
       <div className="fee-container">
         <h2 className="fee-title">Fee Balance</h2>
 
@@ -56,7 +58,7 @@ const FeeBalance = () => {
 
           <h4 className="history-title">Payment History</h4>
 
-          {/* TABLE */}
+          
           <table
             ref={tableRef}
             className="display"
@@ -81,7 +83,9 @@ const FeeBalance = () => {
           </table>
         </div>
       </div>
+
     </StudentLayout>
+
   );
 };
 

@@ -1,253 +1,252 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AdminLayout from "../Layouts/AdminLayout";
 import "../../assets/Css/UserManagement.css";
 
-const UserTable = ({ columns, data, onEdit, onDelete }) => {
-    return (
-        <div className="table-responsive">
-            <table className="table table-hover">
-                <thead className="table-primary">
-                    <tr>
-                        {columns.map((col) => (
-                            <th key={col.key}>{col.label}</th>
-                        ))}
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.length === 0 && (
-                        <tr>
-                            <td colSpan={columns.length + 1} className="text-center text-muted">
-                                No users found.
-                            </td>
-                        </tr>
-                    )}
-                    {data.map((row) => (
-                        <tr key={row.id}>
-                            {columns.map((col) => (
-                                <td key={col.key}>{row[col.key]}</td>
-                            ))}
-                            <td className="d-flex flex-wrap gap-1">
-                                <button className="btn btn-sm btn-primary" onClick={() => onEdit(row)}>
-                                    Edit
-                                </button>
-                                <button className="btn btn-sm btn-danger" onClick={() => onDelete(row)}>
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    );
+
+
+const DataTableWrapper = ({ columns, data, onEdit, onDelete }) => {
+  const tableRef = useRef(null);
+  const dtRef = useRef(null);
+
+  useEffect(() => {
+    if (window.$) {
+      if (dtRef.current) {
+        dtRef.current.destroy();
+      }
+
+      dtRef.current = window.$(tableRef.current).DataTable({
+        paging: true,
+        searching: true,
+        info: true,
+        responsive: true,
+      });
+    }
+
+    return () => {
+      if (dtRef.current) {
+        dtRef.current.destroy();
+        dtRef.current = null;
+      }
+    };
+  }, [data]);
+
+  return (
+    <div className="table-responsive">
+      <table ref={tableRef} className="display user-table" style={{ width: "100%" }}>
+        <thead>
+          <tr>
+            {columns.map((c) => (
+              <th key={c.key}>{c.label}</th>
+            ))}
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {data.map((row) => (
+            <tr key={row.id}>
+              {columns.map((c) => (
+                <td key={c.key}>{row[c.key]}</td>
+              ))}
+              <td className="d-flex gap-1">
+                <button className="btn btn-sm btn-primary" onClick={() => onEdit(row)}>
+                  Edit
+                </button>
+                <button className="btn btn-sm btn-danger" onClick={() => onDelete(row.id)}>
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 };
 
-const AdminsTab = ({ data, setData, onEdit }) => {
-    const columns = [
-        { key: "name", label: "Name" },
-        { key: "role", label: "Role" },
-        { key: "email", label: "Email" },
-        { key: "dateJoined", label: "Date Joined" },
-    ];
-
-    const handleDelete = (user) => setData(data.filter((u) => u.id !== user.id));
-
-    return <UserTable columns={columns} data={data} onEdit={onEdit} onDelete={handleDelete} />;
-};
-
-const TeachersTab = ({ data, setData, onEdit }) => {
-    const columns = [
-        { key: "name", label: "Name" },
-        { key: "subject", label: "Subject" },
-        { key: "email", label: "Email" },
-        { key: "dateJoined", label: "Date Joined" },
-    ];
-
-    const handleDelete = (user) => setData(data.filter((u) => u.id !== user.id));
-
-    return <UserTable columns={columns} data={data} onEdit={onEdit} onDelete={handleDelete} />;
-};
-
-const StudentsTab = ({ data, setData, onEdit }) => {
-    const columns = [
-        { key: "name", label: "Name" },
-        { key: "course", label: "Course" },
-        { key: "email", label: "Email" },
-        { key: "dateJoined", label: "Date Joined" },
-    ];
-
-    const handleDelete = (user) => setData(data.filter((u) => u.id !== user.id));
-
-    return <UserTable columns={columns} data={data} onEdit={onEdit} onDelete={handleDelete} />;
-};
 
 const UserManagement = () => {
-    const [activeTab, setActiveTab] = useState("admins");
-    const [editData, setEditData] = useState(null);
-    const [showModal, setShowModal] = useState(false);
+  const [activeTab, setActiveTab] = useState("admins");
+  const [showModal, setShowModal] = useState(false);
+  const [editData, setEditData] = useState(null);
 
-    const [admins, setAdmins] = useState([
-        { id: 1, name: "Jon Jones", role: "Super Admin", email: "jon@gmail.com", dateJoined: "2024-01-10" },
-        { id: 2, name: "Connor Macgregor", role: "Admin", email: "connor@gmail.com", dateJoined: "2024-01-10" },
-    ]);
+  const [admins, setAdmins] = useState([
+    { id: 1, name: "Jon Jones", role: "Super Admin", email: "jon@gmail.com", dateJoined: "2024-01-10" },
+    { id: 2, name: "Connor", role: "Admin", email: "connor@gmail.com", dateJoined: "2024-01-10" },
+  ]);
 
-    const [teachers, setTeachers] = useState([
-        { id: 1, name: "George St Siers", subject: "Python", email: "gsp@gmail.com", dateJoined: "2024-01-10" },
-        { id: 2, name: "Khabib", subject: "UI/UX", email: "khabib@gmail.com", dateJoined: "2024-01-10" },
-    ]);
+  const [teachers, setTeachers] = useState([
+    { id: 1, name: "GSP", subject: "Python", email: "gsp@gmail.com", dateJoined: "2024-01-10" },
+    { id: 2, name: "Khabib", subject: "UI/UX", email: "khabib@gmail.com", dateJoined: "2024-01-10" },
+  ]);
 
-    const [students, setStudents] = useState([
-        { id: 1, name: "Arman S", course: "React", email: "arman@gmail.com", dateJoined: "2024-01-10" },
-        { id: 2, name: "Ilia T", course: "Python", email: "ilia@gmail.com", dateJoined: "2024-01-10" },
-    ]);
+  const [students, setStudents] = useState([
+    { id: 1, name: "Arman", course: "React", email: "arman@gmail.com", dateJoined: "2024-01-10" },
+    { id: 2, name: "Ilia", course: "Python", email: "ilia@gmail.com", dateJoined: "2024-01-10" },
+  ]);
 
-    const handleSaveEdit = () => {
-        const updateUser = (list, setter) => {
-            if (editData.id) {
-                setter(list.map((u) => (u.id === editData.id ? editData : u)));
-            } else {
-                setter([...list, { ...editData, id: Date.now() }]);
-            }
-        };
 
-        if (activeTab === "admins") updateUser(admins, setAdmins);
-        if (activeTab === "teachers") updateUser(teachers, setTeachers);
-        if (activeTab === "students") updateUser(students, setStudents);
-
-        setEditData(null);
-        setShowModal(false);
+  const openAddModal = () => {
+    let base = {
+      name: "",
+      email: "",
+      dateJoined: "",
     };
 
-    const handleAddUser = () => {
-        const newUser = { name: "", email: "", dateJoined: "" };
+    if (activeTab === "admins") base.role = "";
+    if (activeTab === "teachers") base.subject = "";
+    if (activeTab === "students") base.course = "";
 
-        if (activeTab === "admins") newUser.role = "";
-        if (activeTab === "teachers") newUser.subject = "";
-        if (activeTab === "students") newUser.course = "";
+    setEditData(base);
+    setShowModal(true);
+  };
 
-        setEditData(newUser);
-        setShowModal(true);
+
+  const handleSave = () => {
+    const update = (list, setter) => {
+      if (editData.id) {
+        setter(list.map((u) => (u.id === editData.id ? editData : u)));
+      } else {
+        setter([...list, { ...editData, id: Date.now() }]);
+      }
     };
 
-    return (
-        <AdminLayout>
-            <div className="container mt-4">
-                <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-2">
-                    <h3 className="fw-bold mb-2 mb-md-0">User Management</h3>
-                    <button className="btn btn-primary" onClick={handleAddUser}>
-                        + Add User
-                    </button>
-                </div>
+    if (activeTab === "admins") update(admins, setAdmins);
+    if (activeTab === "teachers") update(teachers, setTeachers);
+    if (activeTab === "students") update(students, setStudents);
 
-                <ul className="nav nav-tabs mb-3 flex-wrap">
-                    {["admins", "teachers", "students"].map((tab) => (
-                        <li className="nav-item" key={tab}>
-                            <button
-                                className={`nav-link px-4 py-2 fw-semibold ${activeTab === tab ? "active custom-tab-active" : "custom-tab"
-                                    }`}
-                                onClick={() => setActiveTab(tab)}
-                            >
-                                {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                            </button>
-                        </li>
-                    ))}
-                </ul>
+    setShowModal(false);
+    setEditData(null);
+  };
 
-                <div className="card shadow-sm p-3 rounded-4">
-                    {activeTab === "admins" && (
-                        <AdminsTab data={admins} setData={setAdmins} onEdit={(u) => { setEditData(u); setShowModal(true); }} />
-                    )}
-                    {activeTab === "teachers" && (
-                        <TeachersTab data={teachers} setData={setTeachers} onEdit={(u) => { setEditData(u); setShowModal(true); }} />
-                    )}
-                    {activeTab === "students" && (
-                        <StudentsTab data={students} setData={setStudents} onEdit={(u) => { setEditData(u); setShowModal(true); }} />
-                    )}
-                </div>
-            </div>
 
-            {showModal && (
-                <div
-                    className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center p-3"
-                    style={{ background: "rgba(0,0,0,0.4)", zIndex: 1050 }}
-                >
-                    <div className="bg-white p-4 rounded w-100" style={{ maxWidth: "500px" }}>
-                        <h5 className="fw-bold mb-3">{editData.id ? "Edit User" : "Add User"}</h5>
+  const handleDelete = (id) => {
+    if (activeTab === "admins") setAdmins(admins.filter((u) => u.id !== id));
+    if (activeTab === "teachers") setTeachers(teachers.filter((u) => u.id !== id));
+    if (activeTab === "students") setStudents(students.filter((u) => u.id !== id));
+  };
 
-                        <input
-                            className="form-control mb-2"
-                            placeholder="Name"
-                            value={editData.name}
-                            onChange={(e) => setEditData({ ...editData, name: e.target.value })}
-                        />
+  return (
+    <AdminLayout>
+      <div className="container mt-4">
+        <div className="d-flex justify-content-between mb-3">
+          <h3 className="fw-bold">User Management</h3>
+          <button className="btn btn-primary" onClick={openAddModal}>
+            + Add User
+          </button>
+        </div>
 
-                        {activeTab === "admins" && (
-                            <input
-                                className="form-control mb-2"
-                                placeholder="Role"
-                                value={editData.role}
-                                onChange={(e) => setEditData({ ...editData, role: e.target.value })}
-                            />
-                        )}
+        
+        <ul className="nav nav-tabs mb-3">
+          {["admins", "teachers", "students"].map((tab) => (
+            <li className="nav-item" key={tab}>
+              <button
+                className={`nav-link ${activeTab === tab ? "active" : ""}`}
+                onClick={() => setActiveTab(tab)}
+              >
+                {tab.toUpperCase()}
+              </button>
+            </li>
+          ))}
+        </ul>
 
-                        {activeTab === "teachers" && (
-                            <input
-                                className="form-control mb-2"
-                                placeholder="Subject"
-                                value={editData.subject}
-                                onChange={(e) => setEditData({ ...editData, subject: e.target.value })}
-                            />
-                        )}
+        
+        <div className="card p-3 shadow-sm">
+          {activeTab === "admins" && (
+            <DataTableWrapper
+              columns={[
+                { key: "name", label: "Name" },
+                { key: "role", label: "Role" },
+                { key: "email", label: "Email" },
+                { key: "dateJoined", label: "Date Joined" },
+              ]}
+              data={admins}
+              onEdit={(u) => { setEditData(u); setShowModal(true); }}
+              onDelete={handleDelete}
+            />
+          )}
 
-                        {activeTab === "students" && (
-                            <input
-                                className="form-control mb-2"
-                                placeholder="Course"
-                                value={editData.course}
-                                onChange={(e) => setEditData({ ...editData, course: e.target.value })}
-                            />
-                        )}
+          {activeTab === "teachers" && (
+            <DataTableWrapper
+              columns={[
+                { key: "name", label: "Name" },
+                { key: "subject", label: "Subject" },
+                { key: "email", label: "Email" },
+                { key: "dateJoined", label: "Date Joined" },
+              ]}
+              data={teachers}
+              onEdit={(u) => { setEditData(u); setShowModal(true); }}
+              onDelete={handleDelete}
+            />
+          )}
 
-                        <input
-                            className="form-control mb-2"
-                            placeholder="Email"
-                            value={editData.email}
-                            onChange={(e) => setEditData({ ...editData, email: e.target.value })}
-                        />
+          {activeTab === "students" && (
+            <DataTableWrapper
+              columns={[
+                { key: "name", label: "Name" },
+                { key: "course", label: "Course" },
+                { key: "email", label: "Email" },
+                { key: "dateJoined", label: "Date Joined" },
+              ]}
+              data={students}
+              onEdit={(u) => { setEditData(u); setShowModal(true); }}
+              onDelete={handleDelete}
+            />
+          )}
+        </div>
+      </div>
 
-                        <input
-                            type="date"
-                            className="form-control mb-3"
-                            value={editData.dateJoined}
-                            onChange={(e) => setEditData({ ...editData, dateJoined: e.target.value })}
-                        />
+     
+      {showModal && (
+        <div className="modal-backdrop-custom">
+          <div className="modal-card">
+            <h5 className="fw-bold mb-3">{editData.id ? "Edit User" : "Add User"}</h5>
 
-                        <div className="d-flex justify-content-end gap-2 flex-wrap">
-                            <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
-                                Cancel
-                            </button>
+            <input className="form-control mb-2" placeholder="Name"
+              value={editData.name}
+              onChange={(e) => setEditData({ ...editData, name: e.target.value })}
+            />
 
-                            <button
-                                className="btn btn-primary"
-                                onClick={handleSaveEdit}
-                                disabled={
-                                    !editData.name ||
-                                    !editData.email ||
-                                    !editData.dateJoined ||
-                                    (activeTab === "admins" && (!editData.role || editData.subject || editData.course)) ||
-                                    (activeTab === "teachers" && (!editData.subject || editData.role || editData.course)) ||
-                                    (activeTab === "students" && (!editData.course || editData.role || editData.subject))
-                                }
-                            >
-                                Save
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            {activeTab === "admins" && (
+              <input className="form-control mb-2" placeholder="Role"
+                value={editData.role}
+                onChange={(e) => setEditData({ ...editData, role: e.target.value })}
+              />
             )}
-        </AdminLayout>
-    );
+
+            {activeTab === "teachers" && (
+              <input className="form-control mb-2" placeholder="Subject"
+                value={editData.subject}
+                onChange={(e) => setEditData({ ...editData, subject: e.target.value })}
+              />
+            )}
+
+            {activeTab === "students" && (
+              <input className="form-control mb-2" placeholder="Course"
+                value={editData.course}
+                onChange={(e) => setEditData({ ...editData, course: e.target.value })}
+              />
+            )}
+
+            <input className="form-control mb-2" placeholder="Email"
+              value={editData.email}
+              onChange={(e) => setEditData({ ...editData, email: e.target.value })}
+            />
+
+            <input type="date" className="form-control mb-3"
+              value={editData.dateJoined}
+              onChange={(e) => setEditData({ ...editData, dateJoined: e.target.value })}
+            />
+
+            <div className="d-flex justify-content-end gap-2">
+              <button className="btn btn-secondary" onClick={() => setShowModal(false)}>Cancel</button>
+              <button className="btn btn-primary" onClick={handleSave}>Save</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </AdminLayout>
+  );
 };
 
 export default UserManagement;

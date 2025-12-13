@@ -2,6 +2,7 @@
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid #dce3f1;
+  padding: 0px 12px 0px 12px;
 }
 
 #coursesTable thead {
@@ -12,7 +13,7 @@
 #coursesTable thead th {
   font-weight: 600;
   padding: 12px;
-  background-color: #3956AD;
+  background-color: #0a2b5c;
   font-size: 15px;
   color: #fff;
   letter-spacing: 0.5px;

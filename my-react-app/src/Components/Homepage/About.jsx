@@ -22,8 +22,8 @@ const About = () => {
 
   return (
     <div>
-      <div className={`container ${aboutcss.coursesWrapper}`}>
-        <h3 className="text-center fw-bold mb-1 mt-3">
+      <div className={`container mb-3 ${aboutcss.coursesWrapper}`}>
+        <h3 className="text-center fw-bold mt-3">
           <span>Our</span>{" "}
           <span style={{ color: "#3956AD" }}>Courses</span>
         </h3>
