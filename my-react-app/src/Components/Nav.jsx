@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import Navstyle from "../assets/Css/Nav.module.css";
@@ -16,9 +16,18 @@ const Nav = ({ userRole = "guest", userName = "" }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [noteOpen, setNoteOpen] = useState(false);
   const [adminMsg, setAdminMsg] = useState("");
+  const [scrolled, setScrolled] = useState(false);
 
   const { notifications, sendNotification, markAsSeen } =
     useContext(NotificationContext);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const toggleSidebar = () => {
     const sidebarClass =
@@ -48,7 +57,11 @@ const Nav = ({ userRole = "guest", userName = "" }) => {
   };
 
   return (
-    <header className={Navstyle.navWrapper}>
+    <header
+      className={`${Navstyle.navWrapper} ${
+        scrolled ? Navstyle.navScrolled : ""
+      }`}
+    >
       {isLoggedIn && (
         <button className={Navstyle.menuBtn} onClick={toggleSidebar}>
           ☰
@@ -56,22 +69,24 @@ const Nav = ({ userRole = "guest", userName = "" }) => {
       )}
 
       <nav className={Navstyle.navContainer}>
-        <div className={Navstyle.leftSection}>
-          <img src={Xenlogo} alt="logo" className={Navstyle.logo} />
-        </div>
+        <img src={Xenlogo} alt="logo" className={Navstyle.logo} />
 
         <div className={Navstyle.rightSection}>
+          <ul className={Navstyle.navLinks}>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/about">About</Link></li>
+            <li><Link to="/why-choose-us">Why Us</Link></li>
+          </ul>
+
           {!isLoggedIn && (
             <div className={Navstyle.dropdownContainer}>
-              <div className={Navstyle.loginGroup}>
-                <button
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className={Navstyle.loginBtn}
-                >
-                  <i className="bi bi-person-circle"></i>
-                  Login
-                </button>
-              </div>
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className={Navstyle.loginBtn}
+              >
+                <i className="bi bi-person-circle"></i>
+                Login
+              </button>
 
               {dropdownOpen && (
                 <div className={Navstyle.dropdownMenu}>
@@ -89,7 +104,6 @@ const Nav = ({ userRole = "guest", userName = "" }) => {
                 onClick={() => setNoteOpen(!noteOpen)}
               >
                 <i className="bi bi-bell"></i>
-
                 {unseenCount > 0 && (
                   <span className={Navstyle.noteBadge}>{unseenCount}</span>
                 )}
@@ -103,13 +117,8 @@ const Nav = ({ userRole = "guest", userName = "" }) => {
                         value={adminMsg}
                         onChange={(e) => setAdminMsg(e.target.value)}
                         placeholder="Type notification..."
-                        style={{
-                          width: "100%",
-                          height: "60px",
-                          padding: "5px",
-                        }}
-                      ></textarea>
-
+                        style={{ width: "100%", height: "60px" }}
+                      />
                       <button
                         onClick={handleSend}
                         style={{
@@ -124,7 +133,6 @@ const Nav = ({ userRole = "guest", userName = "" }) => {
                       >
                         Send
                       </button>
-
                       <hr />
                     </div>
                   )}
@@ -154,8 +162,11 @@ const Nav = ({ userRole = "guest", userName = "" }) => {
               )}
 
               <div className={Navstyle.profileSection}>
-                <img src={ProfileImg} className={Navstyle.profileImg} alt="profile" />
-
+                <img
+                  src={ProfileImg}
+                  className={Navstyle.profileImg}
+                  alt="profile"
+                />
                 <div className={Navstyle.userInfo}>
                   <p className={Navstyle.userName}>{userName}</p>
                   <p className={Navstyle.userRole}>{userRole.toUpperCase()}</p>

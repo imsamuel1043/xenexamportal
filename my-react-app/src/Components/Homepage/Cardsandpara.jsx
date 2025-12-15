@@ -1,15 +1,13 @@
-import { useState } from "react";
-import cardspara from '../../assets/Css/Cardsandpara.module.css'
-import whyimg from '../../assets/images/whychooseimg.jpg'
-import schooledu from '../../assets/images/schooleducation.svg'
-import testprep from '../../assets/images/testprep.svg'
-import testpublish from '../../assets/images/testpublisher.svg'
+import { useState, useEffect } from "react";
+import cardspara from "../../assets/Css/Cardsandpara.module.css";
+import schooledu from "../../assets/images/schooleducation.svg";
+import testprep from "../../assets/images/testprep.svg";
+import testpublish from "../../assets/images/testpublisher.svg";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 const Cardsandpara = () => {
-
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
-
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -22,150 +20,203 @@ const Cardsandpara = () => {
 
         setMessage("Subscribed successfully! 🎉");
         setEmail("");
-
-        // Auto hide after 2 seconds
         setTimeout(() => setMessage(""), 2000);
     };
 
+    /* ✅ FIXED SCROLL REVEAL */
+    useEffect(() => {
+        const elements = document.querySelectorAll(
+            `.${cardspara.scrollReveal}`
+        );
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const index = Number(entry.target.dataset.index || 0);
+                        entry.target.style.transitionDelay = `${index * 0.25}s`;
+                        entry.target.classList.add(cardspara.show);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.35 }
+        );
+
+        elements.forEach((el) => observer.observe(el));
+        return () => observer.disconnect();
+    }, []);
 
     return (
         <div>
+            {/* ===== TOP FEATURE CARDS ===== */}
             <div className={cardspara.cardsspace}>
-                <div className='row row-cols-1 row-cols-md-4 g-3 justify-content-center'>
-                    <div className='col d-flex justify-content-center'>
-                        <div className='card text-center' style={{ width: "12rem", border: "0px", backgroundColor: "#ffff" }} >
-                            <img src={schooledu} alt="schooleduimg" style={{ height: "82px", width: "195px" }} />
-                            <div className='card-body'>
-                                <h6 className='card-title' style={{ fontSize: "16px", fontWeight: "700" }}>Reusable Questions</h6>
-                                <p className='card-text' style={{ fontSize: "16px" }}>Save your question bank and re-
-                                    use it in different exams with
-                                    different mark distributions.</p>
-                            </div>
-                        </div>
-                    </div>
+                <div className="container">
+                    <h3 className="text-center fw-bold mb-4">
+                        Why Choose <span style={{ color: "#3956AD" }}>Our Platform</span>
+                    </h3>
 
-                    <div className='col d-flex justify-content-center'>
-                        <div className='card text-center' style={{ width: "12rem", border: "0px", backgroundColor: "#ffff" }} >
-                            <img src={testprep} alt="testprepimg" style={{ height: "82px", width: "195px" }} />
-                            <div className='card-body'>
-                                <h6 className='card-title' style={{ fontSize: "16px", fontWeight: "700" }}>Save Your Time</h6>
-                                <p className='card-text' style={{ fontSize: "16px" }}> Say goodbye to the hassle of
-                                    paper-based exams and the
-                                    time-consuming manual grading
-                                    system.</p>
+                    <div className="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
+                        {[schooledu, testprep, testpublish].map((img, i) => (
+                            <div key={i} className="col d-flex justify-content-center">
+                                <div
+                                    className={`${cardspara.featureCard} ${cardspara.scrollReveal}`}
+                                    data-index={i}
+                                >
+                                    <img src={img} alt="" />
+                                    <h6>
+                                        {i === 0
+                                            ? "Reusable Questions"
+                                            : i === 1
+                                                ? "Save Your Time"
+                                                : "Simple Process"}
+                                    </h6>
+                                    <p>
+                                        {i === 0 &&
+                                            "Save your question bank and reuse it across multiple exams."}
+                                        {i === 1 &&
+                                            "Eliminate paper-based exams and reduce manual grading."}
+                                        {i === 2 &&
+                                            "Create exams, assign marks, and publish in clicks."}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
+                        ))}
                     </div>
-
-                    <div className='col d-flex justify-content-center'>
-                        <div className='card text-center' style={{ width: "12rem", border: "0px", backgroundColor: "#ffff" }} >
-                            <img src={testpublish} alt="testpublishimg" style={{ height: "82px", width: "195px" }} />
-                            <div className='card-body'>
-                                <h6 className='card-title' style={{ fontSize: "16px", fontWeight: "700" }}>Simple Process</h6>
-                                <p className='card-text' style={{ fontSize: "16px" }}> Streamline your examination
-                                    process. Create exam, select
-                                    questions from question bank,
-                                    allocate marks, done!</p>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
 
-            <div className={` container ${cardspara.stepswrapper}`}>
-                <h2 className={cardspara.stepstitle}>
-                    <span>Get easily started in </span>
-                    <span style={{ color: "#3956AD" }}>3 simple steps</span>
-                </h2>
-
-                <div className={cardspara.stepscontainer}>
-
-                    <div className={cardspara.line}></div>
-
-                    <div className={cardspara.stepbox}>
-                        <div className={cardspara.stepcircle}>1</div>
-                        <p>Login / Register</p>
-                    </div>
-
-                    <div className={cardspara.stepbox}>
-                        <div className={cardspara.stepcircle}>2</div>
-                        <p>Select your course</p>
-                    </div>
-
-                    <div className={cardspara.stepbox}>
-                        <div className={cardspara.stepcircle}>3</div>
-                        <p>Enjoy giving test</p>
-                    </div>
-
-                </div>
-            </div>
+            {/* ===== WHY CHOOSE BOTTOM ===== */}
 
             <div className={cardspara.lastcolor}>
+
                 <div className="container-fluid mt-4 mb-5">
-                    <div className="row text-center justify-content-center gap-4">
-
-                        <div className={`col-10 col-md-3 ${cardspara.whycard}`}>
-                            <div className={cardspara.whyicon}>
-                                <i className="bi bi-book"></i>
+                    <div className="row justify-content-center">
+                        <div className="col-12 col-lg-10">
+                            <div className={cardspara.timelineTwoColumn}>
+                                {[
+                                    {
+                                        icon: "book",
+                                        title: "Comprehensive Content",
+                                        text: "High-quality curated materials.",
+                                    },
+                                    {
+                                        icon: "clock-history",
+                                        title: "Flexible Learning",
+                                        text: "Learn anytime with freedom.",
+                                    },
+                                    {
+                                        icon: "award",
+                                        title: "Recognized Certification",
+                                        text: "Certificates that hold value.",
+                                    },
+                                    {
+                                        icon: "person-badge",
+                                        title: "Personalized Learning Paths",
+                                        text: "Adaptive learning for every student.",
+                                    },
+                                    {
+                                        icon: "clock",
+                                        title: "Instant Results & Feedback",
+                                        text: "Get quick performance feedback.",
+                                    },
+                                    {
+                                        icon: "phone",
+                                        title: "Any Device Access",
+                                        text: "Learn on mobile, tablet, or desktop.",
+                                    },
+                                ].map((item, i) => (
+                                    <div
+                                        key={i}
+                                        className={`${cardspara.timelineTwoColumnItem} ${i % 2 !== 0 ? cardspara.rightColumn : cardspara.leftColumn
+                                            } ${cardspara.scrollReveal}`}
+                                    >
+                                        {i % 2 === 0 ? (
+                                            <>
+                                                <div className={cardspara.timelineTwoColumnContent}>
+                                                    <h5>{item.title}</h5>
+                                                    <p>{item.text}</p>
+                                                </div>
+                                                <div className={cardspara.timelineTwoColumnDot}>
+                                                    <i className={`bi bi-${item.icon}`}></i>
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <div className={cardspara.timelineTwoColumnDot}>
+                                                    <i className={`bi bi-${item.icon}`}></i>
+                                                </div>
+                                                <div
+                                                    className={`${cardspara.timelineTwoColumnContent} ${cardspara.rightContent}`}
+                                                >
+                                                    <h5>{item.title}</h5>
+                                                    <p>{item.text}</p>
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
+                                ))}
                             </div>
-                            <h5 className={cardspara.whytitle}>Comprehensive Content</h5>
-                            <p className={cardspara.whytext}>High-quality curated materials to help you excel.</p>
                         </div>
+                    </div>
+                </div>
+                <div className={cardspara.aboutWrapper}>
+                    <div className="container">
+                        <div className="row justify-content-center">
+                            <div className="col-12 col-lg-8 text-center">
+                                <h2 className={cardspara.aboutTitle}>
+                                    About <span>Us</span>
+                                </h2>
 
-                        <div className={`col-10 col-md-3 ${cardspara.whycard}`}>
-                            <div className={cardspara.whyicon}>
-                                <i className="bi bi-clock-history"></i>
+                                <p className={cardspara.aboutText}>
+                                    We are a smart exam and assessment platform designed to make test preparation simple, reliable, and effective. Our goal is to help students prepare with confidence through structured exams, accurate evaluations, and instant performance insights.
+                                </p>
+
+                                <p className={cardspara.aboutText}>
+                                   We focus on realistic test experiences, personalized practice, and clear result analysis across all devices. Whether you’re preparing for competitive exams, academic assessments, or skill evaluations, we support your exam journey with precision, speed, and reliability.
+                                </p>
                             </div>
-                            <h5 className={cardspara.whytitle}>Flexible Learning</h5>
-                            <p className={cardspara.whytext}>Learn anytime with complete freedom.</p>
                         </div>
-
-                        <div className={`col-10 col-md-3 ${cardspara.whycard}`}>
-                            <div className={cardspara.whyicon}>
-                                <i className="bi bi-award"></i>
-                            </div>
-                            <h5 className={cardspara.whytitle}>Recognized Certification</h5>
-                            <p className={cardspara.whytext}>Get certifications that hold real value.</p>
-                        </div>
-
                     </div>
                 </div>
 
-                <div className={`text-center ${cardspara.subscribe}`}>
-                    <h4 className={`text-white ${cardspara.subs}`}>
-                        Subscribe <span style={{ color: "#3956AD" }}>Newsletter</span>
-                    </h4>
 
-                    <div className="d-flex justify-content-center gap-2 mt-3">
-                        <input
-                            type="text"
-                            className="form-control w-25"
-                            placeholder="Enter your email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
 
-                        {/* FIX IS HERE ↓ */}
-                        <button
-                            className={cardspara.subbutton}
-                            onClick={handleSubmit}
-                        >
-                            Subscribe
-                        </button>
-                    </div>
+                {/* SUBSCRIBE */}
+                <div className={cardspara.newsletterWrapper}>
+                    <div className={cardspara.newsletterBox}>
 
-                    {message && (
-                        <p className={cardspara.fadeMessage}>
-                            {message}
+                        <div className={cardspara.newsIcon}>
+                            <i className="bi bi-envelope"></i>
+                        </div>
+
+                        <h4 className={cardspara.newsTitle}>
+                            News<span>Letter</span>
+                        </h4>
+
+                        <p className={cardspara.newsSubtitle}>
+                            subscribe to our news letter and stay updated
                         </p>
 
-                    )}
-                </div>
-            </div>
+                        <div className={cardspara.inputWrapper}>
+                            <input
+                                type="email"
+                                placeholder="Type your email here"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                            <button onClick={handleSubmit}>
+                                <i className="bi bi-arrow-right"></i>
+                            </button>
+                        </div>
 
+                        {message && <p className={cardspara.fadeMessage}>{message}</p>}
+                    </div>
+                </div>
+
+            </div>
         </div>
-    )
-}
+    );
+};
 
 export default Cardsandpara;
