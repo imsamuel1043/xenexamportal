@@ -5,25 +5,13 @@ import testprep from "../../assets/images/testprep.svg";
 import testpublish from "../../assets/images/testpublisher.svg";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
+
+
 const Cardsandpara = () => {
-    const [email, setEmail] = useState("");
-    const [message, setMessage] = useState("");
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+   
 
-        if (!email) {
-            setMessage("Please enter your email.");
-            setTimeout(() => setMessage(""), 2000);
-            return;
-        }
-
-        setMessage("Subscribed successfully! 🎉");
-        setEmail("");
-        setTimeout(() => setMessage(""), 2000);
-    };
-
-    /* ✅ FIXED SCROLL REVEAL */
+    
     useEffect(() => {
         const elements = document.querySelectorAll(
             `.${cardspara.scrollReveal}`
@@ -49,7 +37,6 @@ const Cardsandpara = () => {
 
     return (
         <div>
-            {/* ===== TOP FEATURE CARDS ===== */}
             <div className={cardspara.cardsspace}>
                 <div className="container">
                     <h3 className="text-center fw-bold mb-4">
@@ -86,7 +73,6 @@ const Cardsandpara = () => {
                 </div>
             </div>
 
-            {/* ===== WHY CHOOSE BOTTOM ===== */}
 
             <div className={cardspara.lastcolor}>
 
@@ -160,7 +146,7 @@ const Cardsandpara = () => {
                         </div>
                     </div>
                 </div>
-                <div className={cardspara.aboutWrapper}>
+                <div id="about" className={cardspara.aboutWrapper}>
                     <div className="container">
                         <div className="row justify-content-center">
                             <div className="col-12 col-lg-8 text-center">
@@ -180,39 +166,6 @@ const Cardsandpara = () => {
                     </div>
                 </div>
 
-
-
-                {/* SUBSCRIBE */}
-                <div className={cardspara.newsletterWrapper}>
-                    <div className={cardspara.newsletterBox}>
-
-                        <div className={cardspara.newsIcon}>
-                            <i className="bi bi-envelope"></i>
-                        </div>
-
-                        <h4 className={cardspara.newsTitle}>
-                            News<span>Letter</span>
-                        </h4>
-
-                        <p className={cardspara.newsSubtitle}>
-                            subscribe to our news letter and stay updated
-                        </p>
-
-                        <div className={cardspara.inputWrapper}>
-                            <input
-                                type="email"
-                                placeholder="Type your email here"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                            <button onClick={handleSubmit}>
-                                <i className="bi bi-arrow-right"></i>
-                            </button>
-                        </div>
-
-                        {message && <p className={cardspara.fadeMessage}>{message}</p>}
-                    </div>
-                </div>
 
             </div>
         </div>

@@ -52,7 +52,7 @@ const About = () => {
   ];
 
   return (
-    <div>
+    <div id="courses" style={{backgroundColor:"#ffffff"}}>
       <div className="container my-5">
         <div className="row align-items-start g-5">
 

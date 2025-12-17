@@ -1,191 +1,208 @@
 import React, { useEffect, useRef, useState } from "react";
 import AdminLayout from "../Layouts/AdminLayout";
 import { useNavigate } from "react-router-dom";
-import '../../assets/Css/Student.css';
-
-import user1 from "../../assets/images/user1.jpg";
-import user2 from "../../assets/images/user2.jpg";
-import user3 from "../../assets/images/user3.jpg";
+import "../../assets/Css/Student.css";
 
 const Students = () => {
   const navigate = useNavigate();
-
   const tableRef = useRef(null);
+  const dtInstance = useRef(null);
 
-  const idFilter = useRef();
-  const nameFilter = useRef();
-  const courseFilter = useRef();
-  const batchFilter = useRef();
-  const dateFilter = useRef();
+  const [students, setStudents] = useState([
+    { name: "Naja Fathima", course: "Full Stack Development", batch: "9th", status: "Inactive" },
+    { name: "Prabin Kumar", course: "UI/UX Development", batch: "9th", status: "Active" },
+    { name: "Samuel Morris", course: "Creative Designer", batch: "9th", status: "Active" },
+    { name: "Vibina K M", course: "UI/UX Development", batch: "9th", status: "Active" },
+    { name: "Aysha", course: "Digital Marketing", batch: "10th", status: "Active" },
+    { name: "Riya Fathima", course: "Full Stack Development", batch: "10th", status: "Active" },
+    { name: "Irfan", course: "Digital Marketing", batch: "10th", status: "Active" },
+    { name: "Manu", course: "Creative Designer", batch: "10th", status: "Active" },
+    { name: "Muhusina", course: "Full Stack Development", batch: "11th", status: "Active" },
+    { name: "Sithara", course: "Creative Designer", batch: "10th", status: "Active" },
+    { name: "Abel Bca", course: "UI/UX Development", batch: "9th", status: "Inactive" },
+    { name: "Nidhin", course: "Digital Marketing", batch: "9th", status: "Inactive" },
+  ]);
 
-  const initialData = [
-    { id: "#CMP801", name: "Prabin", course: "UI/UX Development", batch: "9th", status: "Active", date: "2025-02-05", img: user1 },
-    { id: "#CMP802", name: "Vibina", course: "UI/UX Development", batch: "9th", status: "Active", date: "2025-02-05", img: user2 },
-    { id: "#CMP803", name: "Naja", course: "Full-Stack Development", batch: "9th", status: "Inactive", date: "2025-02-05", img: user3 },
-    { id: "#CMP804", name: "Samuel", course: "UI/UX Development", batch: "9th", status: "Active", date: "2025-02-05", img: user1 },
-    { id: "#CMP805", name: "Sona", course: "Digital Marketing", batch: "9th", status: "Active", date: "2025-02-05", img: user2 },
-    { id: "#CMP806", name: "Raheena", course: "Digital Marketing", batch: "9th", status: "Inactive", date: "2025-02-05", img: user3 },
-  ];
-
-  const [students, setStudents] = useState(initialData);
   const [showModal, setShowModal] = useState(false);
-  const [newStudent, setNewStudent] = useState({
+
+  const [formData, setFormData] = useState({
     name: "",
     course: "",
     batch: "",
     status: "Active",
-    date: "",
-    img: user1,
   });
 
-  useEffect(() => {
+useEffect(() => {
+  if (!tableRef.current || dtInstance.current) return;
 
-    if (window.$.fn.DataTable.isDataTable("#studentsTable")) {
-      window.$("#studentsTable").DataTable().destroy();
-    }
+  const table = new window.DataTable(tableRef.current, {
+    responsive: true,
+    ordering: true,
+    searching: true,
+    paging: true,
+    pagingType: "simple_numbers",
+    lengthChange: true,
+    lengthMenu: [5, 10, 25, 50], 
+    pageLength: 10,              
+    language: {
+      search: "",                
+      searchPlaceholder: "Search...",
+      lengthMenu: " _MENU_ ", 
+      info: "Showing _START_ to _END_ of _TOTAL_ entries", 
+      infoEmpty: "Showing 0 to 0 of 0 entries",
+      infoFiltered: "(filtered from _MAX_ total entries)",
+      paginate: {
+        previous: "‹",
+        next: "›"
+      }
+    },
+    dom: "<'dt-top-row'l f>t<'dt-bottom-row'i p>", 
+  });
 
-    const table = window.$("#studentsTable").DataTable({
-      pageLength: 5,
-      responsive: true,
-      dom: "Bfrtip",
-      buttons: ["copy", "csv", "excel", "pdf", "print"],
-    });
+  dtInstance.current = table;
 
-    
-    window.$(idFilter.current).on("keyup", function () {
-      table.column(0).search(this.value).draw();
-    });
-    window.$(nameFilter.current).on("keyup", function () {
-      table.column(1).search(this.value).draw();
-    });
-    window.$(courseFilter.current).on("keyup", function () {
-      table.column(2).search(this.value).draw();
-    });
-    window.$(batchFilter.current).on("keyup", function () {
-      table.column(3).search(this.value).draw();
-    });
-    window.$(dateFilter.current).on("change", function () {
-      table.column(5).search(this.value).draw();
-    });
+  return () => {
+    table.destroy();
+    dtInstance.current = null;
+  };
+}, []);
 
-  }, [students]);
 
-  
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   const handleAddStudent = () => {
-    if (!newStudent.name || !newStudent.course || !newStudent.batch) return;
+    if (!formData.name || !formData.course || !formData.batch) return;
 
-    const studentToAdd = {
-      id: "#CMP" + Math.floor(1000 + Math.random() * 9000),
-      ...newStudent,
-      date: newStudent.date || new Date().toISOString().split("T")[0],
-    };
+    setStudents(prev => [...prev, formData]);
 
-    setStudents([...students, studentToAdd]);
-    setNewStudent({ name: "", course: "", batch: "", status: "Active", date: "", img: user1 });
+    dtInstance.current.row.add([
+      formData.name,
+      formData.course,
+      formData.batch,
+      `<span class="status-pill ${formData.status.toLowerCase()}">${formData.status}</span>`,
+      `
+      <div class="action-cell">
+        <button class="icon-btn view"><i class="bi bi-eye"></i></button>
+        <button class="icon-btn delete"><i class="bi bi-trash"></i></button>
+      </div>
+      `
+    ]).draw(false);
+
     setShowModal(false);
+    setFormData({ name: "", course: "", batch: "", status: "Active" });
   };
 
   return (
     <AdminLayout>
+      <div>
+        <div className="page-header">
+          <h2 className="page-title">Students Management</h2>
 
-      
-      <div className="d-flex justify-content-between align-items-center flex-wrap">
-        <h3 className="fw-bold mb-2">Students</h3>
-        <button className="btn btn-primary" onClick={() => setShowModal(true)}>
-          Add Student
-        </button>
-      </div>
-
-      
-      <div className="card p-3 mt-3 shadow-sm">
-        <div className="row g-2">
-          <div className="col-md-2"><input ref={idFilter} className="form-control" placeholder="Filter by ID" /></div>
-          <div className="col-md-2"><input ref={nameFilter} className="form-control" placeholder="Filter by Name" /></div>
-          <div className="col-md-2"><input ref={courseFilter} className="form-control" placeholder="Filter by Course" /></div>
-          <div className="col-md-2"><input ref={batchFilter} className="form-control" placeholder="Filter by Batch" /></div>
-          <div className="col-md-2"><input ref={dateFilter} type="date" className="form-control" /></div>
+          <button className="add-student-btn" onClick={() => setShowModal(true)}>
+            <i className="bi bi-plus-lg"></i> Add Student
+          </button>
         </div>
-      </div>
 
-      
-      <div className="card mt-3 p-3 shadow-sm">
-        <div className="table-responsive">
-          <table id="studentsTable" className="table table-bordered align-middle">
-            <thead className="table-primary">
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Course</th>
-                <th>Batch</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {students.map((s) => (
-                <tr key={s.id}>
-                  <td>{s.id}</td>
-                  <td>
-                    <img src={s.img} className="student-img" alt="" />
-                    {s.name}
-                  </td>
-                  <td>{s.course}</td>
-                  <td>{s.batch}</td>
-                  <td>
-                    <span className={`badge ${s.status === "Active" ? "bg-success" : "bg-secondary"}`}>
-                      {s.status}
-                    </span>
-                  </td>
-                  <td>{s.date}</td>
-                  <td>
-                    <button className="btn btn-sm btn-primary me-2" onClick={() => navigate(`/students/${s.id}`)}>
-                      Details
-                    </button>
-                    <button className="btn btn-sm btn-danger" onClick={() => setStudents(students.filter((x) => x.id !== s.id))}>
-                      Delete
-                    </button>
-                  </td>
+        <div className="student-management-box">
+          <div className="table-responsive">
+            <table ref={tableRef} className="display students-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Course</th>
+                  <th>Batch</th>
+                  <th>Status</th>
+                  <th>Action</th>
                 </tr>
-              ))}
-            </tbody>
+              </thead>
 
-          </table>
+              <tbody>
+                {students.map((s, index) => (
+                  <tr key={index}>
+                    <td>{s.name}</td>
+                    <td>{s.course}</td>
+                    <td>{s.batch}</td>
+                    <td>
+                      <span className={`status-pill ${s.status.toLowerCase()}`}>
+                        {s.status}
+                      </span>
+                    </td>
+                    <td className="action-cell">
+                      <button
+                        className="icon-btn view"
+                        onClick={() => navigate(`/students/${s.name}`)}
+                      >
+                        <i className="bi bi-eye"></i>
+                      </button>
+
+                      <button
+                        className="icon-btn delete"
+                        onClick={() =>
+                          setStudents(prev => prev.filter((_, i) => i !== index))
+                        }
+                      >
+                        <i className="bi bi-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {showModal && (
+            <div className="modal-overlay">
+              <div className="modal-box">
+                <h3>Add Student</h3>
+
+                <div className="modal-form">
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Student Name"
+                    value={formData.name}
+                    onChange={handleChange}
+                  />
+                  <input
+                    type="text"
+                    name="course"
+                    placeholder="Course"
+                    value={formData.course}
+                    onChange={handleChange}
+                  />
+                  <input
+                    type="text"
+                    name="batch"
+                    placeholder="Batch"
+                    value={formData.batch}
+                    onChange={handleChange}
+                  />
+                  <select
+                    name="status"
+                    value={formData.status}
+                    onChange={handleChange}
+                  >
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                  </select>
+                </div>
+
+                <div className="modal-actions">
+                  <button className="btn-cancel" onClick={() => setShowModal(false)}>
+                    Cancel
+                  </button>
+                  <button className="btn-add" onClick={handleAddStudent}>
+                    Add Student
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
         </div>
       </div>
-
-      
-      {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-box">
-            <h4 className="modal-title">Add Student</h4>
-
-            <div className="modal-group">
-              <input className="form-control" placeholder="Name" value={newStudent.name}
-                onChange={(e) => setNewStudent({ ...newStudent, name: e.target.value })} />
-              <input className="form-control" placeholder="Course" value={newStudent.course}
-                onChange={(e) => setNewStudent({ ...newStudent, course: e.target.value })} />
-              <input className="form-control" placeholder="Batch" value={newStudent.batch}
-                onChange={(e) => setNewStudent({ ...newStudent, batch: e.target.value })} />
-              <select className="form-control" value={newStudent.status}
-                onChange={(e) => setNewStudent({ ...newStudent, status: e.target.value })}>
-                <option>Active</option>
-                <option>Inactive</option>
-              </select>
-              <input type="date" className="form-control" value={newStudent.date}
-                onChange={(e) => setNewStudent({ ...newStudent, date: e.target.value })} />
-            </div>
-
-            <div className="modal-buttons">
-              <button className="btn-cancel" onClick={() => setShowModal(false)}>Cancel</button>
-              <button className="btn-add" onClick={handleAddStudent}>Add</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-
     </AdminLayout>
   );
 };

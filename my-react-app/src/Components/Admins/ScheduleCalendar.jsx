@@ -92,7 +92,7 @@ const ScheduleCalendar = () => {
         background: "white",
         borderRadius: "15px",
         height: "475px",
-        marginTop: "20px"
+        marginTop: "0px"
       }}
     >
       <h4 className="fw-bold mb-3 schedule">Schedule Calendar</h4>

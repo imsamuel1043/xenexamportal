@@ -46,7 +46,6 @@
   margin-left: auto;
 }
 
-/* NAV LINKS (beside login) */
 .navLinks {
   display: flex;
   align-items: center;
@@ -59,7 +58,7 @@
 .navLinks a {
   text-decoration: none;
   font-size: 16px;
-  font-weight: 500;
+  /* font-weight: 600; */
   color: #2f4991;
   position: relative;
   transition: color 0.3s ease;
@@ -84,7 +83,7 @@
   width: 100%;
 }
 
-/* LOGIN */
+
 .loginBtn {
   background: transparent;
   color: #2f4991;
@@ -98,7 +97,7 @@
   gap: 6px;
 }
 
-/* DROPDOWN */
+
 .dropdownContainer {
   position: relative;
 }
@@ -126,7 +125,7 @@
   background: #f2f2f2;
 }
 
-/* NOTIFICATION */
+
 .notificationIcon {
   background: none;
   border: none;
@@ -146,7 +145,7 @@
   border-radius: 50%;
 }
 
-/* PROFILE */
+
 .profileSection {
   display: flex;
   align-items: center;

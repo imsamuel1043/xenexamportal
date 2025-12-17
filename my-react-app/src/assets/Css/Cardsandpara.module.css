@@ -240,12 +240,12 @@
 }
 
 .leftColumn {
-  margin-left: 300px;
+  margin-left: 200px;
   flex-direction: row;
 }
 
 .rightColumn {
-  margin-right: 300px;
+  margin-right: 200px;
   flex-direction: row-reverse;
 }
 

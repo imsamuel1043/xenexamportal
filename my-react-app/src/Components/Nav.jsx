@@ -72,20 +72,19 @@ const Nav = ({ userRole = "guest", userName = "" }) => {
         <img src={Xenlogo} alt="logo" className={Navstyle.logo} />
 
         <div className={Navstyle.rightSection}>
-          <ul className={Navstyle.navLinks}>
+          {/* <ul className={Navstyle.navLinks}>
             <li><Link to="/">Home</Link></li>
-            <li><Link to="/about">About</Link></li>
-            <li><Link to="/why-choose-us">Why Us</Link></li>
-          </ul>
+            <li><a href="#courses">Courses</a></li>
+            <li><a href="#about">About</a></li>
+          </ul> */}
 
           {!isLoggedIn && (
             <div className={Navstyle.dropdownContainer}>
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className={Navstyle.loginBtn}
-              >
-                <i className="bi bi-person-circle"></i>
-                Login
+              > Login
+              <i className="bi bi-person-circle"></i>
               </button>
 
               {dropdownOpen && (

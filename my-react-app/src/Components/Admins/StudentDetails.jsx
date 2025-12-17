@@ -34,7 +34,7 @@ const StudentDetails = () => {
 
         <AdminLayout>
             <div className="details-wrapper">
-                <p className="btn btn-secondary" onClick={goBack}>Back</p>
+                <p className="btn btns" onClick={goBack}>Back</p>
 
                 <h2 className="page-title fw-bold">Student Details</h2>
 

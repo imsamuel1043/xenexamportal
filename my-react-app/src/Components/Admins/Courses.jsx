@@ -1,46 +1,63 @@
 import React, { useState, useEffect, useRef } from "react";
 import AdminLayout from "../Layouts/AdminLayout";
-import "../../assets/Css/Course.css";
-
+import { useNavigate } from "react-router-dom";
+import "../../assets/Css/Student.css";
 
 const Courses = () => {
+  const navigate = useNavigate();
+  const tableRef = useRef(null);
+  const dtInstance = useRef(null);
+  const searchRef = useRef(null);
 
   const [courses, setCourses] = useState([
-    { id: "#CM9801", course: "Digital Marketing", fee: 30000, batch: "9th", duration: "6 months" },
-    { id: "#CM9802", course: "Fullstack Development", fee: 60000, batch: "9th", duration: "10 months" },
-    { id: "#CM9803", course: "UI/UX Design", fee: 40000, batch: "9th", duration: "8 months" },
-    { id: "#CM9804", course: "Creative Design", fee: 35000, batch: "9th", duration: "5 months" },
-    { id: "#CM9805", course: "Python Development", fee: 50000, batch: "9th", duration: "7 months" },
-    { id: "#CM9806", course: "Node.js Development", fee: 55000, batch: "9th", duration: "9 months" },
-    { id: "#CM9807", course: "PHP Development", fee: 45000, batch: "9th", duration: "6 months" },
-    { id: "#CM9808", course: "Multimedia & Animation", fee: 40000, batch: "9th", duration: "8 months" },
+    { id: "1", course: "Digital Marketing", fee: 30000, batch: "9th", duration: "6 months" },
+    { id: "2", course: "Fullstack Development", fee: 60000, batch: "9th", duration: "10 months" },
+    { id: "3", course: "UI/UX Design", fee: 40000, batch: "9th", duration: "8 months" },
+    { id: "4", course: "Creative Design", fee: 35000, batch: "9th", duration: "5 months" },
+    { id: "5", course: "Python Development", fee: 50000, batch: "9th", duration: "7 months" },
+    { id: "6", course: "Node.js Development", fee: 55000, batch: "9th", duration: "9 months" },
+    { id: "7", course: "PHP Development", fee: 45000, batch: "9th", duration: "6 months" },
+    { id: "8", course: "Multimedia & Animation", fee: 40000, batch: "9th", duration: "8 months" },
   ]);
 
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState(false);
   const [courseForm, setCourseForm] = useState({ id: "", course: "", fee: "", duration: "", batch: "9th" });
 
-  const tableRef = useRef(null);
-  const dataTable = useRef(null);
-
   useEffect(() => {
-    if (dataTable.current) {
-      dataTable.current.destroy(); 
+    if (!tableRef.current) return;
+
+    if (dtInstance.current) dtInstance.current.destroy();
+
+    dtInstance.current = new window.DataTable(tableRef.current, {
+      responsive: true,
+      ordering: true,
+      searching: true,
+      paging: true,
+      pagingType: "simple_numbers",
+      info: false,
+      pageLength: 7,
+      dom: "<'dt-top'<'dt-title'>>t<'dt-bottom'p>",
+    });
+
+    if (searchRef.current) {
+      searchRef.current.addEventListener("input", (e) => {
+        dtInstance.current.search(e.target.value).draw();
+      });
     }
 
-    dataTable.current = $(tableRef.current).DataTable(); 
+    document.querySelector(".dt-title").innerHTML =
+      "<h5 class='table-title'>Courses</h5>";
 
-  }, [courses]); 
+    return () => {
+      if (dtInstance.current) dtInstance.current.destroy();
+      dtInstance.current = null;
+    };
+  }, [courses]);
 
   const openAddModal = () => {
     setEditing(false);
-    setCourseForm({
-      id: "#CM" + Math.floor(1000 + Math.random() * 9000),
-      course: "",
-      fee: "",
-      duration: "",
-      batch: "9th",
-    });
+    setCourseForm({ id: " " + Math.floor(1000 + Math.random() * 9000), course: "", fee: "", duration: "", batch: "9th" });
     setShowModal(true);
   };
 
@@ -51,11 +68,14 @@ const Courses = () => {
   };
 
   const handleSave = () => {
+    if (!courseForm.course || !courseForm.fee || !courseForm.duration) return;
+
     if (editing) {
       setCourses(courses.map((c) => (c.id === courseForm.id ? courseForm : c)));
     } else {
       setCourses([...courses, courseForm]);
     }
+
     setShowModal(false);
   };
 
@@ -64,110 +84,109 @@ const Courses = () => {
   };
 
   return (
-
     <AdminLayout>
+      <div>
+        <div className="page-header">
+          <h2 className="page-title">Course Management</h2>
+          <button className="add-student-btn" onClick={openAddModal}>
+            <i className="bi bi-plus-lg"></i> Add Course
+          </button>
+        </div>
 
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h3 className="fw-bold">Courses</h3>
-        <button className="btn btn-primary" onClick={openAddModal}>
-          New Course
-        </button>
-      </div>
-
-      <div className="table-responsive">
-        <table className="table table-bordered" id="coursesTable" ref={tableRef}>
-          <thead className="table-primary table-color ">
-            <tr>
-              <th>Course ID</th>
-              <th>Course</th>
-              <th>Fee</th>
-              <th>Batch</th>
-              <th>Duration</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {courses.map((course) => (
-              <tr key={course.id}>
-                <td>{course.id}</td>
-                <td>{course.course}</td>
-                <td>{course.fee}</td>
-                <td>{course.batch}</td>
-                <td>{course.duration}</td>
-                <td>
-                  <button
-                    className="btn btn-sm btn-primary me-2"
-                    onClick={() => openEditModal(course)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="btn btn-sm btn-danger"
-                    onClick={() => handleDelete(course.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {showModal && (
-        <div
-          className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
-          style={{ background: "rgba(0,0,0,0.5)", zIndex: 1000 }}
-        >
-          <div className="bg-white p-4 rounded" style={{ width: "400px" }}>
-            <h5 className="fw-bold mb-3">
-              {editing ? "Edit Course" : "Add New Course"}
-            </h5>
-
-            <label className="form-label fw-semibold">Course Name</label>
+        <div className="student-management-box" style={{
+          padding: "20px",
+          background: "#fff",
+          borderRadius: "8px",
+          boxShadow: "0 1px 6px rgba(0,0,0,0.1)",
+          marginBottom: "20px"
+        }}>
+          <div className="dt-top" style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "10px"
+          }}>
+            <div className="dt-title">
+              <h5 className="table-title">Courses</h5>
+            </div>
             <input
               type="text"
-              className="form-control mb-2"
-              value={courseForm.course}
-              onChange={(e) =>
-                setCourseForm({ ...courseForm, course: e.target.value })
-              }
+              className="student-search"
+              placeholder="Search course..."
+              ref={searchRef}
             />
+          </div>
 
-            <label className="form-label fw-semibold">Fee</label>
-            <input
-              type="number"
-              className="form-control mb-2"
-              value={courseForm.fee}
-              onChange={(e) =>
-                setCourseForm({ ...courseForm, fee: e.target.value })
-              }
-            />
-
-            <label className="form-label fw-semibold">Duration</label>
-            <input
-              type="text"
-              className="form-control mb-2"
-              value={courseForm.duration}
-              onChange={(e) =>
-                setCourseForm({ ...courseForm, duration: e.target.value })
-              }
-            />
-
-            <div className="d-flex justify-content-end gap-2 mt-3">
-              <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
-                Cancel
-              </button>
-              <button className="btn btn-primary" onClick={handleSave}>
-                {editing ? "Update" : "Add"}
-              </button>
+          <div className="students-wrapper">
+            <div className="table-responsive">
+              <table ref={tableRef} className="display students-table">
+                <thead>
+                  <tr className="tablehead">
+                    <th>No</th>
+                    <th>Course</th>
+                    <th>Fee</th>
+                    <th>Batch</th>
+                    <th>Duration</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {courses.map((c) => (
+                    <tr key={c.id}>
+                      <td>{c.id}</td>
+                      <td>{c.course}</td>
+                      <td>{c.fee}</td>
+                      <td>{c.batch}</td>
+                      <td>{c.duration}</td>
+                      <td>
+                        <button className="btn-view" onClick={() => openEditModal(c)}>
+                          <i className="bi bi-pencil"></i>
+                        </button>
+                        <button className="btn-delete" onClick={() => handleDelete(c.id)}>
+                          <i className="bi bi-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
+
+          {showModal && (
+            <div className="modal-overlay">
+              <div className="modal-box">
+                <h3>{editing ? "Edit Course" : "Add New Course"}</h3>
+
+                <input
+                  type="text"
+                  placeholder="Course Name"
+                  value={courseForm.course}
+                  onChange={(e) => setCourseForm({ ...courseForm, course: e.target.value })}
+                />
+                <input
+                  type="number"
+                  placeholder="Fee"
+                  value={courseForm.fee}
+                  onChange={(e) => setCourseForm({ ...courseForm, fee: e.target.value })}
+                />
+                <input
+                  type="text"
+                  placeholder="Duration"
+                  value={courseForm.duration}
+                  onChange={(e) => setCourseForm({ ...courseForm, duration: e.target.value })}
+                />
+
+                <div className="modal-actions">
+                  <button className="btn-cancel" onClick={() => setShowModal(false)}>Cancel</button>
+                  <button className="btn-save" onClick={handleSave}>{editing ? "Update" : "Add"}</button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-      )}
-
+      </div>
     </AdminLayout>
-
   );
 };
 

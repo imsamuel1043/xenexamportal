@@ -39,6 +39,7 @@ import { DataProvider } from "./Components/DataContext";
 import Fees from "./Components/Admins/Fees";
 
 import { NotificationProvider } from "./Components/NotificationContext";
+// import DataTable from "./Components/DataTable";
 
 
 
@@ -105,6 +106,8 @@ function AppLayout() {
         <Route path="/Signup" element={<Signup />} />
         <Route path="/loginadmin" element={<LoginAdmin />} />
         <Route path="/loginstudent" element={<LoginStudent />} />
+        {/* <Route path="/datatable" element={<DataTable/>} /> */}
+
 
         <Route
           path="/admin"
