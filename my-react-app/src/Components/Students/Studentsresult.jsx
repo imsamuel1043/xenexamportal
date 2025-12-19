@@ -1,168 +1,98 @@
-import React, { useEffect, useRef, useState } from "react";
-import "../../assets/Css/Studentcss/Studentresult.css";
+import React, { useEffect, useRef } from "react";
+import AdminLayout from "../Layouts/AdminLayout";
+import "../../assets/Css/Student.css";
 
 const Studentsresult = () => {
-  const tableRef = useRef();
-  const dtInstance = useRef(null);
+  const tableRef = useRef(null);
 
-  const [students, setStudents] = useState([
-    { id: 1, name: "Kai cenat", course: "React", status: "Active" },
-    { id: 2, name: "Duke Dennis", course: "javascript", status: "Inactive" },
-    { id: 3, name: "Agent", course: "UI/UX", status: "Active" },
-    { id: 4, name: "Ishowspeed", course: "python", status: "Active" },
-    { id: 5, name: "Jasontheween", course: "Digital marketing", status: "Inactive" },
-    { id: 6, name: "Extra Emily", course: "Bootstrap", status: "Active" }
-  ]);
-
-  const [editRow, setEditRow] = useState(null);
-  const [editForm, setEditForm] = useState({ name: "", course: "", status: "" });
+  
+  const studentResult = [
+    {
+      id: 1,
+      name: "Kai cenat",
+      subject: "React",
+      marks: 80,
+      totalMarks: 100,
+      percentage: "80%",
+      grade: "A",
+    },
+        {
+      id: 2,
+      name: "Kai cenat",
+      subject: "Javascript",
+      marks: 79,
+      totalMarks: 100,
+      percentage: "79%",
+      grade: "A",
+    },
+  ];
 
   useEffect(() => {
-    if (dtInstance.current) {
-      dtInstance.current.destroy();
+    if (!tableRef.current || !window.$) return;
+
+    if ($.fn.DataTable.isDataTable(tableRef.current)) {
+      $(tableRef.current).DataTable().destroy();
     }
 
-    dtInstance.current = window.$(tableRef.current).DataTable({
+    new window.DataTable(tableRef.current, {
       responsive: true,
-      paging: true,
-      searching: true,
-      ordering: true,
-      destroy: true,
-      columnDefs: [{ orderable: false, targets: [4] }]
+      ordering: false,
+      searching: false,
+      paging: false,
+      info: false,
+      dom: "t",
     });
-  }, [students]);
-
- 
-  const handleDelete = (id) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete?");
-    if (!confirmDelete) return;
-
-    setStudents(students.filter((s) => s.id !== id));
-  };
-
-
-  const handleEdit = (student) => {
-    setEditRow(student.id);
-    setEditForm(student);
-  };
-
-  const handleSave = () => {
-    setStudents(
-      students.map((s) => (s.id === editRow ? editForm : s))
-    );
-    setEditRow(null); 
-  };
-
-
-  const handleChange = (e) => {
-    setEditForm({ ...editForm, [e.target.name]: e.target.value });
-  };
+  }, []);
 
   return (
-    <div className="studentsResultWrapper">
-      <h2 className="studentsResultTitle">Students Results</h2>
+    <AdminLayout>
+      <div>
+        
+        <div className="page-header">
+          <h2 className="page-title">My Results</h2>
+        </div>
 
-      <div className="studentsResultTableWrapper">
-        <table
-          ref={tableRef}
-          className="display studentsResultTable"
-          style={{ width: "100%" }}
-        >
-          <thead className="studentsResultHead">
-            <tr>
-              <th>Select</th>
-              <th>Name</th>
-              <th>Course</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
+        
+        <div className="student-management-box">
+          <div className="table-responsive">
+            <table ref={tableRef} className="display students-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Subject</th>
+                  <th>Marks</th>
+                  <th>Percentage</th>
+                  <th>Grade</th>
+                </tr>
+              </thead>
 
-          <tbody className="studentsResultBody">
-            {students.map((s) => (
-              <tr key={s.id}>
-                <td>
-                  <input type="checkbox" />
-                </td>
+              <tbody>
+                {studentResult.map(result => (
+                  <tr key={result.id}>
+                    <td>{result.name}</td>
+                    <td>{result.subject}</td>
+                    <td>
+                      {result.marks}/{result.totalMarks}
+                    </td>
+                    <td>{result.percentage}</td>
+                    <td>
+                      <strong>{result.grade}</strong>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
-                <td>
-                  {editRow === s.id ? (
-                    <input
-                      name="name"
-                      value={editForm.name}
-                      onChange={handleChange}
-                      className="form-control"
-                    />
-                  ) : (
-                    s.name
-                  )}
-                </td>
-
-                <td>
-                  {editRow === s.id ? (
-                    <input
-                      name="course"
-                      value={editForm.course}
-                      onChange={handleChange}
-                      className="form-control"
-                    />
-                  ) : (
-                    s.course
-                  )}
-                </td>
-
-                <td>
-                  {editRow === s.id ? (
-                    <select
-                      name="status"
-                      value={editForm.status}
-                      onChange={handleChange}
-                      className="form-control"
-                    >
-                      <option>Active</option>
-                      <option>Inactive</option>
-                    </select>
-                  ) : (
-                    <span
-                      className={
-                        s.status === "Active"
-                          ? "status-active"
-                          : "status-inactive"
-                      }
-                    >
-                      {s.status}
-                    </span>
-                  )}
-                </td>
-
-                <td>
-                  {editRow === s.id ? (
-                    <button className="sr-btn sr-btn-edit" onClick={handleSave}>
-                      Save
-                    </button>
-                  ) : (
-                    <button
-                      className="sr-btn sr-btn-edit"
-                      onClick={() => handleEdit(s)}
-                    >
-                      Edit
-                    </button>
-                  )}
-
-                  <button
-                    className="sr-btn sr-btn-delete"
-                    onClick={() => handleDelete(s.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-
-        </table>
+            
+            {studentResult.length === 0 && (
+              <p style={{ padding: "20px", textAlign: "center" }}>
+                Results have not been published yet.
+              </p>
+            )}
+          </div>
+        </div>
       </div>
-    </div>
+    </AdminLayout>
   );
 };
 

@@ -1,82 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import AdminLayout from "../Layouts/AdminLayout";
-// import "../../assets/Css/Permission.css";
-
-const DataTableWrapper = ({ columns, data, onEdit, onDelete }) => {
-  const tableRef = useRef(null);
-  const dtRef = useRef(null);
-
-  useEffect(() => {
-    if (window.$) {
-      if (dtRef.current) {
-        dtRef.current.destroy();
-      }
-
-      dtRef.current = window.$(tableRef.current).DataTable({
-        paging: true,
-        searching: true,
-        info: true,
-        responsive: true,
-      });
-    }
-
-    return () => {
-      if (dtRef.current) {
-        dtRef.current.destroy();
-        dtRef.current = null;
-      }
-    };
-  }, [data]);
-
-  return (
-    <div className="table-responsive">
-      <table
-        ref={tableRef}
-        className="display table permission-table"
-        style={{ width: "100%" }}
-      >
-        <thead>
-          <tr>
-            {columns.map((c) => (
-              <th key={c.key}>{c.label}</th>
-            ))}
-            <th style={{ width: "150px" }}>Actions</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {data.map((row) => (
-            <tr key={row.id}>
-              {columns.map((c) => (
-                <td key={c.key}>
-                  {Array.isArray(row[c.key])
-                    ? row[c.key].join(", ")
-                    : row[c.key]}
-                </td>
-              ))}
-              <td>
-                <button
-                  className="btn btn-sm btn-primary me-2"
-                  onClick={() => onEdit(row)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="btn btn-sm btn-danger"
-                  onClick={() => onDelete(row.id)}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-};
+import "../../assets/Css/Student.css";
 
 const Permission = () => {
+  const tableRef = useRef(null);
+  const dtInstance = useRef(null);
+
   const allPermissions = [
     "Create User",
     "Edit User",
@@ -89,29 +18,75 @@ const Permission = () => {
   ];
 
   const [groups, setGroups] = useState([
-    { id: 1, name: "Admin", permissions: allPermissions },
+    { name: "Admin", permissions: allPermissions },
     {
-      id: 2,
       name: "Instructor",
       permissions: ["Manage Exams", "Manage Questions", "View Results"],
     },
     {
-      id: 3,
       name: "Student",
       permissions: ["View Results", "View Dashboard"],
     },
   ]);
 
   const [showModal, setShowModal] = useState(false);
-  const [form, setForm] = useState({ id: null, name: "", permissions: [] });
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const openEditModal = (group) => {
-    setForm(group);
+  const [isEdit, setIsEdit] = useState(false);
+  const [editIndex, setEditIndex] = useState(null);
+  const [deleteIndex, setDeleteIndex] = useState(null);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    permissions: [],
+  });
+
+  
+  useEffect(() => {
+    if (!tableRef.current || dtInstance.current) return;
+
+    const table = new window.DataTable(tableRef.current, {
+      responsive: true,
+      ordering: true,
+      searching: true,
+      paging: true,
+      pagingType: "simple_numbers",
+      lengthChange: true,
+      lengthMenu: [5, 10, 25, 50],
+      pageLength: 10,
+      language: {
+        search: "",
+        searchPlaceholder: "Search...",
+        lengthMenu: " _MENU_ ",
+        info: "Showing _START_ to _END_ of _TOTAL_ entries",
+        paginate: { previous: "‹", next: "›" },
+      },
+      dom: "<'dt-top-row'l f>t<'dt-bottom-row'i p>",
+    });
+
+    dtInstance.current = table;
+
+    return () => {
+      table.destroy();
+      dtInstance.current = null;
+    };
+  }, []);
+
+  
+  const openEditModal = (group, index) => {
+    setIsEdit(true);
+    setEditIndex(index);
+    setFormData(group);
     setShowModal(true);
   };
 
+  const confirmDelete = (index) => {
+    setDeleteIndex(index);
+    setShowDeleteModal(true);
+  };
+
   const togglePermission = (perm) => {
-    setForm((prev) => ({
+    setFormData((prev) => ({
       ...prev,
       permissions: prev.permissions.includes(perm)
         ? prev.permissions.filter((p) => p !== perm)
@@ -120,94 +95,152 @@ const Permission = () => {
   };
 
   const handleSave = () => {
-    if (!form.name.trim()) return;
+    if (!formData.name.trim()) return;
 
     setGroups((prev) =>
-      prev.map((g) => (g.id === form.id ? form : g))
+      prev.map((g, i) => (i === editIndex ? formData : g))
     );
 
     setShowModal(false);
-    setForm({ id: null, name: "", permissions: [] });
   };
 
-  const handleDelete = (id) => {
-    setGroups(groups.filter((g) => g.id !== id));
+  const handleDelete = () => {
+    setGroups((prev) => prev.filter((_, i) => i !== deleteIndex));
+    setShowDeleteModal(false);
   };
 
   return (
     <AdminLayout>
-      <div className="container mt-4">
-        <h3 className="fw-bold mb-3">Permissions</h3>
+      <div>
+        
+        <div className="page-header">
+          <h2 className="page-title">Permission Management</h2>
+        </div>
 
-        <div className="card p-3 shadow-sm">
-          <DataTableWrapper
-            columns={[
-              { key: "name", label: "Group Name" },
-              { key: "permissions", label: "Permissions" },
-            ]}
-            data={groups}
-            onEdit={openEditModal}
-            onDelete={handleDelete}
-          />
+        
+        <div className="student-management-box">
+          <div className="table-responsive">
+            <table ref={tableRef} className="display students-table">
+              <thead>
+                <tr>
+                  <th>Group</th>
+                  <th>Permissions</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {groups.map((g, index) => (
+                  <tr key={index}>
+                    <td>{g.name}</td>
+                    <td>
+                      {g.permissions.map((p, i) => (
+                        <span
+                          key={i}
+                          style={{
+                            display: "inline-block",
+                            background: "#eef2ff",
+                            color: "#3956AD",
+                            padding: "4px 8px",
+                            borderRadius: "6px",
+                            fontSize: "12px",
+                            margin: "2px",
+                          }}
+                        >
+                          {p}
+                        </span>
+                      ))}
+                    </td>
+                    <td className="action-cell">
+                      <button
+                        className="icon-btn view"
+                        onClick={() => openEditModal(g, index)}
+                      >
+                        <i className="bi bi-pencil"></i>
+                      </button>
+                      <button
+                        className="icon-btn delete"
+                        onClick={() => confirmDelete(index)}
+                      >
+                        <i className="bi bi-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          
+          {showModal && (
+            <div className="modal-overlay">
+              <div className="modal-box">
+                <h3>Edit Permissions</h3>
+
+                <input
+                  value={formData.name}
+                  disabled
+                  style={{ marginBottom: "15px" }}
+                />
+
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
+                    gap: "12px",
+                    marginBottom: "20px",
+                  }}
+                >
+                  {allPermissions.map((perm, i) => (
+                    <label key={i} className="form-check">
+                      <input
+                        type="checkbox"
+                        checked={formData.permissions.includes(perm)}
+                        onChange={() => togglePermission(perm)}
+                      />
+                      <span style={{ marginLeft: "8px" }}>{perm}</span>
+                    </label>
+                  ))}
+                </div>
+
+                <div className="modal-actions">
+                  <button
+                    className="btn-cancel"
+                    onClick={() => setShowModal(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button className="btn-add" onClick={handleSave}>
+                    Update
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          
+          {showDeleteModal && (
+            <div className="modal-overlay">
+              <div className="modal-box">
+                <h3>Delete Group?</h3>
+                <p style={{ marginBottom: "20px" }}>
+                  Are you sure you want to delete this group?
+                </p>
+                <div className="modal-actions">
+                  <button
+                    className="btn-cancel"
+                    onClick={() => setShowDeleteModal(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button className="btn-delete" onClick={handleDelete}>
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
-
-      {/* MODAL */}
-      {showModal && (
-        <div
-          className="modal-backdrop-custom"
-          onClick={() => setShowModal(false)}
-        >
-          <div
-            className="modal-card"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h5 className="fw-bold mb-3">Edit Permissions</h5>
-
-            <input
-              className="form-control mb-3"
-              placeholder="Group Name"
-              value={form.name}
-              onChange={(e) =>
-                setForm({ ...form, name: e.target.value })
-              }
-            />
-
-            <label className="fw-bold mb-2">Assign Permissions</label>
-
-            <div className="d-flex flex-wrap gap-3 mb-3">
-              {allPermissions.map((perm, index) => (
-                <div className="form-check" key={index}>
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    checked={form.permissions.includes(perm)}
-                    onChange={() => togglePermission(perm)}
-                  />
-                  <label className="form-check-label">
-                    {perm}
-                  </label>
-                </div>
-              ))}
-            </div>
-
-            <div className="d-flex justify-content-end gap-2">
-              <button
-                className="btn btn-secondary"
-                onClick={() => setShowModal(false)}
-              >
-                Cancel
-              </button>
-              <button
-                className="btn btn-primary"
-                onClick={handleSave}
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </AdminLayout>
   );
 };

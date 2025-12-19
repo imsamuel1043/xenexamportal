@@ -1,144 +1,130 @@
 import React, { useEffect, useRef, useState } from "react";
 import AdminLayout from "../Layouts/AdminLayout";
-import "../../assets/Css/UserManagement.css";
-
-
-
-const DataTableWrapper = ({ columns, data, onEdit, onDelete }) => {
-  const tableRef = useRef(null);
-  const dtRef = useRef(null);
-
-  useEffect(() => {
-    if (window.$) {
-      if (dtRef.current) {
-        dtRef.current.destroy();
-      }
-
-      dtRef.current = window.$(tableRef.current).DataTable({
-        paging: true,
-        searching: true,
-        info: true,
-        responsive: true,
-      });
-    }
-
-    return () => {
-      if (dtRef.current) {
-        dtRef.current.destroy();
-        dtRef.current = null;
-      }
-    };
-  }, [data]);
-
-  return (
-    <div className="table-responsive">
-      <table ref={tableRef} className="display user-table" style={{ width: "100%" }}>
-        <thead>
-          <tr>
-            {columns.map((c) => (
-              <th key={c.key}>{c.label}</th>
-            ))}
-            <th>Actions</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {data.map((row) => (
-            <tr key={row.id}>
-              {columns.map((c) => (
-                <td key={c.key}>{row[c.key]}</td>
-              ))}
-              <td className="d-flex gap-1">
-                <button className="btn btn-sm btn-primary" onClick={() => onEdit(row)}>
-                  Edit
-                </button>
-                <button className="btn btn-sm btn-danger" onClick={() => onDelete(row.id)}>
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-};
-
+import "../../assets/Css/Student.css";
 
 const UserManagement = () => {
+  const tableRef = useRef(null);
+  const dtInstance = useRef(null);
+
   const [activeTab, setActiveTab] = useState("admins");
   const [showModal, setShowModal] = useState(false);
   const [editData, setEditData] = useState(null);
 
+  const [deleteTarget, setDeleteTarget] = useState(null); // id of item to delete
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   const [admins, setAdmins] = useState([
-    { id: 1, name: "Jon Jones", role: "Super Admin", email: "jon@gmail.com", dateJoined: "2024-01-10" },
-    { id: 2, name: "Connor", role: "Admin", email: "connor@gmail.com", dateJoined: "2024-01-10" },
+    { id: "a1", name: "Jon Jones", role: "Super Admin", email: "jon@gmail.com", dateJoined: "2024-01-10" },
+    { id: "a2", name: "Connor", role: "Admin", email: "connor@gmail.com", dateJoined: "2024-01-10" },
   ]);
 
   const [teachers, setTeachers] = useState([
-    { id: 1, name: "GSP", subject: "Python", email: "gsp@gmail.com", dateJoined: "2024-01-10" },
-    { id: 2, name: "Khabib", subject: "UI/UX", email: "khabib@gmail.com", dateJoined: "2024-01-10" },
+    { id: "t1", name: "GSP", subject: "Python", email: "gsp@gmail.com", dateJoined: "2024-01-10" },
+    { id: "t2", name: "Khabib", subject: "UI/UX", email: "khabib@gmail.com", dateJoined: "2024-01-10" },
   ]);
 
   const [students, setStudents] = useState([
-    { id: 1, name: "Arman", course: "React", email: "arman@gmail.com", dateJoined: "2024-01-10" },
-    { id: 2, name: "Ilia", course: "Python", email: "ilia@gmail.com", dateJoined: "2024-01-10" },
+    { id: "s1", name: "Arman", course: "React", email: "arman@gmail.com", dateJoined: "2024-01-10" },
+    { id: "s2", name: "Ilia", course: "Python", email: "ilia@gmail.com", dateJoined: "2024-01-10" },
   ]);
 
+  const getCurrentData = () => {
+    return activeTab === "admins" ? admins : activeTab === "teachers" ? teachers : students;
+  };
+
+  const getColumns = () => {
+    if (activeTab === "admins") return ["name", "role", "email", "dateJoined"];
+    if (activeTab === "teachers") return ["name", "subject", "email", "dateJoined"];
+    return ["name", "course", "email", "dateJoined"];
+  };
+
+ 
+  useEffect(() => {
+    if (!tableRef.current) return;
+
+    if (dtInstance.current) {
+      dtInstance.current.destroy();
+      dtInstance.current = null;
+    }
+
+    const timeout = setTimeout(() => {
+      if (!window.DataTable) return;
+      dtInstance.current = new window.DataTable(tableRef.current, {
+        responsive: true,
+        ordering: true,
+        searching: true,
+        paging: true,
+        pageLength: 5,
+        lengthMenu: [5, 10, 25, 50],
+        columnDefs: [{ orderable: false, targets: -1 }],
+        language: {
+          search: "",
+          searchPlaceholder: "Search...",
+          lengthMenu: "_MENU_",
+          info: "Showing _START_ to _END_ of _TOTAL_ entries",
+          infoEmpty: "Showing 0 to 0 of 0 entries",
+          paginate: { previous: "‹", next: "›" },
+        },
+        dom: "<'dt-top-row'l f>t<'dt-bottom-row'i p>",
+      });
+    }, 0);
+
+    return () => clearTimeout(timeout);
+  }, [activeTab, admins, teachers, students]);
 
   const openAddModal = () => {
-    let base = {
-      name: "",
-      email: "",
-      dateJoined: "",
-    };
-
+    const base = { name: "", email: "", dateJoined: "" };
     if (activeTab === "admins") base.role = "";
     if (activeTab === "teachers") base.subject = "";
     if (activeTab === "students") base.course = "";
-
     setEditData(base);
     setShowModal(true);
   };
 
-
   const handleSave = () => {
-    const update = (list, setter) => {
+    const updateList = (list, setter) => {
       if (editData.id) {
-        setter(list.map((u) => (u.id === editData.id ? editData : u)));
+        setter(list.map(u => (u.id === editData.id ? editData : u)));
       } else {
-        setter([...list, { ...editData, id: Date.now() }]);
+        setter([...list, { ...editData, id: Date.now().toString() }]);
       }
     };
 
-    if (activeTab === "admins") update(admins, setAdmins);
-    if (activeTab === "teachers") update(teachers, setTeachers);
-    if (activeTab === "students") update(students, setStudents);
+    if (activeTab === "admins") updateList(admins, setAdmins);
+    if (activeTab === "teachers") updateList(teachers, setTeachers);
+    if (activeTab === "students") updateList(students, setStudents);
 
     setShowModal(false);
     setEditData(null);
   };
 
+  const confirmDelete = (id) => {
+    setDeleteTarget(id);
+    setShowDeleteModal(true);
+  };
 
-  const handleDelete = (id) => {
-    if (activeTab === "admins") setAdmins(admins.filter((u) => u.id !== id));
-    if (activeTab === "teachers") setTeachers(teachers.filter((u) => u.id !== id));
-    if (activeTab === "students") setStudents(students.filter((u) => u.id !== id));
+  const handleDelete = () => {
+    const id = deleteTarget;
+    if (!id) return;
+
+    if (activeTab === "admins") setAdmins(admins.filter(u => u.id !== id));
+    if (activeTab === "teachers") setTeachers(teachers.filter(u => u.id !== id));
+    if (activeTab === "students") setStudents(students.filter(u => u.id !== id));
+
+    setDeleteTarget(null);
+    setShowDeleteModal(false);
   };
 
   return (
     <AdminLayout>
-      <div className="container mt-4">
-        <div className="d-flex justify-content-between mb-3">
-          <h3 className="fw-bold">User Management</h3>
-          <button className="btn btn-primary" onClick={openAddModal}>
-            + Add User
-          </button>
+      <div>
+        <div className="page-header d-flex justify-content-between align-items-center mb-3">
+          <h2 className="page-title">User Management</h2>
+          <button className="add-student-btn" onClick={openAddModal}>+ Add User</button>
         </div>
 
-        
         <ul className="nav nav-tabs mb-3">
-          {["admins", "teachers", "students"].map((tab) => (
+          {["admins", "teachers", "students"].map(tab => (
             <li className="nav-item" key={tab}>
               <button
                 className={`nav-link ${activeTab === tab ? "active" : ""}`}
@@ -150,101 +136,71 @@ const UserManagement = () => {
           ))}
         </ul>
 
-        
-        <div className="card p-3 shadow-sm">
-          {activeTab === "admins" && (
-            <DataTableWrapper
-              columns={[
-                { key: "name", label: "Name" },
-                { key: "role", label: "Role" },
-                { key: "email", label: "Email" },
-                { key: "dateJoined", label: "Date Joined" },
-              ]}
-              data={admins}
-              onEdit={(u) => { setEditData(u); setShowModal(true); }}
-              onDelete={handleDelete}
-            />
-          )}
-
-          {activeTab === "teachers" && (
-            <DataTableWrapper
-              columns={[
-                { key: "name", label: "Name" },
-                { key: "subject", label: "Subject" },
-                { key: "email", label: "Email" },
-                { key: "dateJoined", label: "Date Joined" },
-              ]}
-              data={teachers}
-              onEdit={(u) => { setEditData(u); setShowModal(true); }}
-              onDelete={handleDelete}
-            />
-          )}
-
-          {activeTab === "students" && (
-            <DataTableWrapper
-              columns={[
-                { key: "name", label: "Name" },
-                { key: "course", label: "Course" },
-                { key: "email", label: "Email" },
-                { key: "dateJoined", label: "Date Joined" },
-              ]}
-              data={students}
-              onEdit={(u) => { setEditData(u); setShowModal(true); }}
-              onDelete={handleDelete}
-            />
-          )}
+        <div className="table-responsive student-management-box">
+          <table ref={tableRef} className="display students-table">
+            <thead>
+              <tr>
+                {getColumns().map(c => (
+                  <th key={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</th>
+                ))}
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {getCurrentData().map(u => (
+                <tr key={`${activeTab}-${u.id}`}>
+                  {getColumns().map(c => (
+                    <td key={c}>{u[c]}</td>
+                  ))}
+                  <td className="action-cell">
+                    <button className="icon-btn view me-2" onClick={() => { setEditData(u); setShowModal(true); }}>
+                      <i className="bi bi-pencil"></i>
+                    </button>
+                    <button className="icon-btn delete" onClick={() => confirmDelete(u.id)}>
+                      <i className="bi bi-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      </div>
 
-     
-      {showModal && (
-        <div className="modal-backdrop-custom">
-          <div className="modal-card">
-            <h5 className="fw-bold mb-3">{editData.id ? "Edit User" : "Add User"}</h5>
-
-            <input className="form-control mb-2" placeholder="Name"
-              value={editData.name}
-              onChange={(e) => setEditData({ ...editData, name: e.target.value })}
-            />
-
-            {activeTab === "admins" && (
-              <input className="form-control mb-2" placeholder="Role"
-                value={editData.role}
-                onChange={(e) => setEditData({ ...editData, role: e.target.value })}
-              />
-            )}
-
-            {activeTab === "teachers" && (
-              <input className="form-control mb-2" placeholder="Subject"
-                value={editData.subject}
-                onChange={(e) => setEditData({ ...editData, subject: e.target.value })}
-              />
-            )}
-
-            {activeTab === "students" && (
-              <input className="form-control mb-2" placeholder="Course"
-                value={editData.course}
-                onChange={(e) => setEditData({ ...editData, course: e.target.value })}
-              />
-            )}
-
-            <input className="form-control mb-2" placeholder="Email"
-              value={editData.email}
-              onChange={(e) => setEditData({ ...editData, email: e.target.value })}
-            />
-
-            <input type="date" className="form-control mb-3"
-              value={editData.dateJoined}
-              onChange={(e) => setEditData({ ...editData, dateJoined: e.target.value })}
-            />
-
-            <div className="d-flex justify-content-end gap-2">
-              <button className="btn btn-secondary" onClick={() => setShowModal(false)}>Cancel</button>
-              <button className="btn btn-primary" onClick={handleSave}>Save</button>
+        {/* Add/Edit Modal */}
+        {showModal && editData && (
+          <div className="modal-overlay">
+            <div className="modal-box">
+              <h3>{editData.id ? "Edit User" : "Add User"}</h3>
+              <div className="modal-form">
+                <input type="text" placeholder="Name" className="form-control mb-2" value={editData.name}
+                  onChange={e => setEditData({ ...editData, name: e.target.value })} />
+                {activeTab === "admins" && <input type="text" placeholder="Role" className="form-control mb-2" value={editData.role} onChange={e => setEditData({ ...editData, role: e.target.value })} />}
+                {activeTab === "teachers" && <input type="text" placeholder="Subject" className="form-control mb-2" value={editData.subject} onChange={e => setEditData({ ...editData, subject: e.target.value })} />}
+                {activeTab === "students" && <input type="text" placeholder="Course" className="form-control mb-2" value={editData.course} onChange={e => setEditData({ ...editData, course: e.target.value })} />}
+                <input type="email" placeholder="Email" className="form-control mb-2" value={editData.email} onChange={e => setEditData({ ...editData, email: e.target.value })} />
+                <input type="date" className="form-control mb-3" value={editData.dateJoined} onChange={e => setEditData({ ...editData, dateJoined: e.target.value })} />
+              </div>
+              <div className="modal-actions mt-2">
+                <button className="btn-cancel me-2" onClick={() => setShowModal(false)}>Cancel</button>
+                <button className="btn-add" onClick={handleSave}>Save</button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+
+        
+        {showDeleteModal && (
+          <div className="modal-overlay">
+            <div className="modal-box">
+              <h3>Are you sure you want to delete this user?</h3>
+              <div className="modal-actions mt-3">
+                <button className="btn-cancel me-2" onClick={() => setShowDeleteModal(false)}>Cancel</button>
+                <button className="btn-add" onClick={handleDelete}>Delete</button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </AdminLayout>
   );
 };

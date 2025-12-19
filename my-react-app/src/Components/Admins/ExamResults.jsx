@@ -1,167 +1,253 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AdminLayout from "../Layouts/AdminLayout";
-import "../../assets/Css/Examresult.css";
+import "../../assets/Css/Student.css";
+
+const FILTER_KEY = "examResultsFilters";
 
 const ExamResults = () => {
+  const tableRef = useRef(null);
+  const dtInstance = useRef(null);
+
   const [results, setResults] = useState([
-    { id: 1, student: "Samuel", exam: "React", batch: "Batch 9", date: "2025-02-10", score: "85%" },
-    { id: 2, student: "Prabin Kumar", exam: "JavaScript", batch: "Batch 12", date: "2025-02-12", score: "92%" },
-    { id: 3, student: "Vibina", exam: "UI/UX Design", batch: "Batch 7", date: "2025-02-13", score: "78%" },
+    { student: "Samuel", exam: "React", course: "Digital Marketing", batch: "Batch 9", date: "2025-02-10", score: "85%" },
+    { student: "Prabin Kumar", exam: "JavaScript", course: "Creative Design", batch: "Batch 12", date: "2025-02-12", score: "92%" },
+    { student: "Vibina", exam: "UI/UX Design", course: "Full Stack Development", batch: "Batch 7", date: "2025-02-13", score: "78%" },
+    { student: "Naja", exam: "React", course: "UI/UX Design and Development", batch: "Batch 9", date: "2025-02-10", score: "85%" },
+    { student: "Aysha", exam: "JavaScript", course: "PHP Development", batch: "Batch 12", date: "2025-02-12", score: "92%" },
+    { student: "Sithara", exam: "UI/UX Design", course: "Multimedia With Animation", batch: "Batch 7", date: "2025-02-13", score: "78%" },
+    { student: "Muhusina", exam: "UI/UX Design", course: "Node JS Development", batch: "Batch 7", date: "2025-02-13", score: "78%" },
+    { student: "Riya", exam: "React", course: "Python Development", batch: "Batch 9", date: "2025-02-10", score: "85%" },
   ]);
 
-  const [search, setSearch] = useState("");
-  const [filterBatch, setFilterBatch] = useState("");
-  const [filterCourse, setFilterCourse] = useState("");
-  const [showModal, setShowModal] = useState(false);
-  const [editingResult, setEditingResult] = useState(null);
-  const [isAdding, setIsAdding] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [activeRowIndex, setActiveRowIndex] = useState(null);
+  const [editData, setEditData] = useState({});
 
-  const tableRef = useRef(null);
-  const dataTableInstance = useRef(null);
-
-  const filteredResults = results.filter((r) => {
-    return (
-      r.student.toLowerCase().includes(search.toLowerCase()) &&
-      (filterBatch ? r.batch === filterBatch : true) &&
-      (filterCourse ? r.exam === filterCourse : true)
-    );
-  });
-
-  const uniqueBatches = [...new Set(results.map((r) => r.batch))];
-  const uniqueCourses = [...new Set(results.map((r) => r.exam))];
-
-  // Initialize / Reinitialize DataTable whenever filteredResults change
+  
   useEffect(() => {
-    if (dataTableInstance.current) {
-      dataTableInstance.current.destroy();
-    }
+    if (!tableRef.current || dtInstance.current) return;
 
-    dataTableInstance.current = window.$(tableRef.current).DataTable({
-      pageLength: 5,
-      destroy: true,
-      responsive: true, // enable responsiveness
+    const savedFilters = JSON.parse(localStorage.getItem(FILTER_KEY) || "{}");
+
+    const table = new window.DataTable(tableRef.current, {
+      responsive: true,
+      ordering: true,
+      searching: true,
+      paging: true,
+      pageLength: 10,
+      dom: "<'dt-top-row'l f>t<'dt-bottom-row'i p>",
+      language: {
+        search: "",
+        searchPlaceholder: "Search...",
+        lengthMenu: " _MENU_ ",
+        paginate: { previous: "‹", next: "›" },
+      },
+      initComplete() {
+        const api = this.api();
+        const filterCols = [
+          { index: 1, key: "exam" },
+          { index: 2, key: "course" },
+          { index: 3, key: "batch" },
+        ];
+
+        filterCols.forEach(colInfo => {
+          const col = api.column(colInfo.index);
+          const th = col.header();
+          if (th.querySelector(".dt-filter-icon")) return;
+
+          th.style.position = "relative";
+          th.style.paddingRight = "26px";
+
+          const text = th.innerText;
+          th.innerHTML = `<span class="th-text">${text}</span>`;
+
+          const icon = document.createElement("i");
+          icon.className = "bi bi-funnel dt-filter-icon";
+          icon.style.position = "absolute";
+          icon.style.right = "6px";
+          icon.style.top = "50%";
+          icon.style.transform = "translateY(-50%)";
+          icon.style.cursor = "pointer";
+
+          const dropdown = document.createElement("div");
+          dropdown.style.position = "absolute";
+          dropdown.style.top = "100%";
+          dropdown.style.right = "0";
+          dropdown.style.background = "#fff";
+          dropdown.style.border = "1px solid #ddd";
+          dropdown.style.borderRadius = "4px";
+          dropdown.style.boxShadow = "0 2px 6px rgba(0,0,0,.15)";
+          dropdown.style.display = "none";
+          dropdown.style.zIndex = "20";
+          dropdown.style.minWidth = "140px";
+          dropdown.style.color = "#333";
+
+          
+          const values = [...new Set(col.data().toArray())];
+
+          const addOption = (label, value = "") => {
+            const opt = document.createElement("div");
+            opt.textContent = label;
+            opt.style.padding = "6px 10px";
+            opt.style.cursor = "pointer";
+            opt.style.color = "#333";
+            opt.onmouseenter = () => (opt.style.background = "#f5f5f5");
+            opt.onmouseleave = () => (opt.style.background = "transparent");
+            opt.onclick = () => {
+              if (value) {
+                col.search("^" + value + "$", true, false).draw();
+                icon.classList.add("active");
+                savedFilters[colInfo.key] = value;
+              } else {
+                col.search("").draw();
+                icon.classList.remove("active");
+                delete savedFilters[colInfo.key];
+              }
+              localStorage.setItem(FILTER_KEY, JSON.stringify(savedFilters));
+              dropdown.style.display = "none";
+            };
+            dropdown.appendChild(opt);
+          };
+
+          addOption("All");
+          values.forEach(v => addOption(v, v));
+
+          
+          if (savedFilters[colInfo.key]) {
+            col.search("^" + savedFilters[colInfo.key] + "$", true, false).draw();
+            icon.classList.add("active");
+          }
+
+          icon.onclick = e => {
+            e.stopPropagation();
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+          };
+          document.addEventListener("click", () => {
+            dropdown.style.display = "none";
+          });
+
+          th.appendChild(icon);
+          th.appendChild(dropdown);
+        });
+      },
     });
-  }, [filteredResults]);
 
-  const handleRemove = (id) => setResults(results.filter((r) => r.id !== id));
+    dtInstance.current = table;
+    return () => {
+      table.destroy();
+      dtInstance.current = null;
+    };
+  }, [results]); 
 
-  const handleEditClick = (result) => {
-    setEditingResult({ ...result });
-    setIsAdding(false);
-    setShowModal(true);
+  
+  const handleEdit = index => {
+    setActiveRowIndex(index);
+    setEditData({ ...results[index] });
+    setShowEditModal(true);
   };
 
-  const handleAddClick = () => {
-    setEditingResult({ student: "", exam: "", batch: "", date: "", score: "" });
-    setIsAdding(true);
-    setShowModal(true);
+  
+  const handleDelete = index => {
+    setActiveRowIndex(index);
+    setShowDeleteModal(true);
   };
 
-  const handleModalChange = (e) => {
+  
+  const confirmDelete = () => {
+    setResults(prev => prev.filter((_, i) => i !== activeRowIndex));
+    setShowDeleteModal(false);
+    setActiveRowIndex(null);
+  };
+
+  
+  const handleEditChange = e => {
     const { name, value } = e.target;
-    setEditingResult((prev) => ({ ...prev, [name]: value }));
+    setEditData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSaveChanges = () => {
-    if (isAdding) {
-      const newResult = { ...editingResult, id: Math.floor(Math.random() * 10000) };
-      setResults([...results, newResult]);
-    } else {
-      setResults(results.map((r) => (r.id === editingResult.id ? editingResult : r)));
-    }
-    setShowModal(false);
+  
+  const saveEdit = () => {
+    setResults(prev => prev.map((r, i) => (i === activeRowIndex ? editData : r)));
+    setShowEditModal(false);
+    setActiveRowIndex(null);
   };
 
   return (
-
     <AdminLayout>
-
-      <div className="container mt-4">
-        <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-          <h3 className="fw-bold">Exam Results</h3>
-          <button className="btn btn-primary mt-2 mt-md-0" onClick={handleAddClick}>Add Result</button>
+      <div>
+        <div className="page-header">
+          <h2 className="page-title">Exam Results</h2>
         </div>
 
-
-        <div className="card shadow-sm p-3 mt-3" style={{ borderRadius: "8px" }}>
-          <div className="row g-3">
-            <div className="col-12 col-md-4">
-              <select className="form-select" value={filterBatch} onChange={(e) => setFilterBatch(e.target.value)}>
-                <option value="">Batch</option>
-                {uniqueBatches.map((b, idx) => <option key={idx} value={b}>{b}</option>)}
-              </select>
-            </div>
-            <div className="col-12 col-md-4">
-              <select className="form-select" value={filterCourse} onChange={(e) => setFilterCourse(e.target.value)}>
-                <option value="">Exam</option>
-                {uniqueCourses.map((c, idx) => <option key={idx} value={c}>{c}</option>)}
-              </select>
-            </div>
-            {/* <div className="col-12 col-md-4">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Search name..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div> */}
+        <div className="student-management-box">
+          <div className="table-responsive">
+            <table ref={tableRef} className="display students-table">
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Exam</th>
+                  <th>Course</th>
+                  <th>Batch</th>
+                  <th>Date</th>
+                  <th>Score</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {results.map((r, i) => (
+                  <tr key={i}>
+                    <td>{r.student}</td>
+                    <td>{r.exam}</td>
+                    <td>{r.course}</td>
+                    <td>{r.batch}</td>
+                    <td>{r.date}</td>
+                    <td className="fw-bold">{r.score}</td>
+                    <td className="action-cell">
+                      <button className="icon-btn view" onClick={() => handleEdit(i)}>
+                        <i className="bi bi-pencil" />
+                      </button>
+                      <button className="icon-btn delete" onClick={() => handleDelete(i)}>
+                        <i className="bi bi-trash" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 
         
-        <div className="card shadow-sm p-3 mt-3">
-          <table
-            ref={tableRef}
-            className="display table table-striped table-bordered dt-responsive nowrap"
-            style={{ width: "100%" }}
-          >
-            <thead>
-              <tr className="table-header">
-                <th>Student</th>
-                <th>Exam</th>
-                <th>Batch</th>
-                <th>Date</th>
-                <th>Score</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredResults.map((r) => (
-                <tr key={r.id}>
-                  <td>{r.student}</td>
-                  <td>{r.exam}</td>
-                  <td>{r.batch}</td>
-                  <td>{r.date}</td>
-                  <td className="fw-bold">{r.score}</td>
-                  <td>
-                    <button className="btn btn-sm btn-primary me-2" onClick={() => handleEditClick(r)}>Edit</button>
-                    <button className="btn btn-sm btn-danger" onClick={() => handleRemove(r.id)}>Remove</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        
-        {showModal && (
+        {showDeleteModal && (
           <div className="modal-overlay">
             <div className="modal-box">
-              <h5 className="fw-bold mb-3">{isAdding ? "Add Result" : "Edit Result"}</h5>
-              <label className="form-label">Student Name</label>
-              <input type="text" className="form-control mb-2" name="student" value={editingResult.student} onChange={handleModalChange} />
-              <label className="form-label">Exam</label>
-              <input type="text" className="form-control mb-2" name="exam" value={editingResult.exam} onChange={handleModalChange} />
-              <label className="form-label">Batch</label>
-              <input type="text" className="form-control mb-2" name="batch" value={editingResult.batch} onChange={handleModalChange} />
-              <label className="form-label">Date</label>
-              <input type="date" className="form-control mb-2" name="date" value={editingResult.date} onChange={handleModalChange} />
-              <label className="form-label">Score</label>
-              <input type="text" className="form-control mb-3" name="score" value={editingResult.score} onChange={handleModalChange} />
-              <div className="d-flex justify-content-end gap-2">
-                <button className="btn btn-secondary" onClick={() => setShowModal(false)}>Cancel</button>
-                <button className="btn btn-primary" onClick={handleSaveChanges}>Save</button>
+              <h3 className="text-danger">Delete Result</h3>
+              <p>Are you sure you want to delete this result?</p>
+              <div className="modal-actions">
+                <button className="btn-cancel" onClick={() => setShowDeleteModal(false)}>Cancel</button>
+                <button className="btn-add" onClick={confirmDelete}>Delete</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        
+        {showEditModal && (
+          <div className="modal-overlay">
+            <div className="modal-box">
+              <h3>Edit Result</h3>
+              <div className="modal-form">
+                <input type="text" name="student" value={editData.student || ""} onChange={handleEditChange} placeholder="Student Name" />
+                <input type="text" name="exam" value={editData.exam || ""} onChange={handleEditChange} placeholder="Exam" />
+                <input type="text" name="course" value={editData.course || ""} onChange={handleEditChange} placeholder="Course" />
+                <input type="text" name="batch" value={editData.batch || ""} onChange={handleEditChange} placeholder="Batch" />
+                <input type="date" name="date" value={editData.date || ""} onChange={handleEditChange} />
+                <input type="text" name="score" value={editData.score || ""} onChange={handleEditChange} placeholder="Score" />
+              </div>
+              <div className="modal-actions">
+                <button className="btn-cancel" onClick={() => setShowEditModal(false)}>Cancel</button>
+                <button className="btn-add" onClick={saveEdit}>Save Changes</button>
               </div>
             </div>
           </div>

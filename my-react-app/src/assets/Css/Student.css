@@ -12,9 +12,8 @@
   font-weight: 600;
   margin: 0;
 }
-/* Remove bold from table header titles */
 .students-table thead th {
-  font-weight: 400 !important; /* normal */
+  font-weight: 400 !important;
 }
 
 .add-student-btn {
@@ -86,20 +85,20 @@
   transition: all 0.25s ease;
 }
 
-/* Hover effect */
+
 .dt-search input[type="search"]:hover {
   border-color: #0059ff;
   background-color: #f9fafb;
 }
 
-/* Focus effect */
+
 .dt-search input[type="search"]:focus {
   border-color: #315fea;
   background-color: #ffffff;
   box-shadow: 0 0 0 3px rgba(0, 64, 255, 0.509);
 }
 
-/* Placeholder styling */
+
 .dt-search input::placeholder {
   color: #9ca3af;
 }
@@ -171,6 +170,7 @@ table.dataTable thead th {
   padding-right: 24px !important;
   text-align: center;
   font-weight: 500;
+  background-color: #081b68;
 }
 
 table.dataTable thead th::before,
@@ -251,7 +251,7 @@ table.dataTable thead th::after {
 div.dt-container {
   position: relative;
   clear: both;
-  padding: 3px;
+  padding: 4px;
 }
 
 .modal-overlay {
@@ -406,5 +406,15 @@ div.dt-container {
 .dt-paging-button.previous,
 .dt-paging-button.next {
   padding: 0 12px !important;
+}
+
+.filter-icon-container {
+  display: inline-block;
+  margin-left: 5px;
+}
+
+
+.filter-dropdown div:hover {
+  background-color: #9be3ff;
 }
 

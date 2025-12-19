@@ -1,131 +1,269 @@
-import React, { useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
 import AdminLayout from "../Layouts/AdminLayout";
-import '../../assets/Css/Ongoing.css';
+import "../../assets/Css/Student.css";
 
 const OngoingExam = () => {
-  const navigate = useNavigate();
   const tableRef = useRef(null);
-  const dataTable = useRef(null);
+  const dtInstance = useRef(null);
 
-  const liveExams = [
+  const resultTableRef = useRef(null);
+  const resultDtInstance = useRef(null);
+
+  const [timeNow, setTimeNow] = useState(Date.now());
+  const [showModal, setShowModal] = useState(false);
+  const [selectedExam, setSelectedExam] = useState(null);
+
+  const [exams] = useState([
     {
-      id: 1,
       title: "Javascript",
-      date: "Dec 5, 2025",
-      duration: "2 Hours",
-      status: "inprogress",
+      startTime: Date.now() - 30 * 60 * 1000,
+      duration: 2 * 60 * 60 * 1000,
+      students: [
+        { name: "Naja Fathima", score: 78 },
+        { name: "Prabin Kumar", score: 85 },
+        { name: "Samuel Morris", score: 66 },
+      ],
     },
     {
-      id: 2,
-      title: "Css",
-      date: "Dec 15, 2025",
-      duration: "1 Hour",
-      status: "notstarted",
+      title: "CSS",
+      startTime: Date.now() + 20 * 60 * 1000,
+      duration: 60 * 60 * 1000,
+      students: [],
     },
     {
-      id: 3,
       title: "Digital Marketing",
-      date: "Nov 27, 2025",
-      duration: "1.5 Hours",
-      status: "completed",
+      startTime: Date.now() - 4 * 60 * 60 * 1000,
+      duration: 90 * 60 * 1000,
+      students: [
+        { name: "Aysha", score: 88 },
+        { name: "Riya Fathima", score: 72 },
+        { name: "Irfan", score: 91 },
+        { name: "Manu", score: 64 },
+      ],
     },
-  ];
+  ]);
 
+  
   useEffect(() => {
-    if (dataTable.current) {
-      dataTable.current.destroy();
-    }
-
-    dataTable.current = $(tableRef.current).DataTable();
+    const timer = setInterval(() => setTimeNow(Date.now()), 1000);
+    return () => clearInterval(timer);
   }, []);
 
-  const getStatusBadge = (status, id) => {
-    if (status === "completed") {
-      return `
-        <span class="badge px-3 py-2"
-          style="
-            background-color:#0dba3525;
-            color:#028b22;
-            border-radius:30px;
-            cursor:pointer;">
-          ✔ Completed
-        </span>`;
-    }
+  
+  const getStatus = (exam) => {
+    const start = exam.startTime;
+    const end = exam.startTime + exam.duration;
 
-    if (status === "inprogress") {
-      return `
-        <span class="badge px-3 py-2"
-          style="
-            background-color:#144efd20;
-            color:#144efd;
-            border-radius:30px;">
-          In Progress
-        </span>`;
-    }
-
-    return `
-      <span class="badge px-3 py-2"
-        style="
-          background-color:#ff480b25;
-          color:#ff480b;
-          border-radius:30px;">
-        Not Started
-      </span>`;
+    if (timeNow < start) return "Not Started";
+    if (timeNow >= start && timeNow <= end) return "In Progress";
+    return "Completed";
   };
+
+  
+  const formatTime = (ms) => {
+    if (ms <= 0) return "00:00:00";
+    const s = Math.floor(ms / 1000);
+    const h = String(Math.floor(s / 3600)).padStart(2, "0");
+    const m = String(Math.floor((s % 3600) / 60)).padStart(2, "0");
+    const sec = String(s % 60).padStart(2, "0");
+    return `${h}:${m}:${sec}`;
+  };
+
+  const getCountdown = (exam) => {
+    const start = exam.startTime;
+    const end = exam.startTime + exam.duration;
+
+    if (timeNow < start) return `Starts in ${formatTime(start - timeNow)}`;
+    if (timeNow <= end) return `Ends in ${formatTime(end - timeNow)}`;
+    return "Completed";
+  };
+
+  
+useEffect(() => {
+  if (!tableRef.current || dtInstance.current) return;
+
+  const table = new window.DataTable(tableRef.current, {
+    responsive: true,
+    ordering: true,
+    searching: true,
+    paging: true,
+    pagingType: "simple_numbers",
+    lengthChange: true,
+    lengthMenu: [5, 10, 25, 50], 
+    pageLength: 10,              
+    language: {
+      search: "",                
+      searchPlaceholder: "Search...",
+      lengthMenu: " _MENU_ ", 
+      info: "Showing _START_ to _END_ of _TOTAL_ entries", 
+      infoEmpty: "Showing 0 to 0 of 0 entries",
+      infoFiltered: "(filtered from _MAX_ total entries)",
+      paginate: {
+        previous: "‹",
+        next: "›"
+      }
+    },
+    dom: "<'dt-top-row'l f>t<'dt-bottom-row'i p>", 
+  });
+
+    dtInstance.current = table;
+
+    return () => {
+      table.destroy();
+      dtInstance.current = null;
+    };
+  }, []);
+
+  
+  useEffect(() => {
+    if (
+      !showModal ||
+      !selectedExam ||
+      selectedExam.status !== "Completed"
+    )
+      return;
+
+    if (!resultTableRef.current || resultDtInstance.current) return;
+
+    const table = new window.DataTable(resultTableRef.current, {
+      responsive: true,
+      ordering: true,
+      searching: true,
+      paging: true,
+      pagingType: "simple_numbers",
+      pageLength: 5,
+      dom: "<'dt-top-row'l f>t<'dt-bottom-row'i p>",
+      language: {
+        search: "",
+        lengthMenu: " _MENU_ ",
+        searchPlaceholder: "Search student...",
+        paginate: { previous: "‹", next: "›" },
+      },
+    });
+
+    resultDtInstance.current = table;
+
+    return () => {
+      table.destroy();
+      resultDtInstance.current = null;
+    };
+  }, [showModal, selectedExam]);
 
   return (
     <AdminLayout>
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h3 className="fw-bold">Examinations</h3>
-      </div>
+      <div>
+        
+        <div className="page-header">
+          <h2 className="page-title">Ongoing Examinations</h2>
+        </div>
 
-      <div className="table-responsive card shadow-sm p-3" style={{ borderRadius: "10px" }}>
-        <table className="table table-bordered" ref={tableRef} id="examTable">
-          <thead className="table-primary">
-            <tr>
-              <th>Exam Title</th>
-              <th>Date</th>
-              <th>Duration</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
+        
+        <div className="student-management-box">
+          <div className="table-responsive">
+            <table ref={tableRef} className="display students-table">
+              <thead>
+                <tr>
+                  <th>Exam</th>
+                  <th>Countdown</th>
+                  <th>Duration</th>
+                  <th>Attended</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {exams.map((exam, index) => {
+                  const status = getStatus(exam);
 
-          <tbody>
-            {liveExams.map((exam) => (
-              <tr key={exam.id}>
-                <td>{exam.title}</td>
-                <td>{exam.date}</td>
-                <td>{exam.duration}</td>
-                <td
-                  dangerouslySetInnerHTML={{
-                    __html: getStatusBadge(exam.status, exam.id),
-                  }}
-                ></td>
+                  return (
+                    <tr key={index}>
+                      <td>{exam.title}</td>
+                      <td>{getCountdown(exam)}</td>
+                      <td>{exam.duration / 60000} mins</td>
+                      <td>{exam.students.length}</td>
+                      <td>
+                        <span
+                          className={`status-pill ${
+                            status === "Completed"
+                              ? "active"
+                              : status === "In Progress"
+                              ? "pending"
+                              : "inactive"
+                          }`}
+                        >
+                          {status}
+                        </span>
+                      </td>
+                      <td className="action-cell">
+                        <button
+                          className="icon-btn view"
+                          onClick={() => {
+                            setSelectedExam({ ...exam, status });
+                            setShowModal(true);
+                          }}
+                        >
+                          <i className="bi bi-eye"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
 
-                <td>
-                  {exam.status === "completed" ? (
-                    <button
-                      className="btn btn-success btn-sm"
-                      onClick={() => navigate(`/completed-exams/${exam.id}`)}
+          
+          {showModal && selectedExam && (
+            <div className="modal-overlay">
+              <div className="modal-box" style={{ maxWidth: "720px" }}>
+                <h3>{selectedExam.title} – Results</h3>
+
+                <p style={{ marginBottom: "6px" }}>
+                  <strong>Status:</strong> {selectedExam.status}
+                </p>
+                <p style={{ marginBottom: "14px" }}>
+                  <strong>Students Attended:</strong>{" "}
+                  {selectedExam.students.length}
+                </p>
+
+                {selectedExam.status === "Completed" ? (
+                  <div className="table-responsive">
+                    <table
+                      ref={resultTableRef}
+                      className="display students-table"
                     >
-                      View Report
-                    </button>
-                  ) : exam.status === "inprogress" ? (
-                    <button className="btn btn-primary btn-sm" disabled>
-                      Ongoing
-                    </button>
-                  ) : (
-                    <button className="btn btn-warning btn-sm" disabled>
-                      Not Started
-                    </button>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Score</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {selectedExam.students.map((s, i) => (
+                          <tr key={i}>
+                            <td>{s.name}</td>
+                            <td>{s.score}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <p>Results will be available after exam completion.</p>
+                )}
+
+                <div className="modal-actions">
+                  <button
+                    className="btn-cancel"
+                    onClick={() => setShowModal(false)}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </AdminLayout>
   );
